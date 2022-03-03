@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		DB745A5127D0FA74007534FA /* BaseProfileView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB745A5027D0FA74007534FA /* BaseProfileView.xib */; };
 		DB745A5327D0FA8C007534FA /* BaseProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB745A5227D0FA8C007534FA /* BaseProfileView.swift */; };
+		DB745A5527D1390F007534FA /* SFProText-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB745A5427D1390F007534FA /* SFProText-Semibold.ttf */; };
 		DB86836A27C2A9F100D82F48 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB86836927C2A9F100D82F48 /* AppDelegate.swift */; };
 		DB86836E27C2A9F100D82F48 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB86836D27C2A9F100D82F48 /* ViewController.swift */; };
 		DB86837327C2A9F800D82F48 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB86837227C2A9F800D82F48 /* Assets.xcassets */; };
@@ -23,6 +24,7 @@
 /* Begin PBXFileReference section */
 		DB745A5027D0FA74007534FA /* BaseProfileView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BaseProfileView.xib; sourceTree = "<group>"; };
 		DB745A5227D0FA8C007534FA /* BaseProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProfileView.swift; sourceTree = "<group>"; };
+		DB745A5427D1390F007534FA /* SFProText-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Semibold.ttf"; sourceTree = "<group>"; };
 		DB86836627C2A9F100D82F48 /* ChatApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB86836927C2A9F100D82F48 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DB86836D27C2A9F100D82F48 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 				DB8BCD8427D02C8D00054A95 /* SFProDisplay-Bold.ttf */,
 				DB8BCD8327D02C8D00054A95 /* SFProDisplay-Regular.ttf */,
 				DB8BCD8527D02C8D00054A95 /* SFProText-Regular.ttf */,
+				DB745A5427D1390F007534FA /* SFProText-Semibold.ttf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -160,6 +163,7 @@
 				DB86837627C2A9F800D82F48 /* LaunchScreen.storyboard in Resources */,
 				DB745A5127D0FA74007534FA /* BaseProfileView.xib in Resources */,
 				DB86837327C2A9F800D82F48 /* Assets.xcassets in Resources */,
+				DB745A5527D1390F007534FA /* SFProText-Semibold.ttf in Resources */,
 				DB8BCD8827D02C8D00054A95 /* SFProText-Regular.ttf in Resources */,
 				DB8BCD8727D02C8D00054A95 /* SFProDisplay-Bold.ttf in Resources */,
 			);
