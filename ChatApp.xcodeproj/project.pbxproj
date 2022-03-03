@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DB745A5127D0FA74007534FA /* BaseProfileView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB745A5027D0FA74007534FA /* BaseProfileView.xib */; };
+		DB745A5327D0FA8C007534FA /* BaseProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB745A5227D0FA8C007534FA /* BaseProfileView.swift */; };
 		DB86836A27C2A9F100D82F48 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB86836927C2A9F100D82F48 /* AppDelegate.swift */; };
 		DB86836E27C2A9F100D82F48 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB86836D27C2A9F100D82F48 /* ViewController.swift */; };
 		DB86837327C2A9F800D82F48 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB86837227C2A9F800D82F48 /* Assets.xcassets */; };
@@ -19,6 +21,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DB745A5027D0FA74007534FA /* BaseProfileView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BaseProfileView.xib; sourceTree = "<group>"; };
+		DB745A5227D0FA8C007534FA /* BaseProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProfileView.swift; sourceTree = "<group>"; };
 		DB86836627C2A9F100D82F48 /* ChatApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB86836927C2A9F100D82F48 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DB86836D27C2A9F100D82F48 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -69,6 +73,8 @@
 				DB86837727C2A9F800D82F48 /* Info.plist */,
 				DBBD175227C6682A0093B548 /* Extensions.swift */,
 				DB8BCD8A27D038FA00054A95 /* Resources */,
+				DB745A5027D0FA74007534FA /* BaseProfileView.xib */,
+				DB745A5227D0FA8C007534FA /* BaseProfileView.swift */,
 			);
 			path = ChatApp;
 			sourceTree = "<group>";
@@ -152,6 +158,7 @@
 			files = (
 				DB8BCD8627D02C8D00054A95 /* SFProDisplay-Regular.ttf in Resources */,
 				DB86837627C2A9F800D82F48 /* LaunchScreen.storyboard in Resources */,
+				DB745A5127D0FA74007534FA /* BaseProfileView.xib in Resources */,
 				DB86837327C2A9F800D82F48 /* Assets.xcassets in Resources */,
 				DB8BCD8827D02C8D00054A95 /* SFProText-Regular.ttf in Resources */,
 				DB8BCD8727D02C8D00054A95 /* SFProDisplay-Bold.ttf in Resources */,
@@ -165,6 +172,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB745A5327D0FA8C007534FA /* BaseProfileView.swift in Sources */,
 				DB86836E27C2A9F100D82F48 /* ViewController.swift in Sources */,
 				DBBD175327C6682A0093B548 /* Extensions.swift in Sources */,
 				DB8BCD8227D026FC00054A95 /* ProfileViewController.swift in Sources */,
