@@ -13,12 +13,12 @@ class BaseProfileView: UIView {
     @IBOutlet weak var photoImageView: UIImageView!
     @IBOutlet private weak var nameTextView: UITextView!
     @IBOutlet private weak var descriptionTextView: UITextView!
-    @IBOutlet private weak var saveButton: UIButton!
+    @IBOutlet weak var saveButton: UIButton!
     
     let editIconView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(red: 0.247, green: 0.471, blue: 0.94, alpha: 1)
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor(red: 0.247, green: 0.471, blue: 0.94, alpha: 1)
         return view
     }()
     
@@ -31,6 +31,8 @@ class BaseProfileView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+//      print(saveButton.frame)
+//      Краш из-за попытки обратиться к кнопке раньше, чем xib, содержащий кнопку, будет инициализирован
         loadNib()
         configureView()
     }

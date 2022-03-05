@@ -10,20 +10,36 @@ import UIKit
 class ProfileViewController: UIViewController {
     
     private let profileView = BaseProfileView()
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "SFProDisplay-Bold", size: 26)
+        label.text = "My Profile"
+        return label
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(profileView.saveButton.frame)
         setupUI()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print(profileView.saveButton.frame)
+//      viewDidAppear вызывается после того, как AutoLayout завершит свою работу и отобразит конечный вид UI элементов, а viewDidLoad - до этого.
     }
     
     private func setupUI() {
         navigationController?.navigationBar.backgroundColor = UIColor(red: 0.968, green: 0.968, blue: 0.968, alpha: 1)
-        navigationController?.navigationBar.largeTitleTextAttributes = [.font: UIFont(name: "SFProDisplay-Bold", size: 26) ?? .boldSystemFont(ofSize: 26)]
         navigationController?.navigationBar.prefersLargeTitles = true
-        title = "My Profile"
         let closeButton = UIBarButtonItem(title: "Close", style: .plain, target: self, action: #selector(closeTheScreen))
+        closeButton.isEnabled = true
         navigationItem.rightBarButtonItem = closeButton
-
+        navigationItem.rightBarButtonItem?.isEnabled = true
+        let titleButton = UIBarButtonItem(title: "My Profile", style: .plain, target: self, action: nil)
+        titleButton.setTitleTextAttributes([.font: UIFont(name: "SFProDisplay-Bold", size: 26) ?? .boldSystemFont(ofSize: 26), .foregroundColor: UIColor.black], for: .normal)
+        navigationItem.leftBarButtonItem = titleButton
+        
         view = profileView
         let tap = UITapGestureRecognizer(target: self, action: #selector(editProfileImage))
         profileView.editIconView.addGestureRecognizer(tap)

@@ -20,11 +20,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
-        let viewController = ViewController()
         window = UIWindow(frame: UIScreen.main.bounds)
+        let viewController = ViewController()
         window?.rootViewController = viewController
         window?.makeKeyAndVisible()
+        UIBarButtonItem.appearance().setTitlePositionAdjustment(UIOffset(horizontal: 0, vertical: 30), for: .default)
         
         NSLog("Application moved from \(lastState.name) to \(application.applicationState.name): \(#function)")
         lastState = application.applicationState
