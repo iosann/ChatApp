@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <device id="retina6_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
@@ -17,21 +17,44 @@
                 <outlet property="nameTextField" destination="6Am-kD-Hn3" id="WzO-NN-K7y"/>
                 <outlet property="photoImageView" destination="PzQ-fx-tFX" id="Cnf-ex-b7D"/>
                 <outlet property="saveButton" destination="EcB-ia-T8z" id="5ij-ec-xjX"/>
+                <outlet property="saveButtonTopConstraint" destination="HMg-TO-tAI" id="bIw-9U-Bbv"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="User_avatar_icon" translatesAutoresizingMaskIntoConstraints="NO" id="PzQ-fx-tFX">
-                    <rect key="frame" x="67.5" y="7" width="240" height="240"/>
+                    <rect key="frame" x="77" y="51" width="274" height="274"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="PzQ-fx-tFX" secondAttribute="height" multiplier="1:1" id="op2-CL-trW"/>
                     </constraints>
                 </imageView>
+                <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="14" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="6Am-kD-Hn3">
+                    <rect key="frame" x="77" y="350" width="274" height="34"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="u36-DO-IfH">
+                    <rect key="frame" x="77" y="409" width="274" height="34"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Marina Dudarenko" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a33-8f-yEC">
+                    <rect key="frame" x="77" y="357" width="274" height="20.333333333333314"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" text="UX/UI designer, web-designer Moscow, Russia" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="InX-xz-vPf">
+                    <rect key="frame" x="77" y="409.33333333333331" width="274" height="40.666666666666686"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EcB-ia-T8z">
-                    <rect key="frame" x="56.5" y="597" width="262.5" height="40"/>
+                    <rect key="frame" x="64.333333333333343" y="822" width="299.33333333333326" height="40"/>
                     <color key="backgroundColor" red="0.96470588239999999" green="0.96470588239999999" blue="0.96470588239999999" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="AfJ-lo-q2e"/>
@@ -42,34 +65,13 @@
                         <action selector="saveChanges:" destination="-1" eventType="touchUpInside" id="DHn-wA-rgi"/>
                     </connections>
                 </button>
-                <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="14" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="6Am-kD-Hn3">
-                    <rect key="frame" x="67.5" y="272.5" width="240" height="34"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
-                </textField>
-                <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="u36-DO-IfH">
-                    <rect key="frame" x="67.5" y="331.5" width="240" height="34"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
-                </textField>
-                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Marina Dudarenko" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a33-8f-yEC">
-                    <rect key="frame" x="67.5" y="279" width="240" height="20.5"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="UX/UI designer, web-designer Moscow, Russia" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="InX-xz-vPf">
-                    <rect key="frame" x="67.5" y="331.5" width="240" height="41"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="a33-8f-yEC" firstAttribute="bottom" secondItem="InX-xz-vPf" secondAttribute="top" constant="-32" id="B3c-5F-3xg"/>
                 <constraint firstItem="EcB-ia-T8z" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="GaC-FE-tKe"/>
+                <constraint firstItem="EcB-ia-T8z" firstAttribute="top" relation="greaterThanOrEqual" secondItem="InX-xz-vPf" secondAttribute="bottom" constant="90" id="HMg-TO-tAI"/>
                 <constraint firstItem="PzQ-fx-tFX" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="7" id="JtU-Cl-YTm"/>
                 <constraint firstItem="u36-DO-IfH" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="L10-9v-M5Y"/>
                 <constraint firstItem="PzQ-fx-tFX" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.64" id="Mnt-IL-rN7"/>
@@ -87,7 +89,7 @@
                 <constraint firstItem="u36-DO-IfH" firstAttribute="width" secondItem="6Am-kD-Hn3" secondAttribute="width" id="n99-5d-0xq"/>
                 <constraint firstItem="6Am-kD-Hn3" firstAttribute="centerY" secondItem="a33-8f-yEC" secondAttribute="centerY" id="tgg-jT-vRc"/>
             </constraints>
-            <point key="canvasLocation" x="138.40000000000001" y="97.536945812807886"/>
+            <point key="canvasLocation" x="136.80000000000001" y="45.42728635682159"/>
         </view>
     </objects>
     <resources>

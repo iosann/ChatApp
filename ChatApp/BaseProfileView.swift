@@ -14,8 +14,9 @@ class BaseProfileView: UIView {
     @IBOutlet weak var saveButton: UIButton!
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var descriptionTextField: UITextField!
-    @IBOutlet private weak var nameLabel: UILabel!
-    @IBOutlet private weak var descriptionLabel: UILabel!
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var saveButtonTopConstraint: NSLayoutConstraint!
     
     let editIconView: UIView = {
         let view = UIView()
@@ -81,6 +82,9 @@ class BaseProfileView: UIView {
     }
     
     private func configureView() {
+        nameTextField.delegate = self
+        descriptionTextField.delegate = self
+        
         nameLabel.font = UIFont(name: "SFProDisplay-Bold", size: 24)
         descriptionLabel.font = UIFont(name: "SFProText-Regular", size: 16)
         nameTextField.font = UIFont(name: "SFProDisplay-Bold", size: 24)
@@ -120,5 +124,18 @@ class BaseProfileView: UIView {
         super.layoutSubviews()
         photoImageView.layer.cornerRadius = photoImageView.bounds.size.width / 2
         editIconView.layer.cornerRadius = editIconView.bounds.size.width / 2
+    }
+}
+
+extension BaseProfileView: UITextFieldDelegate {
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        self.endEditing(true)
     }
 }
