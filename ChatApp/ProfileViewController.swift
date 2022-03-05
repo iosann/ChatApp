@@ -21,6 +21,10 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         print(profileView.saveButton.frame)
         setupUI()
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        profileView.nameTextField.delegate = self
+        profileView.descriptionTextField.delegate = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -47,6 +51,19 @@ class ProfileViewController: UIViewController {
     
     @objc private func closeTheScreen() {
         dismiss(animated: true, completion: nil)
+    }
+    
+    @objc private func keyboardWillShow(notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        let keyboardFrame = keyboardSize.cgRectValue
+        if self.view.frame.origin.y == 0 { self.view.frame.origin.y -= keyboardFrame.height * 0.45 }
+    }
+    
+    @objc private func keyboardWillHide(notification: Notification) {
+        guard let userInfo = notification.userInfo, let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        let keyboardFrame = keyboardSize.cgRectValue
+        if self.view.frame.origin.y != 0 { self.view.frame.origin.y += keyboardFrame.height * 0.45 }
     }
 
     @objc private func editProfileImage(_ sender: UITapGestureRecognizer) {
@@ -83,5 +100,17 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
         let selectedImage = info[.originalImage] as? UIImage
         profileView.photoImageView.image = selectedImage
         dismiss(animated: true)
+    }
+}
+
+extension ProfileViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
     }
 }

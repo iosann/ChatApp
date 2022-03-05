@@ -5,15 +5,16 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BaseProfileView" customModule="ChatApp" customModuleProvider="target">
             <connections>
                 <outlet property="contentView" destination="iN0-l3-epB" id="7rr-7G-gc4"/>
-                <outlet property="descriptionTextView" destination="y9K-Qy-BGd" id="hXh-KV-sBh"/>
-                <outlet property="nameTextView" destination="Emy-Jh-pR2" id="3Yy-yZ-e42"/>
+                <outlet property="descriptionLabel" destination="InX-xz-vPf" id="VTb-Ka-SAH"/>
+                <outlet property="descriptionTextField" destination="u36-DO-IfH" id="iDe-4u-rbr"/>
+                <outlet property="nameLabel" destination="a33-8f-yEC" id="j84-ta-cnf"/>
+                <outlet property="nameTextField" destination="6Am-kD-Hn3" id="WzO-NN-K7y"/>
                 <outlet property="photoImageView" destination="PzQ-fx-tFX" id="Cnf-ex-b7D"/>
                 <outlet property="saveButton" destination="EcB-ia-T8z" id="5ij-ec-xjX"/>
             </connections>
@@ -29,26 +30,6 @@
                         <constraint firstAttribute="width" secondItem="PzQ-fx-tFX" secondAttribute="height" multiplier="1:1" id="op2-CL-trW"/>
                     </constraints>
                 </imageView>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="751" text="Marina Dudarenko" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Emy-Jh-pR2">
-                    <rect key="frame" x="67.5" y="279" width="240" height="30"/>
-                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="30" id="bJY-fP-fM9"/>
-                    </constraints>
-                    <color key="textColor" systemColor="labelColor"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                </textView>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="UX/UI designer, web-designer Moscow, Russia" translatesAutoresizingMaskIntoConstraints="NO" id="y9K-Qy-BGd">
-                    <rect key="frame" x="67.5" y="331" width="240" height="44"/>
-                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="44" id="Cri-Z3-BBs"/>
-                    </constraints>
-                    <color key="textColor" systemColor="labelColor"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                </textView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EcB-ia-T8z">
                     <rect key="frame" x="56.5" y="597" width="262.5" height="40"/>
                     <color key="backgroundColor" red="0.96470588239999999" green="0.96470588239999999" blue="0.96470588239999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -57,35 +38,59 @@
                     </constraints>
                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                     <state key="normal" title="Save"/>
+                    <connections>
+                        <action selector="saveChanges:" destination="-1" eventType="touchUpInside" id="DHn-wA-rgi"/>
+                    </connections>
                 </button>
+                <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="14" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="6Am-kD-Hn3">
+                    <rect key="frame" x="67.5" y="272.5" width="240" height="34"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="u36-DO-IfH">
+                    <rect key="frame" x="67.5" y="331.5" width="240" height="34"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Marina Dudarenko" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a33-8f-yEC">
+                    <rect key="frame" x="67.5" y="279" width="240" height="20.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="UX/UI designer, web-designer Moscow, Russia" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="InX-xz-vPf">
+                    <rect key="frame" x="67.5" y="331.5" width="240" height="41"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="EcB-ia-T8z" firstAttribute="top" relation="greaterThanOrEqual" secondItem="y9K-Qy-BGd" secondAttribute="bottom" constant="30" id="2D4-2g-6F6"/>
-                <constraint firstItem="Emy-Jh-pR2" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="3YP-eu-ePr"/>
-                <constraint firstItem="Emy-Jh-pR2" firstAttribute="top" secondItem="PzQ-fx-tFX" secondAttribute="bottom" constant="32" id="8l5-zX-I2v"/>
+                <constraint firstItem="a33-8f-yEC" firstAttribute="bottom" secondItem="InX-xz-vPf" secondAttribute="top" constant="-32" id="B3c-5F-3xg"/>
                 <constraint firstItem="EcB-ia-T8z" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="GaC-FE-tKe"/>
-                <constraint firstItem="y9K-Qy-BGd" firstAttribute="width" secondItem="PzQ-fx-tFX" secondAttribute="width" id="Gti-uH-p37"/>
                 <constraint firstItem="PzQ-fx-tFX" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="7" id="JtU-Cl-YTm"/>
-                <constraint firstItem="y9K-Qy-BGd" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="LPq-ja-UvE"/>
+                <constraint firstItem="u36-DO-IfH" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="L10-9v-M5Y"/>
                 <constraint firstItem="PzQ-fx-tFX" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.64" id="Mnt-IL-rN7"/>
-                <constraint firstItem="y9K-Qy-BGd" firstAttribute="top" secondItem="Emy-Jh-pR2" secondAttribute="bottom" constant="22" id="VX3-49-UEJ"/>
+                <constraint firstItem="a33-8f-yEC" firstAttribute="width" secondItem="PzQ-fx-tFX" secondAttribute="width" id="PU1-9Z-a7I"/>
+                <constraint firstItem="6Am-kD-Hn3" firstAttribute="width" secondItem="PzQ-fx-tFX" secondAttribute="width" id="UeM-Yr-pm3"/>
+                <constraint firstItem="InX-xz-vPf" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="WGj-QL-xpj"/>
                 <constraint firstItem="EcB-ia-T8z" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.7" id="XHi-w4-Si4"/>
+                <constraint firstItem="InX-xz-vPf" firstAttribute="width" secondItem="a33-8f-yEC" secondAttribute="width" id="YAm-nk-pBG"/>
+                <constraint firstItem="u36-DO-IfH" firstAttribute="centerY" secondItem="InX-xz-vPf" secondAttribute="centerY" constant="-3.5" id="Z3d-KY-fP4"/>
+                <constraint firstItem="a33-8f-yEC" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="aoX-Sa-c0A"/>
+                <constraint firstItem="6Am-kD-Hn3" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="fAQ-wb-N50"/>
+                <constraint firstItem="a33-8f-yEC" firstAttribute="top" secondItem="PzQ-fx-tFX" secondAttribute="bottom" constant="32" id="gMa-ZQ-c4B"/>
                 <constraint firstItem="PzQ-fx-tFX" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="hex-wD-UW3"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="EcB-ia-T8z" secondAttribute="bottom" constant="30" id="kFW-VP-lhb"/>
-                <constraint firstItem="Emy-Jh-pR2" firstAttribute="width" secondItem="PzQ-fx-tFX" secondAttribute="width" id="rGB-N8-CGM"/>
+                <constraint firstItem="u36-DO-IfH" firstAttribute="width" secondItem="6Am-kD-Hn3" secondAttribute="width" id="n99-5d-0xq"/>
+                <constraint firstItem="6Am-kD-Hn3" firstAttribute="centerY" secondItem="a33-8f-yEC" secondAttribute="centerY" id="tgg-jT-vRc"/>
             </constraints>
             <point key="canvasLocation" x="138.40000000000001" y="97.536945812807886"/>
         </view>
     </objects>
     <resources>
         <image name="User_avatar_icon" width="1335" height="1335"/>
-        <systemColor name="labelColor">
-            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>

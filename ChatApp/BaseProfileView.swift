@@ -11,9 +11,11 @@ class BaseProfileView: UIView {
 
     @IBOutlet private var contentView: UIView!
     @IBOutlet weak var photoImageView: UIImageView!
-    @IBOutlet private weak var nameTextView: UITextView!
-    @IBOutlet private weak var descriptionTextView: UITextView!
     @IBOutlet weak var saveButton: UIButton!
+    @IBOutlet weak var nameTextField: UITextField!
+    @IBOutlet weak var descriptionTextField: UITextField!
+    @IBOutlet private weak var nameLabel: UILabel!
+    @IBOutlet private weak var descriptionLabel: UILabel!
     
     let editIconView: UIView = {
         let view = UIView()
@@ -28,6 +30,34 @@ class BaseProfileView: UIView {
         imageView.image = UIImage(systemName: "camera.fill")?.withTintColor(.white, renderingMode: .alwaysOriginal)
         return imageView
     }()
+
+    private var isEnableEditingNameLabel = false {
+        didSet {
+            if isEnableEditingNameLabel == true {
+                nameTextField.text = nameLabel.text
+                nameTextField.isHidden = false
+                nameLabel.isHidden = true
+            } else {
+                if nameTextField.text != "" { nameLabel.text = nameTextField.text }
+                nameTextField.isHidden = true
+                nameLabel.isHidden = false
+            }
+        }
+    }
+    
+    private var isEnableEditingDescriptionLabel = false {
+        didSet {
+            if isEnableEditingDescriptionLabel == true {
+                descriptionTextField.text = descriptionLabel.text
+                descriptionTextField.isHidden = false
+                descriptionLabel.isHidden = true
+            } else {
+                if descriptionTextField.text != "" { descriptionLabel.text = descriptionTextField.text }
+                descriptionTextField.isHidden = true
+                descriptionLabel.isHidden = false
+            }
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -51,8 +81,10 @@ class BaseProfileView: UIView {
     }
     
     private func configureView() {
-        nameTextView.font = UIFont(name: "SFProDisplay-Bold", size: 24)
-        descriptionTextView.font = UIFont(name: "SFProText-Regular", size: 16)
+        nameLabel.font = UIFont(name: "SFProDisplay-Bold", size: 24)
+        descriptionLabel.font = UIFont(name: "SFProText-Regular", size: 16)
+        nameTextField.font = UIFont(name: "SFProDisplay-Bold", size: 24)
+        descriptionTextField.font = UIFont(name: "SFProText-Regular", size: 16)
         
         saveButton.layer.cornerRadius = 14
         saveButton.titleLabel?.font = UIFont(name: "SFProText-Semibold", size: 19)
@@ -67,6 +99,21 @@ class BaseProfileView: UIView {
             editIconImageView.centerXAnchor.constraint(equalTo: editIconView.centerXAnchor),
             editIconImageView.centerYAnchor.constraint(equalTo: editIconView.centerYAnchor)
         ])
+        let nameTap = UITapGestureRecognizer(target: self, action: #selector(editNameOrDescription))
+        let descriptionTap = UITapGestureRecognizer(target: self, action: #selector(editNameOrDescription))
+        nameLabel.addGestureRecognizer(nameTap)
+        descriptionLabel.addGestureRecognizer(descriptionTap)
+    }
+
+    @objc private func editNameOrDescription(_ sender: UITapGestureRecognizer) {
+        guard let parentLabel = sender.view else { return }
+        if parentLabel == nameLabel { isEnableEditingNameLabel = true }
+        else if parentLabel == descriptionLabel { isEnableEditingDescriptionLabel = true }
+    }
+    
+    @IBAction func saveChanges(_ sender: UIButton) {
+        isEnableEditingNameLabel = false
+        isEnableEditingDescriptionLabel = false
     }
     
     override func layoutSubviews() {
