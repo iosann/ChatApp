@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DB504C2B27D93E39004B0CCE /* ConversationsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB504C2A27D93E39004B0CCE /* ConversationsListViewController.swift */; };
+		DB504C2E27D94152004B0CCE /* ConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB504C2C27D94152004B0CCE /* ConversationCell.swift */; };
+		DB504C2F27D94152004B0CCE /* ConversationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB504C2D27D94152004B0CCE /* ConversationCell.xib */; };
+		DB504C3427D94ABC004B0CCE /* Conversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB504C3327D94ABC004B0CCE /* Conversation.swift */; };
 		DB745A5127D0FA74007534FA /* BaseProfileView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB745A5027D0FA74007534FA /* BaseProfileView.xib */; };
 		DB745A5327D0FA8C007534FA /* BaseProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB745A5227D0FA8C007534FA /* BaseProfileView.swift */; };
 		DB745A5527D1390F007534FA /* SFProText-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB745A5427D1390F007534FA /* SFProText-Semibold.ttf */; };
@@ -22,6 +26,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DB504C2A27D93E39004B0CCE /* ConversationsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsListViewController.swift; sourceTree = "<group>"; };
+		DB504C2C27D94152004B0CCE /* ConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationCell.swift; sourceTree = "<group>"; };
+		DB504C2D27D94152004B0CCE /* ConversationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConversationCell.xib; sourceTree = "<group>"; };
+		DB504C3327D94ABC004B0CCE /* Conversation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conversation.swift; sourceTree = "<group>"; };
 		DB745A5027D0FA74007534FA /* BaseProfileView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BaseProfileView.xib; sourceTree = "<group>"; };
 		DB745A5227D0FA8C007534FA /* BaseProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProfileView.swift; sourceTree = "<group>"; };
 		DB745A5427D1390F007534FA /* SFProText-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Semibold.ttf"; sourceTree = "<group>"; };
@@ -49,6 +57,78 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DB504C3027D948F1004B0CCE /* ProfileScreen */ = {
+			isa = PBXGroup;
+			children = (
+				DB504C3627D96345004B0CCE /* Controller */,
+				DB504C3527D96329004B0CCE /* Views */,
+			);
+			path = ProfileScreen;
+			sourceTree = "<group>";
+		};
+		DB504C3127D94925004B0CCE /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
+				DBBD175227C6682A0093B548 /* Extensions.swift */,
+				DB86837427C2A9F800D82F48 /* LaunchScreen.storyboard */,
+				DB86837727C2A9F800D82F48 /* Info.plist */,
+				DB8BCD8A27D038FA00054A95 /* Resources */,
+			);
+			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
+		DB504C3227D94959004B0CCE /* ConversationsScreen */ = {
+			isa = PBXGroup;
+			children = (
+				DB504C3927D96385004B0CCE /* Controller */,
+				DB504C3727D96373004B0CCE /* Views */,
+				DB504C3827D9637C004B0CCE /* Model */,
+			);
+			path = ConversationsScreen;
+			sourceTree = "<group>";
+		};
+		DB504C3527D96329004B0CCE /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DB745A5027D0FA74007534FA /* BaseProfileView.xib */,
+				DB745A5227D0FA8C007534FA /* BaseProfileView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		DB504C3627D96345004B0CCE /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				DB8BCD8127D026FC00054A95 /* ProfileViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		DB504C3727D96373004B0CCE /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DB504C2C27D94152004B0CCE /* ConversationCell.swift */,
+				DB504C2D27D94152004B0CCE /* ConversationCell.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		DB504C3827D9637C004B0CCE /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DB504C3327D94ABC004B0CCE /* Conversation.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DB504C3927D96385004B0CCE /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				DB504C2A27D93E39004B0CCE /* ConversationsListViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
 		DB86835D27C2A9F100D82F48 = {
 			isa = PBXGroup;
 			children = (
@@ -70,13 +150,9 @@
 			children = (
 				DB86836927C2A9F100D82F48 /* AppDelegate.swift */,
 				DB86836D27C2A9F100D82F48 /* ViewController.swift */,
-				DB8BCD8127D026FC00054A95 /* ProfileViewController.swift */,
-				DB86837427C2A9F800D82F48 /* LaunchScreen.storyboard */,
-				DB86837727C2A9F800D82F48 /* Info.plist */,
-				DBBD175227C6682A0093B548 /* Extensions.swift */,
-				DB8BCD8A27D038FA00054A95 /* Resources */,
-				DB745A5027D0FA74007534FA /* BaseProfileView.xib */,
-				DB745A5227D0FA8C007534FA /* BaseProfileView.swift */,
+				DB504C3027D948F1004B0CCE /* ProfileScreen */,
+				DB504C3227D94959004B0CCE /* ConversationsScreen */,
+				DB504C3127D94925004B0CCE /* SupportingFiles */,
 			);
 			path = ChatApp;
 			sourceTree = "<group>";
@@ -159,6 +235,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB504C2F27D94152004B0CCE /* ConversationCell.xib in Resources */,
 				DB8BCD8627D02C8D00054A95 /* SFProDisplay-Regular.ttf in Resources */,
 				DB86837627C2A9F800D82F48 /* LaunchScreen.storyboard in Resources */,
 				DB745A5127D0FA74007534FA /* BaseProfileView.xib in Resources */,
@@ -181,6 +258,9 @@
 				DBBD175327C6682A0093B548 /* Extensions.swift in Sources */,
 				DB8BCD8227D026FC00054A95 /* ProfileViewController.swift in Sources */,
 				DB86836A27C2A9F100D82F48 /* AppDelegate.swift in Sources */,
+				DB504C2B27D93E39004B0CCE /* ConversationsListViewController.swift in Sources */,
+				DB504C3427D94ABC004B0CCE /* Conversation.swift in Sources */,
+				DB504C2E27D94152004B0CCE /* ConversationCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -323,7 +403,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2VAU5M9JPP;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ChatApp/Info.plist;
+				INFOPLIST_FILE = ChatApp/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = LaunchScreen;
@@ -353,7 +433,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2VAU5M9JPP;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ChatApp/Info.plist;
+				INFOPLIST_FILE = ChatApp/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = LaunchScreen;
