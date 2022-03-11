@@ -16,6 +16,9 @@ class ConversationsListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Tinkoff Chat"
+        var iconAvatarImage = UIImage(named: "icon-avatar")
+        iconAvatarImage = iconAvatarImage?.withRenderingMode(.alwaysOriginal)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: iconAvatarImage, style: .plain, target: self, action: #selector(openProfile))
         setupTableView()
         prepareData()
     }
@@ -35,10 +38,18 @@ class ConversationsListViewController: UIViewController {
     }
     
     private func prepareData() {
-        for contact in Conversation.allContacts {
+        var contacts = Conversation.allContacts
+        contacts.sort { $0.date?.compare($1.date ?? Date()) == .orderedDescending }
+        for contact in contacts {
             if contact.online == true { allContacts[0].append(contact) }
-            else if contact.message != nil { allContacts[1].append(contact) }
+            else if contact.online == false && contact.message != nil { allContacts[1].append(contact) }
         }
+    }
+    
+    @objc private func openProfile() {
+        let profileViewController = ProfileViewController()
+        let navigationController = UINavigationController(rootViewController: profileViewController)
+        self.present(navigationController, animated: true)
     }
 }
 
@@ -72,12 +83,15 @@ extension ConversationsListViewController: UITableViewDataSource, UITableViewDel
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return tableView.bounds.size.height / 10
+        return 80
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let contact = allContacts[indexPath.section][indexPath.row]
         let conversationViewController = ConversationViewController()
-        conversationViewController.contactTitle = allContacts[indexPath.section][indexPath.row].name
+        conversationViewController.contactTitle = contact.name
+        if contact.message == nil { conversationViewController.isMessageEmpty = true }
+        else { conversationViewController.isMessageEmpty = false }
         navigationController?.pushViewController(conversationViewController, animated: true)
     }
 }

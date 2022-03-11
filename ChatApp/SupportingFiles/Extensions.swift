@@ -21,9 +21,9 @@ extension UIApplication.State {
 
 extension Date {
     var formattedDate: String {
-        guard let yesterdaysDate = Calendar.current.date(byAdding: .day, value: -1, to: Date()) else { return "" }
         let formatter = DateFormatter()
-        if self > yesterdaysDate { formatter.dateFormat = "HH:mm" }
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        if Calendar.current.isDateInToday(self) { formatter.dateFormat = "HH:mm" }
         else { formatter.dateFormat = "dd MMM" }
         return formatter.string(from: self)
     }
@@ -32,7 +32,7 @@ extension Date {
 extension String {
     var formattedDate: Date? {
         let formatter = DateFormatter()
-        formatter.dateFormat = "YYYYDDMM"
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         return formatter.date(from: self)
     }
 }

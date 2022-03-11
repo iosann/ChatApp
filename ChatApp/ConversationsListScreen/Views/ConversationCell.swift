@@ -18,17 +18,20 @@ class ConversationCell: UITableViewCell {
         nameLabel.text = nil
         messageLabel.text = nil
         timeLabel.text = nil
+        messageLabel.font = .systemFont(ofSize: 14)
+        contentView.backgroundColor = nil
     }
     
     func paintOverTheCell() {
-        contentView.backgroundColor = .systemYellow
+        contentView.backgroundColor = UIColor(red: 1, green: 1, blue: 0.878, alpha: 1)
     }
     
     func setBoldFont() {
-        messageLabel.font = .boldSystemFont(ofSize: 15)
+        messageLabel.font = .boldSystemFont(ofSize: 14)
     }
     
     func noMessages() {
         messageLabel.text = "No messages yet"
+        messageLabel.font = UIFont(name: "SFProDisplay-RegularItalic", size: 14)
     }
 }

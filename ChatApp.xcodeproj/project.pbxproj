@@ -25,6 +25,7 @@
 		DB8BCD8627D02C8D00054A95 /* SFProDisplay-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB8BCD8327D02C8D00054A95 /* SFProDisplay-Regular.ttf */; };
 		DB8BCD8727D02C8D00054A95 /* SFProDisplay-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB8BCD8427D02C8D00054A95 /* SFProDisplay-Bold.ttf */; };
 		DB8BCD8827D02C8D00054A95 /* SFProText-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB8BCD8527D02C8D00054A95 /* SFProText-Regular.ttf */; };
+		DB945AC227DB577F00BBFBA3 /* SFProDisplay-RegularItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB945AC127DB577F00BBFBA3 /* SFProDisplay-RegularItalic.ttf */; };
 		DBBD175327C6682A0093B548 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBD175227C6682A0093B548 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
@@ -49,6 +50,7 @@
 		DB8BCD8327D02C8D00054A95 /* SFProDisplay-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProDisplay-Regular.ttf"; sourceTree = "<group>"; };
 		DB8BCD8427D02C8D00054A95 /* SFProDisplay-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProDisplay-Bold.ttf"; sourceTree = "<group>"; };
 		DB8BCD8527D02C8D00054A95 /* SFProText-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Regular.ttf"; sourceTree = "<group>"; };
+		DB945AC127DB577F00BBFBA3 /* SFProDisplay-RegularItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProDisplay-RegularItalic.ttf"; sourceTree = "<group>"; };
 		DBBD175227C6682A0093B548 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -138,9 +140,9 @@
 		DB504C3C27D9672E004B0CCE /* ConversationDetailScreen */ = {
 			isa = PBXGroup;
 			children = (
-				DB504C3A27D96727004B0CCE /* ConversationViewController.swift */,
-				DB504C3D27D96AD5004B0CCE /* MessageCell.swift */,
-				DB504C3F27D971C4004B0CCE /* Message.swift */,
+				DB945AC327DB608800BBFBA3 /* Controller */,
+				DB945AC427DB609200BBFBA3 /* View */,
+				DB945AC527DB609900BBFBA3 /* Model */,
 			);
 			path = ConversationDetailScreen;
 			sourceTree = "<group>";
@@ -180,6 +182,7 @@
 				DB8BCD8427D02C8D00054A95 /* SFProDisplay-Bold.ttf */,
 				DB8BCD8327D02C8D00054A95 /* SFProDisplay-Regular.ttf */,
 				DB8BCD8527D02C8D00054A95 /* SFProText-Regular.ttf */,
+				DB945AC127DB577F00BBFBA3 /* SFProDisplay-RegularItalic.ttf */,
 				DB745A5427D1390F007534FA /* SFProText-Semibold.ttf */,
 			);
 			path = Fonts;
@@ -192,6 +195,30 @@
 				DB8BCD8927D038EA00054A95 /* Fonts */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		DB945AC327DB608800BBFBA3 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				DB504C3A27D96727004B0CCE /* ConversationViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		DB945AC427DB609200BBFBA3 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DB504C3D27D96AD5004B0CCE /* MessageCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DB945AC527DB609900BBFBA3 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DB504C3F27D971C4004B0CCE /* Message.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -256,6 +283,7 @@
 				DB8BCD8627D02C8D00054A95 /* SFProDisplay-Regular.ttf in Resources */,
 				DB86837627C2A9F800D82F48 /* LaunchScreen.storyboard in Resources */,
 				DB745A5127D0FA74007534FA /* BaseProfileView.xib in Resources */,
+				DB945AC227DB577F00BBFBA3 /* SFProDisplay-RegularItalic.ttf in Resources */,
 				DB86837327C2A9F800D82F48 /* Assets.xcassets in Resources */,
 				DB745A5527D1390F007534FA /* SFProText-Semibold.ttf in Resources */,
 				DB8BCD8827D02C8D00054A95 /* SFProText-Regular.ttf in Resources */,

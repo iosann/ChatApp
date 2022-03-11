@@ -36,6 +36,10 @@ class MessageCell: UITableViewCell {
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
+            cellBackgroundView.widthAnchor.constraint(equalToConstant: contentView.bounds.size.width * 0.75),
+            cellBackgroundView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            cellBackgroundView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
+            
             messageLabel.topAnchor.constraint(equalTo: cellBackgroundView.topAnchor, constant: 8),
             messageLabel.leadingAnchor.constraint(equalTo: cellBackgroundView.leadingAnchor, constant: 8),
             messageLabel.trailingAnchor.constraint(equalTo: cellBackgroundView.trailingAnchor, constant: -8),
@@ -45,21 +49,15 @@ class MessageCell: UITableViewCell {
 
     func setupConstraintsForIncomingMessage() {
         NSLayoutConstraint.activate([
-            cellBackgroundView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
             cellBackgroundView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            cellBackgroundView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
-            cellBackgroundView.widthAnchor.constraint(equalToConstant: contentView.bounds.size.width * 0.75)
         ])
-        cellBackgroundView.backgroundColor = .systemBlue
+        cellBackgroundView.backgroundColor = UIColor(red: 0.902, green: 0.902, blue: 0.98, alpha: 1)
     }
     
     func setupConstraintsForOutgoingMessage() {
         NSLayoutConstraint.activate([
-            cellBackgroundView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
             cellBackgroundView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
-            cellBackgroundView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
-            cellBackgroundView.widthAnchor.constraint(equalToConstant: contentView.bounds.size.width * 0.75)
         ])
-        cellBackgroundView.backgroundColor = .systemPink
+        cellBackgroundView.backgroundColor = UIColor(red: 0.69, green: 0.878, blue: 0.902, alpha: 1)
     }
 }

@@ -11,8 +11,9 @@ class ConversationViewController: UIViewController {
     
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     private let cellIdentifier = "MessageCell"
-    let messages = Message.allMessages
+    private let messages = Message.allMessages
     var contactTitle: String?
+    var isMessageEmpty: Bool?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,11 +40,13 @@ class ConversationViewController: UIViewController {
 extension ConversationViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        messages.count
+        if isMessageEmpty == false { return messages.count }
+        else { return 0 }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
+        cell.selectionStyle = .none
         guard let messageCell = cell as? MessageCell else { return cell }
         messageCell.messageLabel.text = messages[indexPath.row].text
         if messages[indexPath.row].isIncomingMessage == true { messageCell.setupConstraintsForIncomingMessage() }
