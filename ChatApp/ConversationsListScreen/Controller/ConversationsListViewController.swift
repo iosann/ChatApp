@@ -40,18 +40,6 @@ class ConversationsListViewController: UIViewController {
             else if contact.message != nil { allContacts[1].append(contact) }
         }
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 
 extension ConversationsListViewController: UITableViewDataSource, UITableViewDelegate {
@@ -71,7 +59,6 @@ extension ConversationsListViewController: UITableViewDataSource, UITableViewDel
         conversationCell.nameLabel.text = contact.name
         conversationCell.messageLabel.text = contact.message
         conversationCell.timeLabel.text = contact.date?.formattedDate
-        print(contact.date)
         
         if contact.online == true { conversationCell.paintOverTheCell() }
         if contact.hasUnreadMessages == true { conversationCell.setBoldFont() }
@@ -88,4 +75,9 @@ extension ConversationsListViewController: UITableViewDataSource, UITableViewDel
         return tableView.bounds.size.height / 10
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let conversationViewController = ConversationViewController()
+        conversationViewController.contactTitle = allContacts[indexPath.section][indexPath.row].name
+        navigationController?.pushViewController(conversationViewController, animated: true)
+    }
 }
