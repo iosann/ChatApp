@@ -5,6 +5,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,15 +18,18 @@
                 <rect key="frame" x="0.0" y="0.0" width="413" height="94"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iOQ-id-fAQ">
-                        <rect key="frame" x="16" y="10" width="42.5" height="38.5"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Oty-25-Ysa">
+                        <rect key="frame" x="0.0" y="4" width="413" height="86"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iOQ-id-fAQ">
+                        <rect key="frame" x="16" y="16" width="42.5" height="19.5"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" horizontalCompressionResistancePriority="749" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hLk-89-mhp">
-                        <rect key="frame" x="16" y="52.5" width="329" height="33.5"/>
-                        <string key="text">Label Label Label Label Label Label Label Label Label Label Label Label Label Label Label Label Label Label el Label Label Label Label Label Label Label</string>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hLk-89-mhp">
+                        <rect key="frame" x="16" y="36.5" width="337" height="45.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -40,19 +44,26 @@
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="hLk-89-mhp" secondAttribute="bottom" constant="8" id="29B-zK-9iw"/>
-                    <constraint firstItem="iOQ-id-fAQ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="95N-32-hPK"/>
+                    <constraint firstAttribute="bottom" secondItem="hLk-89-mhp" secondAttribute="bottom" constant="12" id="29B-zK-9iw"/>
+                    <constraint firstItem="Oty-25-Ysa" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="4" id="5Gm-6B-KOW"/>
+                    <constraint firstItem="Oty-25-Ysa" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="6TK-sH-KhN"/>
+                    <constraint firstItem="iOQ-id-fAQ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="95N-32-hPK"/>
                     <constraint firstAttribute="trailing" secondItem="X6y-dV-9HQ" secondAttribute="trailing" constant="16" id="Lsc-Fl-UTQ"/>
+                    <constraint firstAttribute="bottom" secondItem="Oty-25-Ysa" secondAttribute="bottom" constant="4" id="NQ9-cf-fbG"/>
                     <constraint firstItem="X6y-dV-9HQ" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Qgt-C1-jY2"/>
                     <constraint firstItem="iOQ-id-fAQ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="aAv-o3-jn5"/>
                     <constraint firstItem="hLk-89-mhp" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="h17-Uu-MIY"/>
-                    <constraint firstItem="hLk-89-mhp" firstAttribute="trailing" secondItem="X6y-dV-9HQ" secondAttribute="leading" constant="8" id="hJi-YM-aJ7"/>
-                    <constraint firstItem="hLk-89-mhp" firstAttribute="top" secondItem="iOQ-id-fAQ" secondAttribute="bottom" constant="4" id="uYM-6b-H5R"/>
+                    <constraint firstItem="hLk-89-mhp" firstAttribute="trailing" secondItem="X6y-dV-9HQ" secondAttribute="leading" constant="16" id="hJi-YM-aJ7"/>
+                    <constraint firstAttribute="trailing" secondItem="Oty-25-Ysa" secondAttribute="trailing" id="kcP-QZ-iaa"/>
+                    <constraint firstItem="hLk-89-mhp" firstAttribute="top" secondItem="iOQ-id-fAQ" secondAttribute="bottom" constant="1" id="uYM-6b-H5R"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
+                <outlet property="cellBackgroundView" destination="Oty-25-Ysa" id="wTz-gg-WOP"/>
                 <outlet property="messageLabel" destination="hLk-89-mhp" id="Y7a-ey-ILE"/>
                 <outlet property="nameLabel" destination="iOQ-id-fAQ" id="kHk-mb-UeP"/>
                 <outlet property="timeLabel" destination="X6y-dV-9HQ" id="ppB-0d-fsV"/>
@@ -60,4 +71,9 @@
             <point key="canvasLocation" x="68.4375" y="121.47887323943662"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>

@@ -7,18 +7,9 @@
 
 import Foundation
 
-protocol MessageCellConfiguration: AnyObject {
-    var text: String? { get set }
-}
-
-class Message: MessageCellConfiguration {
+struct Message {
     var text: String?
     var isIncomingMessage: Bool
-    
-    init(text: String?, isIncomingMessage: Bool) {
-        self.text = text
-        self.isIncomingMessage = isIncomingMessage
-    }
     
     static var allMessages: [Message] {
         return [

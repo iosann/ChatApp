@@ -48,9 +48,7 @@ extension ConversationViewController: UITableViewDataSource, UITableViewDelegate
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
         cell.selectionStyle = .none
         guard let messageCell = cell as? MessageCell else { return cell }
-        messageCell.messageLabel.text = messages[indexPath.row].text
-        if messages[indexPath.row].isIncomingMessage == true { messageCell.setupConstraintsForIncomingMessage() }
-        else { messageCell.setupConstraintsForOutgoingMessage() }
+        messageCell.configure(messageText: messages[indexPath.row].text, isIncomingMessage: messages[indexPath.row].isIncomingMessage)
         return messageCell
     }
 }

@@ -7,17 +7,22 @@
 
 import UIKit
 
-class MessageCell: UITableViewCell {
+protocol MessageCellConfiguration: AnyObject {
+    var messageText: String? { get set }
+}
+
+class MessageCell: UITableViewCell, MessageCellConfiguration {
     
-    let cellIdentifier = "MessageCell"
-    let cellBackgroundView = UIView()
-    let messageLabel: UILabel = {
+    private let cellBackgroundView = UIView()
+    private let messageLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = .systemFont(ofSize: 15)
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         return label
     }()
+    var messageText: String?
+    private var isIncomingMessage: Bool?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -28,36 +33,45 @@ class MessageCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        messageLabel.text = nil
+        isIncomingMessage = nil
+        cellBackgroundView.backgroundColor = nil
+    }
+    
+    func configure(messageText: String?, isIncomingMessage: Bool?) {
+        messageLabel.text = messageText
+        if isIncomingMessage == true {
+            cellBackgroundView.backgroundColor = UIColor(red: 0.902, green: 0.902, blue: 0.98, alpha: 1)
+            NSLayoutConstraint.activate([
+                messageLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
+            ])
+        } else {
+            cellBackgroundView.backgroundColor = UIColor(red: 0.69, green: 0.878, blue: 0.902, alpha: 1)
+            NSLayoutConstraint.activate([
+                messageLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
+            ])
+        }
+    }
+    
     private func setupConstraints() {
+        backgroundColor = .clear
         contentView.addSubview(cellBackgroundView)
-        cellBackgroundView.addSubview(messageLabel)
-        cellBackgroundView.layer.cornerRadius = 10
+        contentView.addSubview(messageLabel)
+        cellBackgroundView.layer.cornerRadius = 8
         cellBackgroundView.translatesAutoresizingMaskIntoConstraints = false
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            cellBackgroundView.widthAnchor.constraint(equalToConstant: contentView.bounds.size.width * 0.75),
-            cellBackgroundView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            cellBackgroundView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
+            messageLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
+            messageLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
+            messageLabel.widthAnchor.constraint(lessThanOrEqualToConstant: contentView.bounds.size.width * 0.75),
             
-            messageLabel.topAnchor.constraint(equalTo: cellBackgroundView.topAnchor, constant: 8),
-            messageLabel.leadingAnchor.constraint(equalTo: cellBackgroundView.leadingAnchor, constant: 8),
-            messageLabel.trailingAnchor.constraint(equalTo: cellBackgroundView.trailingAnchor, constant: -8),
-            messageLabel.bottomAnchor.constraint(equalTo: cellBackgroundView.bottomAnchor, constant: -8)
+            cellBackgroundView.topAnchor.constraint(equalTo: messageLabel.topAnchor, constant: -8),
+            cellBackgroundView.bottomAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 8),
+            cellBackgroundView.leadingAnchor.constraint(equalTo: messageLabel.leadingAnchor, constant: -8),
+            cellBackgroundView.trailingAnchor.constraint(equalTo: messageLabel.trailingAnchor, constant: 8)
         ])
-    }
-
-    func setupConstraintsForIncomingMessage() {
-        NSLayoutConstraint.activate([
-            cellBackgroundView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-        ])
-        cellBackgroundView.backgroundColor = UIColor(red: 0.902, green: 0.902, blue: 0.98, alpha: 1)
-    }
-    
-    func setupConstraintsForOutgoingMessage() {
-        NSLayoutConstraint.activate([
-            cellBackgroundView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
-        ])
-        cellBackgroundView.backgroundColor = UIColor(red: 0.69, green: 0.878, blue: 0.902, alpha: 1)
     }
 }

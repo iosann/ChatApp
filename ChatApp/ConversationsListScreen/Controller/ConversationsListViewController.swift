@@ -35,15 +35,16 @@ class ConversationsListViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         tableView.register(UINib(nibName: "ConversationCell", bundle: nil), forCellReuseIdentifier: cellIdentifier)
+        tableView.separatorStyle = .none
     }
     
     private func prepareData() {
-        var contacts = Conversation.allContacts
-        contacts.sort { $0.date?.compare($1.date ?? Date()) == .orderedDescending }
-        for contact in contacts {
+        for contact in Conversation.allContacts {
             if contact.online == true { allContacts[0].append(contact) }
-            else if contact.online == false && contact.message != nil { allContacts[1].append(contact) }
+            else if contact.message != nil { allContacts[1].append(contact) }
         }
+        allContacts[0].sort { $0.date?.compare($1.date ?? Date()) == .orderedDescending }
+        allContacts[1].sort { $0.date?.compare($1.date ?? Date()) == .orderedDescending }
     }
     
     @objc private func openProfile() {
@@ -67,13 +68,7 @@ extension ConversationsListViewController: UITableViewDataSource, UITableViewDel
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
         guard let conversationCell = cell as? ConversationCell else { return cell }
         let contact = allContacts[indexPath.section][indexPath.row]
-        conversationCell.nameLabel.text = contact.name
-        conversationCell.messageLabel.text = contact.message
-        conversationCell.timeLabel.text = contact.date?.formattedDate
-        
-        if contact.online == true { conversationCell.paintOverTheCell() }
-        if contact.hasUnreadMessages == true { conversationCell.setBoldFont() }
-        if contact.message == nil { conversationCell.noMessages() }
+        conversationCell.configure(name: contact.name, message: contact.message, date: contact.date, online: contact.online, hasUnreadMessages: contact.hasUnreadMessages)
         return conversationCell
     }
     
@@ -83,7 +78,7 @@ extension ConversationsListViewController: UITableViewDataSource, UITableViewDel
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
+        return 90
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
