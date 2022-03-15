@@ -40,9 +40,9 @@ class MessageCell: UITableViewCell, MessageCellConfiguration {
         cellBackgroundView.backgroundColor = nil
     }
     
-    func configure(messageText: String?, isIncomingMessage: Bool?) {
+    func configure(messageText: String?, isIncomingMessage: Bool) {
         messageLabel.text = messageText
-        if isIncomingMessage == true {
+        if isIncomingMessage {
             cellBackgroundView.backgroundColor = UIColor(red: 0.902, green: 0.902, blue: 0.98, alpha: 1)
             NSLayoutConstraint.activate([
                 messageLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
@@ -56,6 +56,7 @@ class MessageCell: UITableViewCell, MessageCellConfiguration {
     }
     
     private func setupConstraints() {
+        selectionStyle = .none
         backgroundColor = .clear
         contentView.addSubview(cellBackgroundView)
         contentView.addSubview(messageLabel)

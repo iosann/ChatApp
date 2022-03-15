@@ -40,7 +40,7 @@ class ConversationsListViewController: UIViewController {
     
     private func prepareData() {
         for contact in Conversation.allContacts {
-            if contact.online == true { allContacts[0].append(contact) }
+            if contact.online { allContacts[0].append(contact) }
             else if contact.message != nil { allContacts[1].append(contact) }
         }
         allContacts[0].sort { $0.date?.compare($1.date ?? Date()) == .orderedDescending }
@@ -85,8 +85,7 @@ extension ConversationsListViewController: UITableViewDataSource, UITableViewDel
         let contact = allContacts[indexPath.section][indexPath.row]
         let conversationViewController = ConversationViewController()
         conversationViewController.contactTitle = contact.name
-        if contact.message == nil { conversationViewController.isMessageEmpty = true }
-        else { conversationViewController.isMessageEmpty = false }
+        conversationViewController.isMessageEmpty = (contact.message == nil) ? true : false
         navigationController?.pushViewController(conversationViewController, animated: true)
     }
 }
