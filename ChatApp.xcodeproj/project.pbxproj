@@ -7,22 +7,50 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DB504C2B27D93E39004B0CCE /* ConversationsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB504C2A27D93E39004B0CCE /* ConversationsListViewController.swift */; };
+		DB504C2E27D94152004B0CCE /* ConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB504C2C27D94152004B0CCE /* ConversationCell.swift */; };
+		DB504C2F27D94152004B0CCE /* ConversationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB504C2D27D94152004B0CCE /* ConversationCell.xib */; };
+		DB504C3427D94ABC004B0CCE /* Conversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB504C3327D94ABC004B0CCE /* Conversation.swift */; };
+		DB504C3B27D96727004B0CCE /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB504C3A27D96727004B0CCE /* ConversationViewController.swift */; };
+		DB504C3E27D96AD5004B0CCE /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB504C3D27D96AD5004B0CCE /* MessageCell.swift */; };
+		DB504C4027D971C4004B0CCE /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB504C3F27D971C4004B0CCE /* Message.swift */; };
+		DB745A5127D0FA74007534FA /* BaseProfileView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB745A5027D0FA74007534FA /* BaseProfileView.xib */; };
+		DB745A5327D0FA8C007534FA /* BaseProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB745A5227D0FA8C007534FA /* BaseProfileView.swift */; };
+		DB745A5527D1390F007534FA /* SFProText-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB745A5427D1390F007534FA /* SFProText-Semibold.ttf */; };
 		DB86836A27C2A9F100D82F48 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB86836927C2A9F100D82F48 /* AppDelegate.swift */; };
 		DB86836E27C2A9F100D82F48 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB86836D27C2A9F100D82F48 /* ViewController.swift */; };
-		DB86837127C2A9F100D82F48 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB86836F27C2A9F100D82F48 /* Main.storyboard */; };
 		DB86837327C2A9F800D82F48 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB86837227C2A9F800D82F48 /* Assets.xcassets */; };
 		DB86837627C2A9F800D82F48 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB86837427C2A9F800D82F48 /* LaunchScreen.storyboard */; };
+		DB8BCD8227D026FC00054A95 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8BCD8127D026FC00054A95 /* ProfileViewController.swift */; };
+		DB8BCD8627D02C8D00054A95 /* SFProDisplay-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB8BCD8327D02C8D00054A95 /* SFProDisplay-Regular.ttf */; };
+		DB8BCD8727D02C8D00054A95 /* SFProDisplay-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB8BCD8427D02C8D00054A95 /* SFProDisplay-Bold.ttf */; };
+		DB8BCD8827D02C8D00054A95 /* SFProText-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB8BCD8527D02C8D00054A95 /* SFProText-Regular.ttf */; };
+		DB945AC227DB577F00BBFBA3 /* SFProDisplay-RegularItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB945AC127DB577F00BBFBA3 /* SFProDisplay-RegularItalic.ttf */; };
 		DBBD175327C6682A0093B548 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBD175227C6682A0093B548 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DB504C2A27D93E39004B0CCE /* ConversationsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsListViewController.swift; sourceTree = "<group>"; };
+		DB504C2C27D94152004B0CCE /* ConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationCell.swift; sourceTree = "<group>"; };
+		DB504C2D27D94152004B0CCE /* ConversationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConversationCell.xib; sourceTree = "<group>"; };
+		DB504C3327D94ABC004B0CCE /* Conversation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conversation.swift; sourceTree = "<group>"; };
+		DB504C3A27D96727004B0CCE /* ConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationViewController.swift; sourceTree = "<group>"; };
+		DB504C3D27D96AD5004B0CCE /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
+		DB504C3F27D971C4004B0CCE /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		DB745A5027D0FA74007534FA /* BaseProfileView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BaseProfileView.xib; sourceTree = "<group>"; };
+		DB745A5227D0FA8C007534FA /* BaseProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProfileView.swift; sourceTree = "<group>"; };
+		DB745A5427D1390F007534FA /* SFProText-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Semibold.ttf"; sourceTree = "<group>"; };
 		DB86836627C2A9F100D82F48 /* ChatApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB86836927C2A9F100D82F48 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DB86836D27C2A9F100D82F48 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		DB86837027C2A9F100D82F48 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DB86837227C2A9F800D82F48 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DB86837527C2A9F800D82F48 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DB86837727C2A9F800D82F48 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DB8BCD8127D026FC00054A95 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		DB8BCD8327D02C8D00054A95 /* SFProDisplay-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProDisplay-Regular.ttf"; sourceTree = "<group>"; };
+		DB8BCD8427D02C8D00054A95 /* SFProDisplay-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProDisplay-Bold.ttf"; sourceTree = "<group>"; };
+		DB8BCD8527D02C8D00054A95 /* SFProText-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Regular.ttf"; sourceTree = "<group>"; };
+		DB945AC127DB577F00BBFBA3 /* SFProDisplay-RegularItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProDisplay-RegularItalic.ttf"; sourceTree = "<group>"; };
 		DBBD175227C6682A0093B548 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -37,6 +65,88 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DB504C3027D948F1004B0CCE /* ProfileScreen */ = {
+			isa = PBXGroup;
+			children = (
+				DB504C3627D96345004B0CCE /* Controller */,
+				DB504C3527D96329004B0CCE /* Views */,
+			);
+			path = ProfileScreen;
+			sourceTree = "<group>";
+		};
+		DB504C3127D94925004B0CCE /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
+				DBBD175227C6682A0093B548 /* Extensions.swift */,
+				DB86837427C2A9F800D82F48 /* LaunchScreen.storyboard */,
+				DB86837727C2A9F800D82F48 /* Info.plist */,
+				DB8BCD8A27D038FA00054A95 /* Resources */,
+			);
+			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
+		DB504C3227D94959004B0CCE /* ConversationsListScreen */ = {
+			isa = PBXGroup;
+			children = (
+				DB504C3927D96385004B0CCE /* Controller */,
+				DB504C3727D96373004B0CCE /* Views */,
+				DB504C3827D9637C004B0CCE /* Model */,
+			);
+			path = ConversationsListScreen;
+			sourceTree = "<group>";
+		};
+		DB504C3527D96329004B0CCE /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DB745A5027D0FA74007534FA /* BaseProfileView.xib */,
+				DB745A5227D0FA8C007534FA /* BaseProfileView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		DB504C3627D96345004B0CCE /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				DB8BCD8127D026FC00054A95 /* ProfileViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		DB504C3727D96373004B0CCE /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DB504C2C27D94152004B0CCE /* ConversationCell.swift */,
+				DB504C2D27D94152004B0CCE /* ConversationCell.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		DB504C3827D9637C004B0CCE /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DB504C3327D94ABC004B0CCE /* Conversation.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DB504C3927D96385004B0CCE /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				DB504C2A27D93E39004B0CCE /* ConversationsListViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		DB504C3C27D9672E004B0CCE /* ConversationDetailScreen */ = {
+			isa = PBXGroup;
+			children = (
+				DB945AC327DB608800BBFBA3 /* Controller */,
+				DB945AC427DB609200BBFBA3 /* View */,
+				DB945AC527DB609900BBFBA3 /* Model */,
+			);
+			path = ConversationDetailScreen;
+			sourceTree = "<group>";
+		};
 		DB86835D27C2A9F100D82F48 = {
 			isa = PBXGroup;
 			children = (
@@ -58,13 +168,57 @@
 			children = (
 				DB86836927C2A9F100D82F48 /* AppDelegate.swift */,
 				DB86836D27C2A9F100D82F48 /* ViewController.swift */,
-				DB86836F27C2A9F100D82F48 /* Main.storyboard */,
-				DB86837227C2A9F800D82F48 /* Assets.xcassets */,
-				DB86837427C2A9F800D82F48 /* LaunchScreen.storyboard */,
-				DB86837727C2A9F800D82F48 /* Info.plist */,
-				DBBD175227C6682A0093B548 /* Extensions.swift */,
+				DB504C3127D94925004B0CCE /* SupportingFiles */,
+				DB504C3027D948F1004B0CCE /* ProfileScreen */,
+				DB504C3227D94959004B0CCE /* ConversationsListScreen */,
+				DB504C3C27D9672E004B0CCE /* ConversationDetailScreen */,
 			);
 			path = ChatApp;
+			sourceTree = "<group>";
+		};
+		DB8BCD8927D038EA00054A95 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				DB8BCD8427D02C8D00054A95 /* SFProDisplay-Bold.ttf */,
+				DB8BCD8327D02C8D00054A95 /* SFProDisplay-Regular.ttf */,
+				DB8BCD8527D02C8D00054A95 /* SFProText-Regular.ttf */,
+				DB945AC127DB577F00BBFBA3 /* SFProDisplay-RegularItalic.ttf */,
+				DB745A5427D1390F007534FA /* SFProText-Semibold.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		DB8BCD8A27D038FA00054A95 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DB86837227C2A9F800D82F48 /* Assets.xcassets */,
+				DB8BCD8927D038EA00054A95 /* Fonts */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		DB945AC327DB608800BBFBA3 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				DB504C3A27D96727004B0CCE /* ConversationViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		DB945AC427DB609200BBFBA3 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DB504C3D27D96AD5004B0CCE /* MessageCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DB945AC527DB609900BBFBA3 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DB504C3F27D971C4004B0CCE /* Message.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -125,9 +279,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB504C2F27D94152004B0CCE /* ConversationCell.xib in Resources */,
+				DB8BCD8627D02C8D00054A95 /* SFProDisplay-Regular.ttf in Resources */,
 				DB86837627C2A9F800D82F48 /* LaunchScreen.storyboard in Resources */,
+				DB745A5127D0FA74007534FA /* BaseProfileView.xib in Resources */,
+				DB945AC227DB577F00BBFBA3 /* SFProDisplay-RegularItalic.ttf in Resources */,
 				DB86837327C2A9F800D82F48 /* Assets.xcassets in Resources */,
-				DB86837127C2A9F100D82F48 /* Main.storyboard in Resources */,
+				DB745A5527D1390F007534FA /* SFProText-Semibold.ttf in Resources */,
+				DB8BCD8827D02C8D00054A95 /* SFProText-Regular.ttf in Resources */,
+				DB8BCD8727D02C8D00054A95 /* SFProDisplay-Bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,23 +298,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB745A5327D0FA8C007534FA /* BaseProfileView.swift in Sources */,
+				DB504C3E27D96AD5004B0CCE /* MessageCell.swift in Sources */,
 				DB86836E27C2A9F100D82F48 /* ViewController.swift in Sources */,
+				DB504C3B27D96727004B0CCE /* ConversationViewController.swift in Sources */,
 				DBBD175327C6682A0093B548 /* Extensions.swift in Sources */,
+				DB8BCD8227D026FC00054A95 /* ProfileViewController.swift in Sources */,
+				DB504C4027D971C4004B0CCE /* Message.swift in Sources */,
 				DB86836A27C2A9F100D82F48 /* AppDelegate.swift in Sources */,
+				DB504C2B27D93E39004B0CCE /* ConversationsListViewController.swift in Sources */,
+				DB504C3427D94ABC004B0CCE /* Conversation.swift in Sources */,
+				DB504C2E27D94152004B0CCE /* ConversationCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		DB86836F27C2A9F100D82F48 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DB86837027C2A9F100D82F48 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		DB86837427C2A9F800D82F48 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -291,10 +451,10 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2VAU5M9JPP;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ChatApp/Info.plist;
+				INFOPLIST_FILE = ChatApp/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -304,7 +464,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.annabelousova.ChatApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.annabelousova.ChatApp2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -321,10 +481,10 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2VAU5M9JPP;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ChatApp/Info.plist;
+				INFOPLIST_FILE = ChatApp/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -334,7 +494,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.annabelousova.ChatApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.annabelousova.ChatApp2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

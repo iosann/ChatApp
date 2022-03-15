@@ -8,10 +8,31 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    private lazy var openProfileButton: UIButton = {
+        let button = UIButton()
+        button.frame.size = CGSize(width: 150, height: 50)
+        button.center = self.view.center
+        button.setTitle("Open profile", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.layer.cornerRadius = 8
+        button.layer.borderColor = UIColor.black.cgColor
+        button.layer.borderWidth = 2
+        button.addTarget(self, action: #selector(openProfile), for: .touchUpInside)
+        return button
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
+        view.addSubview(openProfileButton)
         NSLog(#function)
+    }
+    
+    @objc private func openProfile() {
+        let profileViewController = ProfileViewController()
+        let navigationController = UINavigationController(rootViewController: profileViewController)
+        self.present(navigationController, animated: true)
     }
 
     override func viewWillAppear(_ animated: Bool) {
