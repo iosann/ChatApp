@@ -19,6 +19,7 @@ class ConversationsListViewController: UIViewController {
         var iconAvatarImage = UIImage(named: "icon-avatar")
         iconAvatarImage = iconAvatarImage?.withRenderingMode(.alwaysOriginal)
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: iconAvatarImage, style: .plain, target: self, action: #selector(openProfile))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "icon_settings"), style: .plain, target: self, action: #selector(openThemes))
         setupTableView()
         prepareData()
     }
@@ -51,6 +52,11 @@ class ConversationsListViewController: UIViewController {
         let profileViewController = ProfileViewController()
         let navigationController = UINavigationController(rootViewController: profileViewController)
         self.present(navigationController, animated: true)
+    }
+    
+    @objc private func openThemes() {
+        let themesViewController = ThemesViewController()
+        navigationController?.pushViewController(themesViewController, animated: true)
     }
 }
 
