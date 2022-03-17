@@ -16,12 +16,17 @@ class ConversationsListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Tinkoff Chat"
-        var iconAvatarImage = UIImage(named: "icon-avatar")
+        var iconAvatarImage = UIImage(named: "avatar_icon")
         iconAvatarImage = iconAvatarImage?.withRenderingMode(.alwaysOriginal)
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: iconAvatarImage, style: .plain, target: self, action: #selector(openProfile))
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "icon_settings"), style: .plain, target: self, action: #selector(openThemes))
         setupTableView()
         prepareData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: ThemeManager.shared.current.tintColor]
     }
     
     private func setupTableView() {

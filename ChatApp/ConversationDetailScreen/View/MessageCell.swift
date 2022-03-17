@@ -43,12 +43,12 @@ class MessageCell: UITableViewCell, MessageCellConfiguration {
     func configure(messageText: String?, isIncomingMessage: Bool) {
         messageLabel.text = messageText
         if isIncomingMessage {
-            cellBackgroundView.backgroundColor = UIColor(red: 0.902, green: 0.902, blue: 0.98, alpha: 1)
+            ThemeManager.shared.setBackgroundColorForIncomingMessage(for: cellBackgroundView)
             NSLayoutConstraint.activate([
                 messageLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
             ])
         } else {
-            cellBackgroundView.backgroundColor = UIColor(red: 0.69, green: 0.878, blue: 0.902, alpha: 1)
+            ThemeManager.shared.setBackgroundColorForOutgoingMessage(for: cellBackgroundView)
             NSLayoutConstraint.activate([
                 messageLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
             ])
