@@ -15,6 +15,7 @@ class ThemesViewController: UIViewController {
     private lazy var buttons = [topButton, middleButton, bottomButton]
     private let myView = ButtonThemesView(frame: CGRect(x: 0, y: 0, width: 300, height: 70))
     
+    // сильная ссылка на делегат может создать retain cycle
     private weak var delegate: ChangeThemeProtocol?
     
     override func viewDidLoad() {
@@ -22,6 +23,7 @@ class ThemesViewController: UIViewController {
         title = "Settings"
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
         self.delegate = ThemeManager.shared
+        // захват сильной ссылки на self (ThemesViewController) может создать retain cycle, при котором ThemeManager будет держать ссылку на ThemesViewController и не даст ему деинициализироваться
         ThemeManager.shared.selectedThemeComplition = { [weak self] theme in
             self?.setTheme(theme: theme)
         }
