@@ -16,14 +16,15 @@ class ThemesViewController: UIViewController {
     private let myView = ButtonThemesView(frame: CGRect(x: 0, y: 0, width: 300, height: 70))
     
     private weak var delegate: ChangeThemeProtocol?
-    private let themeManager = ThemeManager.shared
-//    var selectedTheme: ((Theme) -> ())?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Settings"
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: ThemeManager.shared.current.tintColor]
-        self.delegate = themeManager
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
+        self.delegate = ThemeManager.shared
+        ThemeManager.shared.selectedThemeComplition = { [weak self] theme in
+            self?.setTheme(theme: theme)
+        }
         ThemeManager.shared.setBackgroundColor(for: view)
         view.addSubview(myView)
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelScreen))
@@ -43,6 +44,10 @@ class ThemesViewController: UIViewController {
         if self.isMovingFromParent {
             ThemeManager.shared.save()
         }
+    }
+    
+    private func setTheme(theme: ColorTheme) {
+        ThemeManager.shared.currentTheme = theme
     }
     
     private func setButtonImage(backgroundColor: UIColor, incomingMessageColor: UIColor, outgoingMessageColor: UIColor, forButton button: UIButton) {
@@ -83,12 +88,13 @@ class ThemesViewController: UIViewController {
         sender.imageView?.layer.borderWidth = 3
         sender.imageView?.layer.borderColor = UIColor.blue.cgColor
         view.backgroundColor = selectedTheme.backgroundColor
-        delegate?.applyTheme(theme: selectedTheme)
+ //       delegate?.currentTheme = selectedTheme
+        ThemeManager.shared.selectedThemeComplition?(selectedTheme)
     }
     
     @objc private func cancelScreen() {
-        delegate?.applyTheme(theme: ThemeManager.saved)
+//        delegate?.currentTheme = ThemeManager.saved
+        ThemeManager.shared.selectedThemeComplition?(ThemeManager.saved)
         ThemeManager.shared.setBackgroundColor(for: view)
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: ThemeManager.shared.current.tintColor]
     }
 }

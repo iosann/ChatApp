@@ -19,7 +19,7 @@ class ConversationViewController: UIViewController {
         super.viewDidLoad()
         setupTableView()
         title = contactTitle
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: ThemeManager.shared.current.tintColor]
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: ThemeManager.shared.currentTheme.tintColor]
     }
     
     private func setupTableView() {

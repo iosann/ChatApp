@@ -7,18 +7,17 @@
 
 import UIKit
 
-//    var selectedTheme: ((Theme) -> ())?
-
 protocol ChangeThemeProtocol: AnyObject {
-    func applyTheme(theme: ColorTheme)
+    var currentTheme: ColorTheme { get set }
 }
     
 class ThemeManager: ChangeThemeProtocol {
-    
+
     static let shared = ThemeManager(savedTheme: ThemeManager.saved)
+    var selectedThemeComplition: ((ColorTheme) -> Void)?
     
     private init(savedTheme: ColorTheme) {
-        self.current = savedTheme
+        self.currentTheme = savedTheme
     }
 
     static var saved: ColorTheme {
@@ -26,34 +25,39 @@ class ThemeManager: ChangeThemeProtocol {
         return ColorTheme(rawValue: storedThemeNumber) ?? .classic
     }
     
-    var current: ColorTheme {
+    var currentTheme: ColorTheme {
         didSet { apply() }
     }
     
     func apply() {
-        UIApplication.shared.delegate?.window??.tintColor = current.tintColor
-//        UINavigationBar.appearance().barStyle = current.barStyle
-        UITableView.appearance().backgroundColor = current.backgroundColor
-        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: current.tintColor]
+        UIApplication.shared.delegate?.window??.tintColor = currentTheme.tintColor
+        UITableView.appearance().backgroundColor = currentTheme.backgroundColor
+        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: currentTheme.tintColor]
     }
     
     func save() {
-        UserDefaults.standard.set(current.rawValue, forKey: "CurrentTheme")
+        UserDefaults.standard.set(currentTheme.rawValue, forKey: "CurrentTheme")
     }
     
     func applyTheme(theme: ColorTheme) {
-        current = theme
+        currentTheme = theme
     }
     
     func setBackgroundColor(for view: UIView) {
-        view.backgroundColor = current.backgroundColor
+        view.backgroundColor = currentTheme.backgroundColor
     }
     
     func setBackgroundColorForIncomingMessage(for view: UIView) {
-        view.backgroundColor = current.incomingMessageColor
+        view.backgroundColor = currentTheme.incomingMessageColor
     }
     
     func setBackgroundColorForOutgoingMessage(for view: UIView) {
-        view.backgroundColor = current.outgoingMessageColor
+        view.backgroundColor = currentTheme.outgoingMessageColor
     }
 }
+
+
+
+
+
+

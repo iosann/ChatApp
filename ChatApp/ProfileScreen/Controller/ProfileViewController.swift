@@ -56,7 +56,7 @@ class ProfileViewController: UIViewController {
         closeButton.isEnabled = true
         navigationItem.rightBarButtonItem = closeButton
         let titleButton = UIBarButtonItem(title: "My Profile", style: .plain, target: self, action: nil)
-        titleButton.setTitleTextAttributes([.font: UIFont(name: "SFProDisplay-Bold", size: 26) ?? .boldSystemFont(ofSize: 26), .foregroundColor: ThemeManager.shared.current.tintColor], for: .normal)
+        titleButton.setTitleTextAttributes([.font: UIFont(name: "SFProDisplay-Bold", size: 26) ?? .boldSystemFont(ofSize: 26), .foregroundColor: ThemeManager.shared.currentTheme.tintColor], for: .normal)
         navigationItem.leftBarButtonItem = titleButton
         ThemeManager.shared.setBackgroundColor(for: view)
         setupScrollView()

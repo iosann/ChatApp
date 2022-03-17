@@ -19,6 +19,7 @@ class MessageCell: UITableViewCell, MessageCellConfiguration {
         label.font = .systemFont(ofSize: 15)
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
+        label.textColor = ThemeManager.shared.currentTheme.textColor
         return label
     }()
     var messageText: String?
