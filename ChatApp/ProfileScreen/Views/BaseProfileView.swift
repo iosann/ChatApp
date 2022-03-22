@@ -82,6 +82,7 @@ class BaseProfileView: UIView {
     }
     
     private func configureView() {
+        ThemeManager.shared.setBackgroundColor(for: contentView)
         nameTextField.delegate = self
         descriptionTextField.delegate = self
         

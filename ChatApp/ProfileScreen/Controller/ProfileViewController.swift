@@ -51,15 +51,14 @@ class ProfileViewController: UIViewController {
     }
     
     private func setupUI() {
-        navigationController?.navigationBar.backgroundColor = UIColor(red: 0.968, green: 0.968, blue: 0.968, alpha: 1)
         navigationController?.navigationBar.prefersLargeTitles = true
         let closeButton = UIBarButtonItem(title: "Close", style: .plain, target: self, action: #selector(closeTheScreen))
         closeButton.isEnabled = true
         navigationItem.rightBarButtonItem = closeButton
         let titleButton = UIBarButtonItem(title: "My Profile", style: .plain, target: self, action: nil)
-        titleButton.setTitleTextAttributes([.font: UIFont(name: "SFProDisplay-Bold", size: 26) ?? .boldSystemFont(ofSize: 26), .foregroundColor: UIColor.black], for: .normal)
+        titleButton.setTitleTextAttributes([.font: UIFont(name: "SFProDisplay-Bold", size: 26) ?? .boldSystemFont(ofSize: 26), .foregroundColor: ThemeManager.shared.currentTheme.tintColor], for: .normal)
         navigationItem.leftBarButtonItem = titleButton
-        view.backgroundColor = .white
+        ThemeManager.shared.setBackgroundColor(for: view)
         setupScrollView()
         let tap = UITapGestureRecognizer(target: self, action: #selector(editProfileImage))
         profileView.editIconView.addGestureRecognizer(tap)

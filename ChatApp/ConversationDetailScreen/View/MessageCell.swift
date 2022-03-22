@@ -19,6 +19,7 @@ class MessageCell: UITableViewCell, MessageCellConfiguration {
         label.font = .systemFont(ofSize: 15)
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
+        label.textColor = ThemeManager.shared.currentTheme.textColor
         return label
     }()
     var messageText: String?
@@ -40,15 +41,15 @@ class MessageCell: UITableViewCell, MessageCellConfiguration {
         cellBackgroundView.backgroundColor = nil
     }
     
-    func configure(messageText: String?, isIncomingMessage: Bool?) {
+    func configure(messageText: String?, isIncomingMessage: Bool) {
         messageLabel.text = messageText
-        if isIncomingMessage == true {
-            cellBackgroundView.backgroundColor = UIColor(red: 0.902, green: 0.902, blue: 0.98, alpha: 1)
+        if isIncomingMessage {
+            ThemeManager.shared.setBackgroundColorForIncomingMessage(for: cellBackgroundView)
             NSLayoutConstraint.activate([
                 messageLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
             ])
         } else {
-            cellBackgroundView.backgroundColor = UIColor(red: 0.69, green: 0.878, blue: 0.902, alpha: 1)
+            ThemeManager.shared.setBackgroundColorForOutgoingMessage(for: cellBackgroundView)
             NSLayoutConstraint.activate([
                 messageLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
             ])
@@ -56,6 +57,7 @@ class MessageCell: UITableViewCell, MessageCellConfiguration {
     }
     
     private func setupConstraints() {
+        selectionStyle = .none
         backgroundColor = .clear
         contentView.addSubview(cellBackgroundView)
         contentView.addSubview(messageLabel)

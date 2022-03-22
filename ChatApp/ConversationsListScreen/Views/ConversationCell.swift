@@ -25,16 +25,14 @@ class ConversationCell: UITableViewCell, ConversationCellConfiguration {
     var name: String?
     var message: String?
     var date: Date?
-    var online: Bool = false
-    var hasUnreadMessages: Bool = false
+    var online = false
+    var hasUnreadMessages = false
     
     func configure(name: String?, message: String?, date: Date?, online: Bool, hasUnreadMessages: Bool) {
-        if online == true {
-            cellBackgroundView.backgroundColor = UIColor(red: 1, green: 1, blue: 0.878, alpha: 1)
-        } else {
-            cellBackgroundView.backgroundColor = .white
-        }
-        if hasUnreadMessages == true { messageLabel.font = .boldSystemFont(ofSize: 14) }
+        cellBackgroundView.backgroundColor = online
+                                            ? UIColor(red: 1, green: 1, blue: 0.878, alpha: 1)
+                                            : .white
+        if hasUnreadMessages { messageLabel.font = .boldSystemFont(ofSize: 14) }
         if message == nil {
             messageLabel.text = "No messages yet"
             messageLabel.font = UIFont(name: "SFProDisplay-RegularItalic", size: 14)
@@ -44,6 +42,7 @@ class ConversationCell: UITableViewCell, ConversationCellConfiguration {
         nameLabel.text = name
         timeLabel.text = date?.formattedDate
         cellBackgroundView.layer.cornerRadius = 8
+        selectionStyle = .none
     }
     
     override func prepareForReuse() {

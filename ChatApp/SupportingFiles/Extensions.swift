@@ -36,3 +36,24 @@ extension String {
         return formatter.date(from: self)
     }
 }
+
+extension UIView {
+    func asImage() -> UIImage {
+        let renderer = UIGraphicsImageRenderer(bounds: bounds)
+        return renderer.image { rendererContext in
+            layer.render(in: rendererContext.cgContext)
+        }
+    }
+}
+
+extension UIButton {
+    
+    func centerVertically(padding: CGFloat) {
+        guard let imageViewSize = self.imageView?.frame.size,
+              let titleLabelSize = self.titleLabel?.frame.size
+        else { return }
+        let totalHeight = imageViewSize.height + titleLabelSize.height + padding
+        self.imageEdgeInsets = UIEdgeInsets(top: -(totalHeight - imageViewSize.height), left: 0, bottom: 0, right: -titleLabelSize.width)
+        self.titleEdgeInsets = UIEdgeInsets(top: 0, left: -imageViewSize.width, bottom: -(totalHeight - titleLabelSize.height), right: 0)
+    }
+}

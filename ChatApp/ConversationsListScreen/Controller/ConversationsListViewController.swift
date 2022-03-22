@@ -16,11 +16,17 @@ class ConversationsListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Tinkoff Chat"
-        var iconAvatarImage = UIImage(named: "icon-avatar")
+        var iconAvatarImage = UIImage(named: "avatar_icon")
         iconAvatarImage = iconAvatarImage?.withRenderingMode(.alwaysOriginal)
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: iconAvatarImage, style: .plain, target: self, action: #selector(openProfile))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "icon_settings"), style: .plain, target: self, action: #selector(openThemes))
         setupTableView()
         prepareData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: ThemeManager.shared.currentTheme.tintColor]
     }
     
     private func setupTableView() {
@@ -40,7 +46,7 @@ class ConversationsListViewController: UIViewController {
     
     private func prepareData() {
         for contact in Conversation.allContacts {
-            if contact.online == true { allContacts[0].append(contact) }
+            if contact.online { allContacts[0].append(contact) }
             else if contact.message != nil { allContacts[1].append(contact) }
         }
         allContacts[0].sort { $0.date?.compare($1.date ?? Date()) == .orderedDescending }
@@ -51,6 +57,11 @@ class ConversationsListViewController: UIViewController {
         let profileViewController = ProfileViewController()
         let navigationController = UINavigationController(rootViewController: profileViewController)
         self.present(navigationController, animated: true)
+    }
+    
+    @objc private func openThemes() {
+        let themesViewController = ThemesViewController()
+        navigationController?.pushViewController(themesViewController, animated: true)
     }
 }
 
@@ -85,8 +96,7 @@ extension ConversationsListViewController: UITableViewDataSource, UITableViewDel
         let contact = allContacts[indexPath.section][indexPath.row]
         let conversationViewController = ConversationViewController()
         conversationViewController.contactTitle = contact.name
-        if contact.message == nil { conversationViewController.isMessageEmpty = true }
-        else { conversationViewController.isMessageEmpty = false }
+        conversationViewController.isMessageEmpty = (contact.message == nil) ? true : false
         navigationController?.pushViewController(conversationViewController, animated: true)
     }
 }

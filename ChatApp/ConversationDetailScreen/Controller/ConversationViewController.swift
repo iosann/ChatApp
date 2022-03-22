@@ -19,6 +19,7 @@ class ConversationViewController: UIViewController {
         super.viewDidLoad()
         setupTableView()
         title = contactTitle
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: ThemeManager.shared.currentTheme.tintColor]
     }
     
     private func setupTableView() {
@@ -40,13 +41,12 @@ class ConversationViewController: UIViewController {
 extension ConversationViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if isMessageEmpty == false { return messages.count }
+        if !(isMessageEmpty ?? true) { return messages.count }
         else { return 0 }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
-        cell.selectionStyle = .none
         guard let messageCell = cell as? MessageCell else { return cell }
         messageCell.configure(messageText: messages[indexPath.row].text, isIncomingMessage: messages[indexPath.row].isIncomingMessage)
         return messageCell
