@@ -17,7 +17,7 @@ class ProfileViewController: UIViewController {
         label.text = "My Profile"
         return label
     }()
-    lazy var activityIndicator: UIActivityIndicatorView = {
+    private lazy var activityIndicator: UIActivityIndicatorView = {
         let activityIndicator = UIActivityIndicatorView()
         activityIndicator.style = .large
         activityIndicator.color = .black
@@ -26,14 +26,17 @@ class ProfileViewController: UIViewController {
         return activityIndicator
     }()
     
-    let savingByGCD = SavingByGCD()
-    let saveByOperations = SavingByOperations()
-    var storedFullName: String?
-    var storedDescription: String?
-    var storedPhoto: UIImage?
+    private let savingByGCD = SavingByGCD()
+    private let saveByOperations = SavingByOperations()
+    private var storedFullName: String?
+    private var storedDescription: String?
+    private var storedPhoto: UIImage?
+    private weak var delegate: ISavingData?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+ //       self.delegate = savingByGCD
+        self.delegate = saveByOperations
         getStoredData()
         setupUI()
 //        print(profileView.saveButton.frame)
@@ -87,15 +90,15 @@ class ProfileViewController: UIViewController {
     }
     
     private func getStoredData() {
-        savingByGCD.getStoredString(fileName: Constants.fullnameFilename) { [weak self] fullname in
+        delegate?.getStoredString(fileName: Constants.fullnameFilename) { [weak self] fullname in
             self?.storedFullName = fullname
             DispatchQueue.main.async { self?.profileView.nameTextField.text = fullname }
         }
-        savingByGCD.getStoredString(fileName: Constants.descriptionFileName) { [weak self] description in
+        delegate?.getStoredString(fileName: Constants.descriptionFileName) { [weak self] description in
             self?.storedDescription = description
             DispatchQueue.main.async { self?.profileView.descriptionTextField.text = description }
         }
-        savingByGCD.getStoredImage { [weak self] image in
+        delegate?.getStoredImage { [weak self] image in
             self?.storedPhoto = image
             DispatchQueue.main.async { self?.profileView.photoImageView.image = image }
         }
@@ -118,7 +121,7 @@ class ProfileViewController: UIViewController {
         }
         
         if sender == profileView.saveButtons.first {
-            savingByGCD.writeData(fullName: newName, description: newDescription, image: newPhoto) { bool in
+            delegate?.writeData(fullName: newName, description: newDescription, image: newPhoto) { bool in
                 DispatchQueue.main.async { [weak self] in
                     self?.activityIndicator.stopAnimating()
                     self?.showAlertForResult(bool)
@@ -126,8 +129,10 @@ class ProfileViewController: UIViewController {
             }
         } else {
             saveByOperations.writeData(fullName: newName, description: newDescription, image: newPhoto) { [weak self] bool in
-                self?.activityIndicator.stopAnimating()
-                self?.showAlertForResult(bool)
+                DispatchQueue.main.async { [weak self] in
+                    self?.activityIndicator.stopAnimating()
+                    self?.showAlertForResult(bool)
+                }
             }
         }
     }
@@ -153,7 +158,8 @@ class ProfileViewController: UIViewController {
     
     @objc private func keyboardWillShow(notification: Notification) {
         guard let userInfo = notification.userInfo,
-              let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+              let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
+        else { return }
         let keyboardFrame = keyboardSize.cgRectValue
         
         let offset = profileView.descriptionTextField.frame.maxY + (navigationController?.navigationBar.bounds.height ?? 0)
