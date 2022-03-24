@@ -92,7 +92,7 @@
                 <constraint firstItem="PzQ-fx-tFX" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="7" id="JtU-Cl-YTm"/>
                 <constraint firstItem="u36-DO-IfH" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="L10-9v-M5Y"/>
                 <constraint firstItem="PzQ-fx-tFX" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.64" id="Mnt-IL-rN7"/>
-                <constraint firstItem="6Am-kD-Hn3" firstAttribute="top" secondItem="PzQ-fx-tFX" secondAttribute="bottom" constant="132" id="Paf-a7-0Sx"/>
+                <constraint firstItem="6Am-kD-Hn3" firstAttribute="top" secondItem="PzQ-fx-tFX" secondAttribute="bottom" constant="32" id="Paf-a7-0Sx"/>
                 <constraint firstItem="6Am-kD-Hn3" firstAttribute="width" secondItem="PzQ-fx-tFX" secondAttribute="width" id="UeM-Yr-pm3"/>
                 <constraint firstItem="EcB-ia-T8z" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.7" id="XHi-w4-Si4"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="BsK-B9-Mny" secondAttribute="trailing" constant="20" id="ep1-Py-ZDl"/>
