@@ -14,7 +14,8 @@ class SavingByOperations: ISavingData {
     func writeData(fullName: String?, description: String?, image: UIImage?, _ completion: @escaping(Bool) -> Void) {
         let writeDataOperation = WriteDataOperation(fullName: fullName, profileDescription: description, image: image)
         writeDataOperation.completionBlock = {
-            completion(writeDataOperation.boolResult)
+            guard let result = writeDataOperation.boolResult else { return }
+            completion(result)
         }
         operationQueue.addOperation(writeDataOperation)
     }
@@ -40,7 +41,7 @@ class WriteDataOperation: AsyncOperation {
     private let fullName: String?
     private let profileDescription: String?
     private let image: UIImage?
-    var boolResult: Bool
+    var boolResult: Bool?
     
     init(fullName: String?, profileDescription: String?, image: UIImage?) {
         self.fullName = fullName

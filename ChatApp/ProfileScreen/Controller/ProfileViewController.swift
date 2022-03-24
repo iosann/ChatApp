@@ -26,22 +26,25 @@ class ProfileViewController: UIViewController {
         return activityIndicator
     }()
     
-    private let savingByGCD = SavingByGCD()
+    private let saveByGCD = SavingByGCD()
     private let saveByOperations = SavingByOperations()
     private var storedFullName: String?
     private var storedDescription: String?
     private var storedPhoto: UIImage?
+    private var newDataForSaving: [String: Any?] = ["newName": nil, "newDescription": nil, "newPhoto": nil, "isGCDMethod": nil]
     private weak var delegate: ISavingData?
 
     override func viewDidLoad() {
         super.viewDidLoad()
- //       self.delegate = savingByGCD
+        
+//      чтобы проверить чтение сохраненнызх данных, нужно заменить делегата
+//      self.delegate = savingByGCD
         self.delegate = saveByOperations
         getStoredData()
         setupUI()
-//        print(profileView.saveButton.frame)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+//        print(profileView.saveButton.frame)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -67,6 +70,7 @@ class ProfileViewController: UIViewController {
         setupScrollView()
         profileView.addSubview(activityIndicator)
         profileView.editPhotoButton.addTarget(self, action: #selector(editProfileImage), for: .touchUpInside)
+        profileView.cancelButton.addTarget(self, action: #selector(cancelEditing), for: .touchUpInside)
         profileView.saveButtons.forEach { $0.addTarget(self, action: #selector(saveChanges), for: .touchUpInside) }
     }
     
@@ -110,50 +114,73 @@ class ProfileViewController: UIViewController {
     
     @objc private func saveChanges(_ sender: UIButton) {
         activityIndicator.startAnimating()
-        var newName: String?
-        var newDescription: String?
-        var newPhoto: UIImage?
+        [profileView.saveButtons.first, profileView.saveButtons.last, profileView.editPhotoButton, profileView.cancelButton].forEach { $0?.isEnabled = false }
         
-        if profileView.nameTextField.text != storedFullName { newName = profileView.nameTextField.text }
-        if profileView.descriptionTextField.text != storedDescription { newDescription = profileView.descriptionTextField.text }
-        if profileView.photoImageView.image != nil, profileView.photoImageView.image != storedPhoto {
-            newPhoto = profileView.photoImageView.image
+        if profileView.nameTextField.text != storedFullName {
+            newDataForSaving["newName"] = profileView.nameTextField.text
         }
+        if profileView.descriptionTextField.text != storedDescription {
+            newDataForSaving["newDescription"] = profileView.descriptionTextField.text
+        }
+        if profileView.photoImageView.image != nil, profileView.photoImageView.image != storedPhoto {
+            newDataForSaving["newPhoto"] = profileView.photoImageView.image
+        }
+        if sender == profileView.saveButtons.first { newDataForSaving["isGCDMethod"] = true }
+        else { newDataForSaving["isGCDMethod"] = false }
         
-        if sender == profileView.saveButtons.first {
-            delegate?.writeData(fullName: newName, description: newDescription, image: newPhoto) { bool in
-                DispatchQueue.main.async { [weak self] in
-                    self?.activityIndicator.stopAnimating()
-                    self?.showAlertForResult(bool)
-                }
+        writeNewData()
+    }
+    
+    private func writeNewData() {
+// saveByGCD или saveByOperations меняется на delegate
+        if (newDataForSaving["isGCDMethod"] as? Bool) == true {
+            saveByGCD.writeData(fullName: newDataForSaving["newName"] as? String,
+                                description: newDataForSaving["newDescription"] as? String,
+                                image: newDataForSaving["newPhoto"] as? UIImage) { [weak self] result in
+                self?.showAlert(result)
             }
-        } else {
-            saveByOperations.writeData(fullName: newName, description: newDescription, image: newPhoto) { [weak self] bool in
-                DispatchQueue.main.async { [weak self] in
-                    self?.activityIndicator.stopAnimating()
-                    self?.showAlertForResult(bool)
-                }
+        } else if (newDataForSaving["isGCDMethod"] as? Bool) == false {
+            saveByOperations.writeData(fullName: newDataForSaving["newName"] as? String,
+                                       description: newDataForSaving["newDescription"] as? String,
+                                       image: newDataForSaving["newPhoto"] as? UIImage) { [weak self] result in
+                self?.showAlert(result)
             }
         }
     }
     
-    private func showAlertForResult(_ success: Bool) {
+    private func showAlert(_ result: Bool) {
+        DispatchQueue.main.async { [weak self] in
+            self?.activityIndicator.stopAnimating()
+            self?.createAlertForResult(result)
+        }
+    }
+    
+    @objc private func cancelEditing() {
+        profileView.isEditingMode = false
+        profileView.nameTextField.text = storedFullName
+        profileView.descriptionTextField.text = storedDescription
+        profileView.photoImageView.image = storedPhoto
+    }
+    
+    private func createAlertForResult(_ success: Bool) {
         if success {
             let alert = UIAlertController(title: "Данные сохранены", message: nil, preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "Ok", style: .cancel) { [weak self] _ in self?.profileView.isEditingMode = false }
+            let okAction = UIAlertAction(title: "Ok", style: .cancel) { [weak self] _ in self?.profileView.isEditingMode = false
+                self?.newDataForSaving.keys.forEach { self?.newDataForSaving[$0] = nil }
+            }
             alert.addAction(okAction)
             present(alert, animated: true)
         } else {
             let alert = UIAlertController(title: "Ошибка", message: "Не удалось сохранить данные", preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "Ok", style: .default) { [weak self] _ in self?.profileView.isEditingMode = false }
+            let okAction = UIAlertAction(title: "Ok", style: .default) { [weak self] _ in self?.profileView.isEditingMode = false
+            }
             alert.addAction(okAction)
-            let repeatAction = UIAlertAction(title: "Повторить", style: .cancel) { alertAction in
-                //  повторить сохранение
+            let repeatAction = UIAlertAction(title: "Повторить", style: .cancel) { [weak self] _ in
+                self?.writeNewData()
             }
             alert.addAction(repeatAction)
             present(alert, animated: true)
         }
-        
     }
     
     @objc private func keyboardWillShow(notification: Notification) {

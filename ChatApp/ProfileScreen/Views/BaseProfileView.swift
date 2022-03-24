@@ -29,14 +29,15 @@ class BaseProfileView: UIView {
     var isEditingMode = false {
         didSet {
             if isEditingMode {
-                nameTextField.isUserInteractionEnabled = true
-                descriptionTextField.isUserInteractionEnabled = true
+                [nameTextField, descriptionTextField].forEach { $0?.isUserInteractionEnabled = true }
                 editButton.isHidden = true
                 buttonStackView.isHidden = false
             } else {
                 buttonStackView.isHidden = true
                 editButton.isHidden = false
                 saveButtons.forEach { $0.isEnabled = false }
+                [editPhotoButton, cancelButton].forEach { $0.isEnabled = true }
+                [nameTextField, descriptionTextField].forEach { $0?.isUserInteractionEnabled = false }
             }
         }
     }
@@ -91,12 +92,6 @@ class BaseProfileView: UIView {
         super.layoutSubviews()
         photoImageView.layer.cornerRadius = photoImageView.bounds.size.width / 2
         editPhotoButton.layer.cornerRadius = editPhotoButton.bounds.size.width / 2
-    }
-    
-    @IBAction func cancelEditing(_ sender: UIButton) {
-    // textField.text = предыдущее значение
-    // photoImageView.image = предыдущее значение
-        isEditingMode = false
     }
 }
 
