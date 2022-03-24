@@ -17,11 +17,26 @@ class ProfileViewController: UIViewController {
         label.text = "My Profile"
         return label
     }()
+    lazy var activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView()
+        activityIndicator.style = .large
+        activityIndicator.color = .black
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.center = view.center
+        return activityIndicator
+    }()
+    
+    let savingByGCD = SavingByGCD()
+    let saveByOperations = SavingByOperations()
+    var storedFullName: String?
+    var storedDescription: String?
+    var storedPhoto: UIImage?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        print(profileView.saveButton.frame)
+        getStoredData()
         setupUI()
+//        print(profileView.saveButton.frame)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
@@ -36,6 +51,20 @@ class ProfileViewController: UIViewController {
         super.viewDidDisappear(animated)
         NotificationCenter.default.removeObserver(UIResponder.keyboardWillShowNotification)
         NotificationCenter.default.removeObserver(UIResponder.keyboardWillHideNotification)
+    }
+    
+    private func setupUI() {
+        navigationController?.navigationBar.prefersLargeTitles = true
+        let closeButton = UIBarButtonItem(title: "Close", style: .plain, target: self, action: #selector(closeTheScreen))
+        navigationItem.rightBarButtonItem = closeButton
+        let titleButton = UIBarButtonItem(title: "My Profile", style: .plain, target: self, action: nil)
+        titleButton.setTitleTextAttributes([.font: UIFont(name: "SFProDisplay-Bold", size: 26) ?? .boldSystemFont(ofSize: 26), .foregroundColor: ThemeManager.shared.currentTheme.tintColor], for: .normal)
+        navigationItem.leftBarButtonItem = titleButton
+        ThemeManager.shared.setBackgroundColor(for: view)
+        setupScrollView()
+        profileView.addSubview(activityIndicator)
+        profileView.editPhotoButton.addTarget(self, action: #selector(editProfileImage), for: .touchUpInside)
+        profileView.saveButtons.forEach { $0.addTarget(self, action: #selector(saveChanges), for: .touchUpInside) }
     }
     
     private func setupScrollView() {
@@ -57,21 +86,69 @@ class ProfileViewController: UIViewController {
         ])
     }
     
-    private func setupUI() {
-        navigationController?.navigationBar.prefersLargeTitles = true
-        let closeButton = UIBarButtonItem(title: "Close", style: .plain, target: self, action: #selector(closeTheScreen))
-        closeButton.isEnabled = true
-        navigationItem.rightBarButtonItem = closeButton
-        let titleButton = UIBarButtonItem(title: "My Profile", style: .plain, target: self, action: nil)
-        titleButton.setTitleTextAttributes([.font: UIFont(name: "SFProDisplay-Bold", size: 26) ?? .boldSystemFont(ofSize: 26), .foregroundColor: ThemeManager.shared.currentTheme.tintColor], for: .normal)
-        navigationItem.leftBarButtonItem = titleButton
-        ThemeManager.shared.setBackgroundColor(for: view)
-        setupScrollView()
-        profileView.editPhotoButton.addTarget(self, action: #selector(editProfileImage), for: .touchUpInside)
+    private func getStoredData() {
+        savingByGCD.getStoredString(fileName: Constants.fullnameFilename) { [weak self] fullname in
+            self?.storedFullName = fullname
+            DispatchQueue.main.async { self?.profileView.nameTextField.text = fullname }
+        }
+        savingByGCD.getStoredString(fileName: Constants.descriptionFileName) { [weak self] description in
+            self?.storedDescription = description
+            DispatchQueue.main.async { self?.profileView.descriptionTextField.text = description }
+        }
+        savingByGCD.getStoredImage { [weak self] image in
+            self?.storedPhoto = image
+            DispatchQueue.main.async { self?.profileView.photoImageView.image = image }
+        }
     }
     
     @objc private func closeTheScreen() {
         dismiss(animated: true, completion: nil)
+    }
+    
+    @objc private func saveChanges(_ sender: UIButton) {
+        activityIndicator.startAnimating()
+        var newName: String?
+        var newDescription: String?
+        var newPhoto: UIImage?
+        
+        if profileView.nameTextField.text != storedFullName { newName = profileView.nameTextField.text }
+        if profileView.descriptionTextField.text != storedDescription { newDescription = profileView.descriptionTextField.text }
+        if profileView.photoImageView.image != nil, profileView.photoImageView.image != storedPhoto {
+            newPhoto = profileView.photoImageView.image
+        }
+        
+        if sender == profileView.saveButtons.first {
+            savingByGCD.writeData(fullName: newName, description: newDescription, image: newPhoto) { bool in
+                DispatchQueue.main.async { [weak self] in
+                    self?.activityIndicator.stopAnimating()
+                    self?.showAlertForResult(bool)
+                }
+            }
+        } else {
+            saveByOperations.writeData(fullName: newName, description: newDescription, image: newPhoto) { [weak self] bool in
+                self?.activityIndicator.stopAnimating()
+                self?.showAlertForResult(bool)
+            }
+        }
+    }
+    
+    private func showAlertForResult(_ success: Bool) {
+        if success {
+            let alert = UIAlertController(title: "Данные сохранены", message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ok", style: .cancel) { [weak self] _ in self?.profileView.isEditingMode = false }
+            alert.addAction(okAction)
+            present(alert, animated: true)
+        } else {
+            let alert = UIAlertController(title: "Ошибка", message: "Не удалось сохранить данные", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ok", style: .default) { [weak self] _ in self?.profileView.isEditingMode = false }
+            alert.addAction(okAction)
+            let repeatAction = UIAlertAction(title: "Повторить", style: .cancel) { alertAction in
+                //  повторить сохранение
+            }
+            alert.addAction(repeatAction)
+            present(alert, animated: true)
+        }
+        
     }
     
     @objc private func keyboardWillShow(notification: Notification) {
@@ -79,8 +156,7 @@ class ProfileViewController: UIViewController {
               let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         let keyboardFrame = keyboardSize.cgRectValue
         
-        let offset = (profileView.activeTextField?.frame.maxY ?? profileView.descriptionTextField.frame.maxY)
-        + (navigationController?.navigationBar.bounds.height ?? 0)
+        let offset = profileView.descriptionTextField.frame.maxY + (navigationController?.navigationBar.bounds.height ?? 0)
         if offset > keyboardFrame.minY {
             scrollView.contentOffset = CGPoint(x: 0, y: (offset - keyboardFrame.minY))
         }
@@ -97,7 +173,9 @@ class ProfileViewController: UIViewController {
     }
 
     @objc private func editProfileImage(_ sender: UIButton) {
-        print("Выбери изображение профиля")
+        profileView.isEditingMode = true
+        profileView.saveButtons.forEach { $0.isEnabled = true }
+//        print("Выбери изображение профиля")
         
         let alert = UIAlertController(title: "Choose image source", message: nil, preferredStyle: .actionSheet)
         let imagePicker = UIImagePickerController()

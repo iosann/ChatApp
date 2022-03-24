@@ -26,19 +26,19 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="User_avatar_icon" translatesAutoresizingMaskIntoConstraints="NO" id="PzQ-fx-tFX">
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PzQ-fx-tFX">
                     <rect key="frame" x="67.666666666666686" y="51" width="240" height="240"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="PzQ-fx-tFX" secondAttribute="height" multiplier="1:1" id="op2-CL-trW"/>
                     </constraints>
                 </imageView>
-                <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Name" textAlignment="natural" minimumFontSize="14" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="6Am-kD-Hn3">
-                    <rect key="frame" x="67.666666666666686" y="323" width="240" height="34"/>
+                <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Full name" textAlignment="natural" minimumFontSize="14" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="6Am-kD-Hn3">
+                    <rect key="frame" x="67.666666666666686" y="423" width="240" height="34"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
                 <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Description" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="u36-DO-IfH">
-                    <rect key="frame" x="67.666666666666686" y="389" width="240" height="34"/>
+                    <rect key="frame" x="67.666666666666686" y="489" width="240" height="34"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
@@ -95,7 +95,7 @@
                 <constraint firstItem="PzQ-fx-tFX" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="7" id="JtU-Cl-YTm"/>
                 <constraint firstItem="u36-DO-IfH" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="L10-9v-M5Y"/>
                 <constraint firstItem="PzQ-fx-tFX" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.64" id="Mnt-IL-rN7"/>
-                <constraint firstItem="6Am-kD-Hn3" firstAttribute="top" secondItem="PzQ-fx-tFX" secondAttribute="bottom" constant="32" id="Paf-a7-0Sx"/>
+                <constraint firstItem="6Am-kD-Hn3" firstAttribute="top" secondItem="PzQ-fx-tFX" secondAttribute="bottom" constant="132" id="Paf-a7-0Sx"/>
                 <constraint firstItem="6Am-kD-Hn3" firstAttribute="width" secondItem="PzQ-fx-tFX" secondAttribute="width" id="UeM-Yr-pm3"/>
                 <constraint firstItem="EcB-ia-T8z" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.7" id="XHi-w4-Si4"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="BsK-B9-Mny" secondAttribute="trailing" constant="20" id="ep1-Py-ZDl"/>
@@ -110,7 +110,4 @@
             <point key="canvasLocation" x="136.80000000000001" y="45.073891625615765"/>
         </view>
     </objects>
-    <resources>
-        <image name="User_avatar_icon" width="1335" height="1335"/>
-    </resources>
 </document>

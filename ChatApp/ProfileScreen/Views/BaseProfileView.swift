@@ -17,30 +17,26 @@ class BaseProfileView: UIView {
     @IBOutlet private weak var buttonStackView: UIStackView!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet var saveButtons: [UIButton]!
-    private(set) var activeTextField: UITextField?
     
     private(set) var editPhotoButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = UIColor(red: 0.247, green: 0.471, blue: 0.94, alpha: 1)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(systemName: "camera.fill")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
-        button.isEnabled = false
         return button
     }()
     
-    private var isEditingMode = false {
+    var isEditingMode = false {
         didSet {
             if isEditingMode {
                 nameTextField.isUserInteractionEnabled = true
                 descriptionTextField.isUserInteractionEnabled = true
                 editButton.isHidden = true
                 buttonStackView.isHidden = false
-                editPhotoButton.isEnabled = true
             } else {
                 buttonStackView.isHidden = true
                 editButton.isHidden = false
                 saveButtons.forEach { $0.isEnabled = false }
-                editPhotoButton.isEnabled = false
             }
         }
     }
@@ -86,7 +82,10 @@ class BaseProfileView: UIView {
         ])
     }
     
-    @IBAction func editTextFields(_ sender: UIButton) { isEditingMode = true }
+    @IBAction func editTextFields(_ sender: UIButton) {
+        isEditingMode = true
+        if nameTextField.canBecomeFirstResponder { nameTextField.becomeFirstResponder() }
+    }
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -96,6 +95,7 @@ class BaseProfileView: UIView {
     
     @IBAction func cancelEditing(_ sender: UIButton) {
     // textField.text = предыдущее значение
+    // photoImageView.image = предыдущее значение
         isEditingMode = false
     }
 }
@@ -113,7 +113,6 @@ extension BaseProfileView: UITextFieldDelegate {
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        activeTextField = textField
         saveButtons.forEach { $0.isEnabled = true }
     }
 }
