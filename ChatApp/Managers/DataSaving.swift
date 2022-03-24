@@ -48,7 +48,6 @@ class DataSaving {
     }
     
     private func writeString(string: String, pathName: String) {
-    // вернуть ошибку
         guard let fileName = path?.appendingPathComponent(pathName) else {
             errors.append(ServiceError.default)
             return
