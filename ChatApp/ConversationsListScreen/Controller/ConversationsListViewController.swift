@@ -6,27 +6,55 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
 class ConversationsListViewController: UIViewController {
     
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     private let cellIdentifier = "ConversationCell"
-    private var allContacts = [[Conversation](), [Conversation]()]
+    private let db = Firestore.firestore()
+    private lazy var reference = db.collection("channels")
+    private var channels = [Channel]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Tinkoff Chat"
-        var iconAvatarImage = UIImage(named: "avatar_icon")
-        iconAvatarImage = iconAvatarImage?.withRenderingMode(.alwaysOriginal)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: iconAvatarImage, style: .plain, target: self, action: #selector(openProfile))
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "icon_settings"), style: .plain, target: self, action: #selector(openThemes))
-        setupTableView()
-        prepareData()
+        getChannels()
+        setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: ThemeManager.shared.currentTheme.tintColor]
+    }
+    
+    private func setupUI() {
+        title = "Channels"
+        var iconAvatarImage = UIImage(named: "avatar_icon")
+        iconAvatarImage = iconAvatarImage?.withRenderingMode(.alwaysOriginal)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: iconAvatarImage, style: .plain, target: self, action: #selector(openProfile))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "icon_settings"), style: .plain, target: self, action: #selector(openThemes))
+        setupTableView()
+    }
+    
+    private func getChannels() {
+        reference.addSnapshotListener { [weak self] snapshot, error in
+            guard error == nil else {
+                print(error?.localizedDescription)
+                return
+            }
+            guard let snapshot = snapshot else { return }
+            snapshot.documents.forEach {
+                let date = ($0.data()["lastActivity"] as? Timestamp)?.dateValue()
+                let timestampDate = date != nil ? date : "2022-01-01T17:29:50Z".formattedDate
+                let channel = Channel(identifier: $0.documentID,
+                                      name: $0.data()["name"] as? String,
+                                      lastMessage: $0.data()["lastMessage"] as? String,
+                                      lastActivity: timestampDate)
+                self?.channels.append(channel)
+            }
+            self?.channels.sort { $0.lastActivity?.compare($1.lastActivity ?? Date()) == .orderedDescending }
+            self?.tableView.reloadData()
+        }
     }
     
     private func setupTableView() {
@@ -44,15 +72,6 @@ class ConversationsListViewController: UIViewController {
         tableView.separatorStyle = .none
     }
     
-    private func prepareData() {
-        for contact in Conversation.allContacts {
-            if contact.online { allContacts[0].append(contact) }
-            else if contact.message != nil { allContacts[1].append(contact) }
-        }
-        allContacts[0].sort { $0.date?.compare($1.date ?? Date()) == .orderedDescending }
-        allContacts[1].sort { $0.date?.compare($1.date ?? Date()) == .orderedDescending }
-    }
-    
     @objc private func openProfile() {
         let profileViewController = ProfileViewController()
         let navigationController = UINavigationController(rootViewController: profileViewController)
@@ -67,25 +86,16 @@ class ConversationsListViewController: UIViewController {
 
 extension ConversationsListViewController: UITableViewDataSource, UITableViewDelegate {
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return allContacts.count
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return allContacts[section].count
+        return channels.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
         guard let conversationCell = cell as? ConversationCell else { return cell }
-        let contact = allContacts[indexPath.section][indexPath.row]
-        conversationCell.configure(name: contact.name, message: contact.message, date: contact.date, online: contact.online, hasUnreadMessages: contact.hasUnreadMessages)
+        let channel = channels[indexPath.row]
+        conversationCell.configure(name: channel.name, message: channel.lastMessage, date: channel.lastActivity)
         return conversationCell
-    }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 { return "Online" }
-        else { return "History" }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -93,10 +103,9 @@ extension ConversationsListViewController: UITableViewDataSource, UITableViewDel
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let contact = allContacts[indexPath.section][indexPath.row]
         let conversationViewController = ConversationViewController()
-        conversationViewController.contactTitle = contact.name
-        conversationViewController.isMessageEmpty = (contact.message == nil) ? true : false
+        conversationViewController.selectedChannelId = channels[indexPath.row].identifier
+        conversationViewController.titleText = channels[indexPath.row].name
         navigationController?.pushViewController(conversationViewController, animated: true)
     }
 }

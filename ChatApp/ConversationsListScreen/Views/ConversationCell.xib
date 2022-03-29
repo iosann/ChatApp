@@ -23,13 +23,13 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iOQ-id-fAQ">
-                        <rect key="frame" x="16" y="16" width="42.5" height="19.5"/>
+                        <rect key="frame" x="16" y="16" width="311" height="19.5"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hLk-89-mhp">
-                        <rect key="frame" x="16" y="36.5" width="337" height="45.5"/>
+                        <rect key="frame" x="16" y="36.5" width="305" height="45.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -46,6 +46,7 @@
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
+                    <constraint firstItem="iOQ-id-fAQ" firstAttribute="trailing" secondItem="X6y-dV-9HQ" secondAttribute="leading" constant="-10" id="0pZ-YM-M4a"/>
                     <constraint firstAttribute="bottom" secondItem="hLk-89-mhp" secondAttribute="bottom" constant="12" id="29B-zK-9iw"/>
                     <constraint firstItem="Oty-25-Ysa" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="4" id="5Gm-6B-KOW"/>
                     <constraint firstItem="Oty-25-Ysa" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="6TK-sH-KhN"/>
@@ -55,7 +56,7 @@
                     <constraint firstItem="X6y-dV-9HQ" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Qgt-C1-jY2"/>
                     <constraint firstItem="iOQ-id-fAQ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="aAv-o3-jn5"/>
                     <constraint firstItem="hLk-89-mhp" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="h17-Uu-MIY"/>
-                    <constraint firstItem="hLk-89-mhp" firstAttribute="trailing" secondItem="X6y-dV-9HQ" secondAttribute="leading" constant="16" id="hJi-YM-aJ7"/>
+                    <constraint firstItem="hLk-89-mhp" firstAttribute="trailing" secondItem="X6y-dV-9HQ" secondAttribute="leading" constant="-16" id="hJi-YM-aJ7"/>
                     <constraint firstAttribute="trailing" secondItem="Oty-25-Ysa" secondAttribute="trailing" id="kcP-QZ-iaa"/>
                     <constraint firstItem="hLk-89-mhp" firstAttribute="top" secondItem="iOQ-id-fAQ" secondAttribute="bottom" constant="1" id="uYM-6b-H5R"/>
                 </constraints>

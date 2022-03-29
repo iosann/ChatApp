@@ -57,9 +57,3 @@ class ThemeManager: ChangeThemeProtocol {
         view.backgroundColor = currentTheme.outgoingMessageColor
     }
 }
-
-
-
-
-
-

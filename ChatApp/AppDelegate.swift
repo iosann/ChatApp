@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -13,7 +14,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var lastState = UIApplication.shared.applicationState
     
-    func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+    func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+        FirebaseApp.configure()
+        if UserDefaults.standard.string(forKey: "DeviceId") == nil, let uuid = UIDevice.current.identifierForVendor?.uuidString {
+                UserDefaults.standard.setValue(uuid, forKey: "DeviceId")
+            }
         NSLog("Application moved from not running to \(application.applicationState.name): \(#function)")
         lastState = application.applicationState
         return true

@@ -28,7 +28,7 @@ class ConversationCell: UITableViewCell, ConversationCellConfiguration {
     var online = false
     var hasUnreadMessages = false
     
-    func configure(name: String?, message: String?, date: Date?, online: Bool, hasUnreadMessages: Bool) {
+    func configure(name: String?, message: String?, date: Date?) {
         cellBackgroundView.backgroundColor = online
                                             ? UIColor(red: 1, green: 1, blue: 0.878, alpha: 1)
                                             : .white

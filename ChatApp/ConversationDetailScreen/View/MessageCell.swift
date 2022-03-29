@@ -22,8 +22,23 @@ class MessageCell: UITableViewCell, MessageCellConfiguration {
         label.textColor = ThemeManager.shared.currentTheme.textColor
         return label
     }()
+    private let senderNameLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.font = .boldSystemFont(ofSize: 16)
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        label.textColor = ThemeManager.shared.currentTheme.textColor
+        return label
+    }()
+    private let timeLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.font = .systemFont(ofSize: 12)
+        label.numberOfLines = 1
+        label.textAlignment = .right
+        label.textColor = ThemeManager.shared.currentTheme.textColor
+        return label
+    }()
     var messageText: String?
-    private var isIncomingMessage: Bool?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -37,21 +52,24 @@ class MessageCell: UITableViewCell, MessageCellConfiguration {
     override func prepareForReuse() {
         super.prepareForReuse()
         messageLabel.text = nil
-        isIncomingMessage = nil
+        senderNameLabel.text = nil
+        timeLabel.text = nil
         cellBackgroundView.backgroundColor = nil
     }
     
-    func configure(messageText: String?, isIncomingMessage: Bool) {
+    func configure(messageText: String?, date: Date?, isIncomingMessage: Bool, senderName: String?) {
         messageLabel.text = messageText
+        timeLabel.text = date?.formattedDate
         if isIncomingMessage {
             ThemeManager.shared.setBackgroundColorForIncomingMessage(for: cellBackgroundView)
             NSLayoutConstraint.activate([
-                messageLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
+                messageLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
             ])
         } else {
             ThemeManager.shared.setBackgroundColorForOutgoingMessage(for: cellBackgroundView)
+            senderNameLabel.text = senderName
             NSLayoutConstraint.activate([
-                messageLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
+                messageLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
             ])
         }
     }
@@ -61,19 +79,31 @@ class MessageCell: UITableViewCell, MessageCellConfiguration {
         backgroundColor = .clear
         contentView.addSubview(cellBackgroundView)
         contentView.addSubview(messageLabel)
+        contentView.addSubview(senderNameLabel)
+        contentView.addSubview(timeLabel)
         cellBackgroundView.layer.cornerRadius = 8
         cellBackgroundView.translatesAutoresizingMaskIntoConstraints = false
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
+        senderNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        timeLabel.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            messageLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
-            messageLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
+            senderNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
+            senderNameLabel.leadingAnchor.constraint(equalTo: messageLabel.leadingAnchor),
+            senderNameLabel.trailingAnchor.constraint(equalTo: messageLabel.trailingAnchor),
+            
+            messageLabel.topAnchor.constraint(equalTo: senderNameLabel.bottomAnchor, constant: 8),
             messageLabel.widthAnchor.constraint(lessThanOrEqualToConstant: contentView.bounds.size.width * 0.75),
             
-            cellBackgroundView.topAnchor.constraint(equalTo: messageLabel.topAnchor, constant: -8),
-            cellBackgroundView.bottomAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 8),
+            timeLabel.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 8),
+            timeLabel.trailingAnchor.constraint(equalTo: messageLabel.trailingAnchor),
+            timeLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
+            
+            cellBackgroundView.topAnchor.constraint(equalTo: senderNameLabel.topAnchor, constant: -8),
+            cellBackgroundView.bottomAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 8),
             cellBackgroundView.leadingAnchor.constraint(equalTo: messageLabel.leadingAnchor, constant: -8),
-            cellBackgroundView.trailingAnchor.constraint(equalTo: messageLabel.trailingAnchor, constant: 8)
+            cellBackgroundView.trailingAnchor.constraint(equalTo: messageLabel.trailingAnchor, constant: 8),
+            cellBackgroundView.widthAnchor.constraint(greaterThanOrEqualToConstant: 60)
         ])
     }
 }

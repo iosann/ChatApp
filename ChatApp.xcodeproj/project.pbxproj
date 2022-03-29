@@ -11,16 +11,13 @@
 		DB504C2B27D93E39004B0CCE /* ConversationsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB504C2A27D93E39004B0CCE /* ConversationsListViewController.swift */; };
 		DB504C2E27D94152004B0CCE /* ConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB504C2C27D94152004B0CCE /* ConversationCell.swift */; };
 		DB504C2F27D94152004B0CCE /* ConversationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB504C2D27D94152004B0CCE /* ConversationCell.xib */; };
-		DB504C3427D94ABC004B0CCE /* Conversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB504C3327D94ABC004B0CCE /* Conversation.swift */; };
 		DB504C3B27D96727004B0CCE /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB504C3A27D96727004B0CCE /* ConversationViewController.swift */; };
 		DB504C3E27D96AD5004B0CCE /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB504C3D27D96AD5004B0CCE /* MessageCell.swift */; };
-		DB504C4027D971C4004B0CCE /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB504C3F27D971C4004B0CCE /* Message.swift */; };
 		DB745A5127D0FA74007534FA /* BaseProfileView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB745A5027D0FA74007534FA /* BaseProfileView.xib */; };
 		DB745A5327D0FA8C007534FA /* BaseProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB745A5227D0FA8C007534FA /* BaseProfileView.swift */; };
 		DB745A5527D1390F007534FA /* SFProText-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB745A5427D1390F007534FA /* SFProText-Semibold.ttf */; };
 		DB8512E927E2477D00F26830 /* ColorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8512E827E2477D00F26830 /* ColorTheme.swift */; };
 		DB86836A27C2A9F100D82F48 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB86836927C2A9F100D82F48 /* AppDelegate.swift */; };
-		DB86836E27C2A9F100D82F48 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB86836D27C2A9F100D82F48 /* ViewController.swift */; };
 		DB86837327C2A9F800D82F48 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB86837227C2A9F800D82F48 /* Assets.xcassets */; };
 		DB86837627C2A9F800D82F48 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB86837427C2A9F800D82F48 /* LaunchScreen.storyboard */; };
 		DB8BCD8227D026FC00054A95 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8BCD8127D026FC00054A95 /* ProfileViewController.swift */; };
@@ -33,6 +30,8 @@
 		DBD232BA27E137E800484E0B /* ThemesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD232B927E137E800484E0B /* ThemesViewController.swift */; };
 		DBD232BE27E13FEF00484E0B /* ButtonThemesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD232BD27E13FEF00484E0B /* ButtonThemesView.swift */; };
 		DBE6239527F36A0900EA22F4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DBE6239427F36A0900EA22F4 /* GoogleService-Info.plist */; };
+		DBE6239727F3705E00EA22F4 /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE6239627F3705E00EA22F4 /* Channel.swift */; };
+		DBE6239927F370D600EA22F4 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE6239827F370D600EA22F4 /* Message.swift */; };
 		DBFFEE8B27EBA9FD00F194D9 /* SavingByGCD.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFFEE8A27EBA9FD00F194D9 /* SavingByGCD.swift */; };
 		DBFFEE8D27EBACD600F194D9 /* SavingByOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFFEE8C27EBACD600F194D9 /* SavingByOperations.swift */; };
 		DBFFEE9127EC751E00F194D9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFFEE9027EC751E00F194D9 /* Constants.swift */; };
@@ -46,17 +45,14 @@
 		DB504C2A27D93E39004B0CCE /* ConversationsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsListViewController.swift; sourceTree = "<group>"; };
 		DB504C2C27D94152004B0CCE /* ConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationCell.swift; sourceTree = "<group>"; };
 		DB504C2D27D94152004B0CCE /* ConversationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConversationCell.xib; sourceTree = "<group>"; };
-		DB504C3327D94ABC004B0CCE /* Conversation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conversation.swift; sourceTree = "<group>"; };
 		DB504C3A27D96727004B0CCE /* ConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationViewController.swift; sourceTree = "<group>"; };
 		DB504C3D27D96AD5004B0CCE /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
-		DB504C3F27D971C4004B0CCE /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		DB745A5027D0FA74007534FA /* BaseProfileView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BaseProfileView.xib; sourceTree = "<group>"; };
 		DB745A5227D0FA8C007534FA /* BaseProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProfileView.swift; sourceTree = "<group>"; };
 		DB745A5427D1390F007534FA /* SFProText-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Semibold.ttf"; sourceTree = "<group>"; };
 		DB8512E827E2477D00F26830 /* ColorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTheme.swift; sourceTree = "<group>"; };
 		DB86836627C2A9F100D82F48 /* ChatApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB86836927C2A9F100D82F48 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		DB86836D27C2A9F100D82F48 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		DB86837227C2A9F800D82F48 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DB86837527C2A9F800D82F48 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DB86837727C2A9F800D82F48 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -70,6 +66,8 @@
 		DBD232B927E137E800484E0B /* ThemesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemesViewController.swift; sourceTree = "<group>"; };
 		DBD232BD27E13FEF00484E0B /* ButtonThemesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonThemesView.swift; sourceTree = "<group>"; };
 		DBE6239427F36A0900EA22F4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		DBE6239627F3705E00EA22F4 /* Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
+		DBE6239827F370D600EA22F4 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		DBFFEE8A27EBA9FD00F194D9 /* SavingByGCD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavingByGCD.swift; sourceTree = "<group>"; };
 		DBFFEE8C27EBACD600F194D9 /* SavingByOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavingByOperations.swift; sourceTree = "<group>"; };
 		DBFFEE9027EC751E00F194D9 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -166,7 +164,7 @@
 		DB504C3827D9637C004B0CCE /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				DB504C3327D94ABC004B0CCE /* Conversation.swift */,
+				DBE6239627F3705E00EA22F4 /* Channel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -211,7 +209,6 @@
 			isa = PBXGroup;
 			children = (
 				DB86836927C2A9F100D82F48 /* AppDelegate.swift */,
-				DB86836D27C2A9F100D82F48 /* ViewController.swift */,
 				DB504C3127D94925004B0CCE /* SupportingFiles */,
 				DB504C3027D948F1004B0CCE /* ProfileScreen */,
 				DB504C3227D94959004B0CCE /* ConversationsListScreen */,
@@ -262,7 +259,7 @@
 		DB945AC527DB609900BBFBA3 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				DB504C3F27D971C4004B0CCE /* Message.swift */,
+				DBE6239827F370D600EA22F4 /* Message.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -445,20 +442,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				DBFFEE9327EC8FFD00F194D9 /* DataSaving.swift in Sources */,
+				DBE6239727F3705E00EA22F4 /* Channel.swift in Sources */,
 				DB745A5327D0FA8C007534FA /* BaseProfileView.swift in Sources */,
 				DB504C3E27D96AD5004B0CCE /* MessageCell.swift in Sources */,
 				DBFFEE8D27EBACD600F194D9 /* SavingByOperations.swift in Sources */,
 				DBB937C127E3651A0066E6C1 /* ThemeManager.swift in Sources */,
-				DB86836E27C2A9F100D82F48 /* ViewController.swift in Sources */,
+				DBE6239927F370D600EA22F4 /* Message.swift in Sources */,
 				DB504C3B27D96727004B0CCE /* ConversationViewController.swift in Sources */,
 				DBBD175327C6682A0093B548 /* Extensions.swift in Sources */,
 				DB8BCD8227D026FC00054A95 /* ProfileViewController.swift in Sources */,
-				DB504C4027D971C4004B0CCE /* Message.swift in Sources */,
 				DBD232BE27E13FEF00484E0B /* ButtonThemesView.swift in Sources */,
 				DB86836A27C2A9F100D82F48 /* AppDelegate.swift in Sources */,
 				DB8512E927E2477D00F26830 /* ColorTheme.swift in Sources */,
 				DB504C2B27D93E39004B0CCE /* ConversationsListViewController.swift in Sources */,
-				DB504C3427D94ABC004B0CCE /* Conversation.swift in Sources */,
 				DBFFEE8B27EBA9FD00F194D9 /* SavingByGCD.swift in Sources */,
 				DBD232BA27E137E800484E0B /* ThemesViewController.swift in Sources */,
 				DB504C2E27D94152004B0CCE /* ConversationCell.swift in Sources */,

@@ -23,7 +23,8 @@ class ThemesViewController: UIViewController {
         title = "Settings"
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
         self.delegate = ThemeManager.shared
-        // захват сильной ссылки на self (ThemesViewController) может создать retain cycle, при котором ThemeManager будет держать ссылку на ThemesViewController и не даст ему деинициализироваться
+        // захват сильной ссылки на self (ThemesViewController) может создать retain cycle,
+        // при котором ThemeManager будет держать ссылку на ThemesViewController и не даст ему деинициализироваться
         ThemeManager.shared.selectedThemeComplition = { [weak self] theme in
             self?.setTheme(theme: theme)
         }
@@ -33,7 +34,10 @@ class ThemesViewController: UIViewController {
         customizeButtons()
         
         for (theme, button) in zip(ColorTheme.allCases, buttons) {
-            setButtonImage(backgroundColor: theme.backgroundColor, incomingMessageColor: theme.incomingMessageColor, outgoingMessageColor: theme.outgoingMessageColor, forButton: button)
+            setButtonImage(backgroundColor: theme.backgroundColor,
+                           incomingMessageColor: theme.incomingMessageColor,
+                           outgoingMessageColor: theme.outgoingMessageColor,
+                           forButton: button)
             button.setTitle(theme.name, for: .normal)
             button.tag = theme.rawValue
             button.centerVertically(padding: 15)

@@ -28,8 +28,9 @@ class DataSaving {
             if image != nil { self.writeImage(image: image!) }
 // sleep() добавлен, чтобы во время записи данных увидеть activityIndicator и убедиться в назаблокированности экрана
             sleep(2)
-            if self.errors.isEmpty { completion(true) }
-            else { completion(false) }
+            if self.errors.isEmpty {
+                completion(true)
+            } else { completion(false) }
     }
     
     func getStoredString(fileName: String, _ completion: @escaping (String) -> Void) {

@@ -23,8 +23,9 @@ extension Date {
     var formattedDate: String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX")
-        if Calendar.current.isDateInToday(self) { formatter.dateFormat = "HH:mm" }
-        else { formatter.dateFormat = "dd MMM" }
+        if Calendar.current.isDateInToday(self) {
+            formatter.dateFormat = "HH:mm"
+        } else { formatter.dateFormat = "dd MMM" }
         return formatter.string(from: self)
     }
 }
