@@ -17,19 +17,61 @@ class ProfileViewController: UIViewController {
         label.text = "My Profile"
         return label
     }()
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView()
+        activityIndicator.style = .large
+        activityIndicator.color = .black
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.center = view.center
+        return activityIndicator
+    }()
+    
+    private let saveByGCD = SavingByGCD()
+    private let saveByOperations = SavingByOperations()
+    private var storedFullName: String?
+    private var storedDescription: String?
+    private var storedPhoto: UIImage?
+    private var newDataForSaving: [String: Any?] = ["newName": nil, "newDescription": nil, "newPhoto": nil, "isGCDMethod": nil]
+    private weak var delegate: ISavingData?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(profileView.saveButton.frame)
+        
+//      чтобы проверить чтение сохраненнызх данных, нужно заменить делегата
+//      self.delegate = savingByGCD
+        self.delegate = saveByOperations
+        getStoredData()
         setupUI()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+//        print(profileView.saveButton.frame)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print(profileView.saveButton.frame)
+//        print(profileView.saveButton.frame)
 //      viewDidAppear вызывается после того, как AutoLayout завершит свою работу и отобразит конечный вид UI элементов, а viewDidLoad - до этого.
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        NotificationCenter.default.removeObserver(UIResponder.keyboardWillShowNotification)
+        NotificationCenter.default.removeObserver(UIResponder.keyboardWillHideNotification)
+    }
+    
+    private func setupUI() {
+        navigationController?.navigationBar.prefersLargeTitles = true
+        let closeButton = UIBarButtonItem(title: "Close", style: .plain, target: self, action: #selector(closeTheScreen))
+        navigationItem.rightBarButtonItem = closeButton
+        let titleButton = UIBarButtonItem(title: "My Profile", style: .plain, target: self, action: nil)
+        titleButton.setTitleTextAttributes([.font: UIFont(name: "SFProDisplay-Bold", size: 26) ?? .boldSystemFont(ofSize: 26), .foregroundColor: ThemeManager.shared.currentTheme.tintColor], for: .normal)
+        navigationItem.leftBarButtonItem = titleButton
+        ThemeManager.shared.setBackgroundColor(for: view)
+        setupScrollView()
+        profileView.addSubview(activityIndicator)
+        profileView.editPhotoButton.addTarget(self, action: #selector(editProfileImage), for: .touchUpInside)
+        profileView.cancelButton.addTarget(self, action: #selector(cancelEditing), for: .touchUpInside)
+        profileView.saveButtons.forEach { $0.addTarget(self, action: #selector(saveChanges), for: .touchUpInside) }
     }
     
     private func setupScrollView() {
@@ -41,53 +83,132 @@ class ProfileViewController: UIViewController {
         NSLayoutConstraint.activate([
             scrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             scrollView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor, constant: navigationController?.navigationBar.bounds.maxY ?? 0),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             profileView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
             profileView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             profileView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            profileView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+            profileView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            profileView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height -  (navigationController?.navigationBar.bounds.height ?? 0) - 60)
         ])
     }
     
-    private func setupUI() {
-        navigationController?.navigationBar.prefersLargeTitles = true
-        let closeButton = UIBarButtonItem(title: "Close", style: .plain, target: self, action: #selector(closeTheScreen))
-        closeButton.isEnabled = true
-        navigationItem.rightBarButtonItem = closeButton
-        let titleButton = UIBarButtonItem(title: "My Profile", style: .plain, target: self, action: nil)
-        titleButton.setTitleTextAttributes([.font: UIFont(name: "SFProDisplay-Bold", size: 26) ?? .boldSystemFont(ofSize: 26), .foregroundColor: ThemeManager.shared.currentTheme.tintColor], for: .normal)
-        navigationItem.leftBarButtonItem = titleButton
-        ThemeManager.shared.setBackgroundColor(for: view)
-        setupScrollView()
-        let tap = UITapGestureRecognizer(target: self, action: #selector(editProfileImage))
-        profileView.editIconView.addGestureRecognizer(tap)
-        changeConstraint()
+    private func getStoredData() {
+        delegate?.getStoredString(fileName: Constants.fullnameFilename) { [weak self] fullname in
+            self?.storedFullName = fullname
+            DispatchQueue.main.async { self?.profileView.nameTextField.text = fullname }
+        }
+        delegate?.getStoredString(fileName: Constants.descriptionFileName) { [weak self] description in
+            self?.storedDescription = description
+            DispatchQueue.main.async { self?.profileView.descriptionTextField.text = description }
+        }
+        delegate?.getStoredImage { [weak self] image in
+            self?.storedPhoto = image
+            DispatchQueue.main.async { self?.profileView.photoImageView.image = image }
+        }
     }
     
     @objc private func closeTheScreen() {
         dismiss(animated: true, completion: nil)
     }
     
-    @objc private func keyboardWillShow(notification: Notification) {
-        guard let userInfo = notification.userInfo,
-              let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-        let keyboardFrame = keyboardSize.cgRectValue
-        if self.view.frame.origin.y == 0 {
-            if UIScreen.main.bounds.height <= 736 {
-                self.view.frame.origin.y -= keyboardFrame.height * 0.45
-            } else {
-                self.view.frame.origin.y -= keyboardFrame.height * 0.2
+    @objc private func saveChanges(_ sender: UIButton) {
+        activityIndicator.startAnimating()
+        [profileView.saveButtons.first, profileView.saveButtons.last, profileView.editPhotoButton, profileView.cancelButton].forEach { $0?.isEnabled = false }
+        
+        if profileView.nameTextField.text != storedFullName {
+            newDataForSaving["newName"] = profileView.nameTextField.text
+        }
+        if profileView.descriptionTextField.text != storedDescription {
+            newDataForSaving["newDescription"] = profileView.descriptionTextField.text
+        }
+        if profileView.photoImageView.image != nil, profileView.photoImageView.image != storedPhoto {
+            newDataForSaving["newPhoto"] = profileView.photoImageView.image
+        }
+        if sender == profileView.saveButtons.first { newDataForSaving["isGCDMethod"] = true }
+        else { newDataForSaving["isGCDMethod"] = false }
+        
+        writeNewData()
+    }
+    
+    private func writeNewData() {
+// saveByGCD или saveByOperations меняется на delegate
+        if (newDataForSaving["isGCDMethod"] as? Bool) == true {
+            saveByGCD.writeData(fullName: newDataForSaving["newName"] as? String,
+                                description: newDataForSaving["newDescription"] as? String,
+                                image: newDataForSaving["newPhoto"] as? UIImage) { [weak self] result in
+                self?.showAlert(result)
+            }
+        } else if (newDataForSaving["isGCDMethod"] as? Bool) == false {
+            saveByOperations.writeData(fullName: newDataForSaving["newName"] as? String,
+                                       description: newDataForSaving["newDescription"] as? String,
+                                       image: newDataForSaving["newPhoto"] as? UIImage) { [weak self] result in
+                self?.showAlert(result)
             }
         }
     }
     
+    private func showAlert(_ result: Bool) {
+        DispatchQueue.main.async { [weak self] in
+            self?.activityIndicator.stopAnimating()
+            self?.createAlertForResult(result)
+        }
+    }
+    
+    @objc private func cancelEditing() {
+        profileView.isEditingMode = false
+        profileView.nameTextField.text = storedFullName
+        profileView.descriptionTextField.text = storedDescription
+        profileView.photoImageView.image = storedPhoto
+    }
+    
+    private func createAlertForResult(_ success: Bool) {
+        if success {
+            let alert = UIAlertController(title: "Данные сохранены", message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ok", style: .cancel) { [weak self] _ in self?.profileView.isEditingMode = false
+                self?.newDataForSaving.keys.forEach { self?.newDataForSaving[$0] = nil }
+            }
+            alert.addAction(okAction)
+            present(alert, animated: true)
+        } else {
+            let alert = UIAlertController(title: "Ошибка", message: "Не удалось сохранить данные", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ok", style: .default) { [weak self] _ in self?.profileView.isEditingMode = false
+            }
+            alert.addAction(okAction)
+            let repeatAction = UIAlertAction(title: "Повторить", style: .cancel) { [weak self] _ in
+                self?.writeNewData()
+            }
+            alert.addAction(repeatAction)
+            present(alert, animated: true)
+        }
+    }
+    
+    @objc private func keyboardWillShow(notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
+        else { return }
+        let keyboardFrame = keyboardSize.cgRectValue
+        
+        let offset = profileView.descriptionTextField.frame.maxY + (navigationController?.navigationBar.bounds.height ?? 0)
+        if offset > keyboardFrame.minY {
+            scrollView.contentOffset = CGPoint(x: 0, y: (offset - keyboardFrame.minY))
+        }
+        let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardFrame.height, right: 0.0)
+        scrollView.contentInset = contentInsets
+        scrollView.scrollIndicatorInsets = contentInsets
+    }
+    
     @objc private func keyboardWillHide(notification: Notification) {
-        if self.view.frame.origin.y != 0 { self.view.frame.origin.y = 0 }
+        scrollView.contentOffset = .zero
+        let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
+        scrollView.contentInset = contentInsets
+        scrollView.scrollIndicatorInsets = contentInsets
     }
 
-    @objc private func editProfileImage(_ sender: UITapGestureRecognizer) {
-        print("Выбери изображение профиля")
+    @objc private func editProfileImage(_ sender: UIButton) {
+        profileView.isEditingMode = true
+        profileView.saveButtons.forEach { $0.isEnabled = true }
+//        print("Выбери изображение профиля")
         
         let alert = UIAlertController(title: "Choose image source", message: nil, preferredStyle: .actionSheet)
         let imagePicker = UIImagePickerController()
@@ -111,12 +232,6 @@ class ProfileViewController: UIViewController {
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         alert.addAction(cancelAction)
         present(alert, animated: true)
-    }
-    
-    private func changeConstraint() {
-        if UIScreen.main.bounds.height >= 812 {
-            profileView.saveButtonTopConstraint.constant = (UIScreen.main.bounds.maxY - 1.4 * profileView.descriptionLabel.frame.maxY) / 1.3
-        }
     }
 }
 

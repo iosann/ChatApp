@@ -36,7 +36,9 @@ class ThemeManager: ChangeThemeProtocol {
     }
     
     func save() {
-        UserDefaults.standard.set(currentTheme.rawValue, forKey: "CurrentTheme")
+        DispatchQueue.global(qos: .utility).async { [weak self] in
+            UserDefaults.standard.set(self?.currentTheme.rawValue, forKey: "CurrentTheme")
+        }
     }
     
     func applyTheme(theme: ColorTheme) {
