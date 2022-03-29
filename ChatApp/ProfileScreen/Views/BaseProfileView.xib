@@ -17,8 +17,7 @@
                 <outlet property="editButton" destination="EcB-ia-T8z" id="5ij-ec-xjX"/>
                 <outlet property="nameTextField" destination="6Am-kD-Hn3" id="WzO-NN-K7y"/>
                 <outlet property="photoImageView" destination="PzQ-fx-tFX" id="Cnf-ex-b7D"/>
-                <outletCollection property="saveButtons" destination="AZJ-00-Vs9" collectionClass="NSMutableArray" id="DIk-Jq-ALE"/>
-                <outletCollection property="saveButtons" destination="dSL-8q-Jih" collectionClass="NSMutableArray" id="pwi-c4-Mpg"/>
+                <outlet property="saveButton" destination="dSL-8q-Jih" id="yMx-75-5yv"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -63,26 +62,15 @@
                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                             <state key="normal" title="Cancel"/>
                         </button>
-                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="XKf-Iy-dHF">
+                        <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dSL-8q-Jih">
                             <rect key="frame" x="0.0" y="50" width="335" height="40"/>
-                            <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AZJ-00-Vs9">
-                                    <rect key="frame" x="0.0" y="0.0" width="162.66666666666666" height="40"/>
-                                    <color key="backgroundColor" red="0.96470588235294119" green="0.96470588235294119" blue="0.96470588235294119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                    <state key="normal" title="Save GCD"/>
-                                </button>
-                                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dSL-8q-Jih">
-                                    <rect key="frame" x="172.66666666666663" y="0.0" width="162.33333333333337" height="40"/>
-                                    <color key="backgroundColor" red="0.96470588235294119" green="0.96470588235294119" blue="0.96470588235294119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="40" id="RY3-36-qR5"/>
-                                    </constraints>
-                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                    <state key="normal" title="Save Operations"/>
-                                </button>
-                            </subviews>
-                        </stackView>
+                            <color key="backgroundColor" red="0.96470588235294119" green="0.96470588235294119" blue="0.96470588235294119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="RY3-36-qR5"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" title="Save Operations"/>
+                        </button>
                     </subviews>
                 </stackView>
             </subviews>

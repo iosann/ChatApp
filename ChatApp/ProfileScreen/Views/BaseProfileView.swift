@@ -16,7 +16,7 @@ class BaseProfileView: UIView {
     @IBOutlet weak var descriptionTextField: UITextField!
     @IBOutlet private weak var buttonStackView: UIStackView!
     @IBOutlet weak var cancelButton: UIButton!
-    @IBOutlet var saveButtons: [UIButton]!
+    @IBOutlet weak var saveButton: UIButton!
     
     private(set) var editPhotoButton: UIButton = {
         let button = UIButton()
@@ -35,7 +35,7 @@ class BaseProfileView: UIView {
             } else {
                 buttonStackView.isHidden = true
                 editButton.isHidden = false
-                saveButtons.forEach { $0.isEnabled = false }
+                saveButton.isEnabled = false
                 [editPhotoButton, cancelButton].forEach { $0.isEnabled = true }
                 [nameTextField, descriptionTextField].forEach { $0?.isUserInteractionEnabled = false }
             }
@@ -72,7 +72,7 @@ class BaseProfileView: UIView {
         
         editButton.layer.cornerRadius = 12
         editButton.titleLabel?.font = UIFont(name: "SFProText-Semibold", size: 19)
-        [cancelButton, saveButtons.first, saveButtons.last].forEach { $0?.layer.cornerRadius = 12 }
+        [cancelButton, saveButton].forEach { $0?.layer.cornerRadius = 12 }
 
         contentView.addSubview(editPhotoButton)
         NSLayoutConstraint.activate([
@@ -108,6 +108,6 @@ extension BaseProfileView: UITextFieldDelegate {
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        saveButtons.forEach { $0.isEnabled = true }
+        saveButton.isEnabled = true
     }
 }

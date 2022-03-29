@@ -54,7 +54,6 @@ class DataSaving {
         }
         do {
             try string.write(to: fileName, atomically: true, encoding: String.Encoding.utf8)
-            print("saved ", string)
         } catch {
             errors.append(error)
         }
@@ -69,7 +68,6 @@ class DataSaving {
         }
         do {
             try data.write(to: filePath)
-            print("saved image")
         } catch {
             errors.append(error)
         }
