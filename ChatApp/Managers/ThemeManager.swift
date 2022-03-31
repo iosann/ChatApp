@@ -33,7 +33,6 @@ class ThemeManager: ChangeThemeProtocol {
         UIApplication.shared.delegate?.window??.tintColor = currentTheme.tintColor
         UITableView.appearance().backgroundColor = currentTheme.backgroundColor
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: currentTheme.tintColor]
-        UINavigationBar.appearance().backgroundColor = currentTheme.backgroundColor
     }
     
     func save() {

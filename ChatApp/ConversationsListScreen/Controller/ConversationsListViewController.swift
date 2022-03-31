@@ -35,9 +35,6 @@ class ConversationsListViewController: UIViewController {
         navigationItem.leftBarButtonItems = [
             UIBarButtonItem(image: UIImage(named: "icon_settings"), style: .plain, target: self, action: #selector(openThemes)),
             UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addChannel))]
-        navigationController?.navigationBar.barTintColor = ThemeManager.shared.currentTheme.backgroundColor
-        navigationController?.navigationBar.backgroundColor = ThemeManager.shared.currentTheme.backgroundColor
-        view.backgroundColor = ThemeManager.shared.currentTheme.backgroundColor
         setupTableView()
     }
     

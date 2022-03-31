@@ -70,7 +70,7 @@ class ThemesViewController: UIViewController {
             view.addSubview($0)
             $0.addTarget(self, action: #selector(chooseTheme), for: .touchUpInside)
             $0.titleLabel?.font = .boldSystemFont(ofSize: 22)
-            $0.setTitleColor(.white, for: .normal)
+            $0.setTitleColor(.black, for: .normal)
             $0.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
                 $0.widthAnchor.constraint(equalToConstant: 300),

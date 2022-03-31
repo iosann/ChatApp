@@ -41,7 +41,6 @@
                 </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
-            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="Qt1-pL-Dzw" firstAttribute="leading" secondItem="gxF-Yf-iZo" secondAttribute="trailing" constant="16" id="Ca7-oR-9tG"/>
                 <constraint firstAttribute="trailing" secondItem="Qt1-pL-Dzw" secondAttribute="trailing" constant="16" id="Urh-70-XEd"/>
@@ -59,9 +58,6 @@
         <image name="paperplane.fill" catalog="system" width="128" height="118"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
     </resources>
 </document>

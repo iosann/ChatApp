@@ -30,18 +30,26 @@ class ConversationViewController: UIViewController {
         setupUI()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        NotificationCenter.default.removeObserver(UIResponder.keyboardWillChangeFrameNotification)
+        NotificationCenter.default.removeObserver(UIResponder.keyboardWillHideNotification)
+    }
+    
     private func setupUI() {
         title = titleText
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: ThemeManager.shared.currentTheme.tintColor]
         composeBar.sendButton.addTarget(self, action: #selector(sendNewMessage), for: .touchUpInside)
         ThemeManager.shared.setBackgroundColor(for: view)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame),
+                                               name: UIResponder.keyboardWillChangeFrameNotification,
+                                               object: nil)
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
-        
         setupTableView()
         setupComposeBar()
     }
@@ -55,7 +63,7 @@ class ConversationViewController: UIViewController {
             tableView.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -45)
         ])
         tableView.register(MessageCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.separatorStyle = .none
@@ -96,6 +104,8 @@ class ConversationViewController: UIViewController {
     
     @objc private func dismissKeyboard() {
         composeBar.textView.resignFirstResponder()
+        composeBar.textView.text = Constants.textViewPlaceholder
+        composeBar.textViewHeight.constant = 38
     }
     
     @objc private func sendNewMessage() {
@@ -103,36 +113,26 @@ class ConversationViewController: UIViewController {
         let message = Message(content: text, created: Date(), senderId: myDeviceId, senderName: "")
         reference.addDocument(data: message.toDict)
         dismissKeyboard()
-        composeBar.textView.text = Constants.textViewPlaceholder
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        scrollToBottom(animated: false)
-    }
-     
-    func scrollToBottom(animated: Bool) {
-        print(#function)
-        view.layoutIfNeeded()
-        let bottomOffset = CGPoint(x: 0, y: max(-tableView.contentInset.top, tableView.contentSize.height - (tableView.bounds.size.height - tableView.contentInset.bottom)))
-        tableView.setContentOffset(bottomOffset, animated: animated)
-    }
-    
-    @objc private func keyboardWillShow(notification: Notification) {
-        guard let userInfo = notification.userInfo else { return }
-        guard let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-        let keyboardFrame = keyboardSize.cgRectValue
-        if self.view.frame.origin.y == 0 { self.view.frame.origin.y -= keyboardFrame.height * 0.85 }
     }
 
     @objc private func keyboardWillHide(notification: Notification) {
-        if self.view.frame.origin.y != 0 { self.view.frame.origin.y = 0 }
+        self.view.frame.origin.y = 0
+    }
+    
+    @objc private func keyboardWillChangeFrame(notification: Notification) {
+        guard let userInfo = notification.userInfo else { return }
+        guard let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        let keyboardFrame = keyboardSize.cgRectValue
+        if keyboardFrame.height > 100, self.view.frame.origin.y > -100 {
+            self.view.frame.origin.y -= keyboardFrame.height * 0.85
+        }
     }
     
     private func scrollToBottom() {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self, !self.messages.isEmpty else { return }
             let indexPath = IndexPath(row: self.messages.count - 1, section: 0)
-            self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+            self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
         }
     }
 }
