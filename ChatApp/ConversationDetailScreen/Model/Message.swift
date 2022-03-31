@@ -16,6 +16,6 @@ struct Message {
 
 extension Message {
     var toDict: [String: Any] {
-        return ["content": content, "created": Timestamp(date: created ?? Date()), "senderID": senderId, "senderName": senderName]
+        return ["content": content as Any, "created": Timestamp(date: created ?? Date()), "senderID": senderId as Any, "senderName": senderName as Any]
     }
 }

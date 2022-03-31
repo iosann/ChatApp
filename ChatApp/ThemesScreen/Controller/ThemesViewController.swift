@@ -86,16 +86,16 @@ class ThemesViewController: UIViewController {
     }
     
     @objc private func chooseTheme(_ sender: UIButton) {
-        let selectedTheme = ColorTheme(rawValue: sender.tag)!
+        let selectedTheme = ColorTheme(rawValue: sender.tag)
         buttons.forEach {
             $0.imageView?.layer.borderWidth = 1
             $0.imageView?.layer.borderColor = UIColor.black.cgColor
         }
         sender.imageView?.layer.borderWidth = 3
         sender.imageView?.layer.borderColor = UIColor.blue.cgColor
-        view.backgroundColor = selectedTheme.backgroundColor
+        view.backgroundColor = selectedTheme?.backgroundColor
  //       delegate?.currentTheme = selectedTheme
-        ThemeManager.shared.selectedThemeComplition?(selectedTheme)
+        ThemeManager.shared.selectedThemeComplition?(selectedTheme ?? .classic)
     }
     
     @objc private func cancelScreen() {

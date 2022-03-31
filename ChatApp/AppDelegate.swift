@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
 //        UIBarButtonItem.appearance().setTitlePositionAdjustment(UIOffset(horizontal: 0, vertical: 30), for: .default)
-//        UIBarButtonItem.appearance().tintColor = .black
+ //       UINavigationBar.appearance().isTranslucent = false
         ThemeManager.shared.apply()
         
         NSLog("Application moved from \(lastState.name) to \(application.applicationState.name): \(#function)")

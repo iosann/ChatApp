@@ -10,4 +10,5 @@ import Foundation
 struct Constants {
     static let fullnameFilename = "FullName.txt"
     static let descriptionFileName = "Description.txt"
+    static let textViewPlaceholder = "Enter message..."
 }

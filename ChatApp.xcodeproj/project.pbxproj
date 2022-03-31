@@ -27,6 +27,8 @@
 		DB945AC227DB577F00BBFBA3 /* SFProDisplay-RegularItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB945AC127DB577F00BBFBA3 /* SFProDisplay-RegularItalic.ttf */; };
 		DBB937C127E3651A0066E6C1 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB937C027E3651A0066E6C1 /* ThemeManager.swift */; };
 		DBBD175327C6682A0093B548 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBD175227C6682A0093B548 /* Extensions.swift */; };
+		DBC9757527F5F2DF009CC84C /* ComposeBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBC9757427F5F2DF009CC84C /* ComposeBarView.xib */; };
+		DBC9757727F5F48C009CC84C /* ComposeBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9757627F5F48C009CC84C /* ComposeBarView.swift */; };
 		DBD232BA27E137E800484E0B /* ThemesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD232B927E137E800484E0B /* ThemesViewController.swift */; };
 		DBD232BE27E13FEF00484E0B /* ButtonThemesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD232BD27E13FEF00484E0B /* ButtonThemesView.swift */; };
 		DBE6239527F36A0900EA22F4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DBE6239427F36A0900EA22F4 /* GoogleService-Info.plist */; };
@@ -63,6 +65,8 @@
 		DB945AC127DB577F00BBFBA3 /* SFProDisplay-RegularItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProDisplay-RegularItalic.ttf"; sourceTree = "<group>"; };
 		DBB937C027E3651A0066E6C1 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 		DBBD175227C6682A0093B548 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		DBC9757427F5F2DF009CC84C /* ComposeBarView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ComposeBarView.xib; sourceTree = "<group>"; };
+		DBC9757627F5F48C009CC84C /* ComposeBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeBarView.swift; sourceTree = "<group>"; };
 		DBD232B927E137E800484E0B /* ThemesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemesViewController.swift; sourceTree = "<group>"; };
 		DBD232BD27E13FEF00484E0B /* ButtonThemesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonThemesView.swift; sourceTree = "<group>"; };
 		DBE6239427F36A0900EA22F4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -252,6 +256,8 @@
 			isa = PBXGroup;
 			children = (
 				DB504C3D27D96AD5004B0CCE /* MessageCell.swift */,
+				DBC9757627F5F48C009CC84C /* ComposeBarView.swift */,
+				DBC9757427F5F2DF009CC84C /* ComposeBarView.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -366,6 +372,7 @@
 				DB8BCD8627D02C8D00054A95 /* SFProDisplay-Regular.ttf in Resources */,
 				DB86837627C2A9F800D82F48 /* LaunchScreen.storyboard in Resources */,
 				DB745A5127D0FA74007534FA /* BaseProfileView.xib in Resources */,
+				DBC9757527F5F2DF009CC84C /* ComposeBarView.xib in Resources */,
 				DB945AC227DB577F00BBFBA3 /* SFProDisplay-RegularItalic.ttf in Resources */,
 				DB86837327C2A9F800D82F48 /* Assets.xcassets in Resources */,
 				DB745A5527D1390F007534FA /* SFProText-Semibold.ttf in Resources */,
@@ -455,6 +462,7 @@
 				DB86836A27C2A9F100D82F48 /* AppDelegate.swift in Sources */,
 				DB8512E927E2477D00F26830 /* ColorTheme.swift in Sources */,
 				DB504C2B27D93E39004B0CCE /* ConversationsListViewController.swift in Sources */,
+				DBC9757727F5F48C009CC84C /* ComposeBarView.swift in Sources */,
 				DBFFEE8B27EBA9FD00F194D9 /* SavingByGCD.swift in Sources */,
 				DBD232BA27E137E800484E0B /* ThemesViewController.swift in Sources */,
 				DB504C2E27D94152004B0CCE /* ConversationCell.swift in Sources */,

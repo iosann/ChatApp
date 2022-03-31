@@ -35,13 +35,16 @@ class ConversationsListViewController: UIViewController {
         navigationItem.leftBarButtonItems = [
             UIBarButtonItem(image: UIImage(named: "icon_settings"), style: .plain, target: self, action: #selector(openThemes)),
             UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addChannel))]
+        navigationController?.navigationBar.barTintColor = ThemeManager.shared.currentTheme.backgroundColor
+        navigationController?.navigationBar.backgroundColor = ThemeManager.shared.currentTheme.backgroundColor
+        view.backgroundColor = ThemeManager.shared.currentTheme.backgroundColor
         setupTableView()
     }
     
     private func getChannels() {
         reference.addSnapshotListener { [weak self] snapshot, error in
             guard error == nil else {
-                print(error?.localizedDescription)
+                print(String(describing: error?.localizedDescription))
                 return
             }
             guard let snapshot = snapshot else { return }

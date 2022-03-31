@@ -23,9 +23,9 @@ class DataSaving {
     private var errors = [Error]()
     
     func writeData(fullName: String?, description: String?, image: UIImage?, _ completion: @escaping (Bool) -> Void) {
-            if fullName != nil { self.writeString(string: fullName!, pathName: Constants.fullnameFilename) }
-            if description != nil { self.writeString(string: description!, pathName: Constants.descriptionFileName) }
-            if image != nil { self.writeImage(image: image!) }
+            if fullName != nil { self.writeString(string: fullName ?? "", pathName: Constants.fullnameFilename) }
+            if description != nil { self.writeString(string: description ?? "", pathName: Constants.descriptionFileName) }
+            if image != nil { self.writeImage(image: image ?? UIImage()) }
 // sleep() добавлен, чтобы во время записи данных увидеть activityIndicator и убедиться в назаблокированности экрана
             sleep(2)
             if self.errors.isEmpty {
@@ -44,7 +44,7 @@ class DataSaving {
         guard let filePath = path?.appendingPathComponent("Photo"),
               let data = try? Data(contentsOf: filePath),
               let image = UIImage(data: data)
-        else { return completion(UIImage(named: "User_avatar_icon")!) }
+        else { return completion(UIImage(named: "User_avatar_icon") ?? UIImage()) }
         completion(image)
     }
     

@@ -16,6 +16,6 @@ import Foundation
 
 extension Channel {
     var toDict: [String: Any] {
-        return ["identifier": identifier, "name": name, "lastMessage": lastMessage, "lastActivity": lastActivity]
+        return ["identifier": identifier as Any, "name": name as Any, "lastMessage": lastMessage as Any, "lastActivity": lastActivity as Any]
     }
 }

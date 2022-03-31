@@ -16,22 +16,65 @@ class ConversationViewController: UIViewController {
     private let db = Firestore.firestore()
     private lazy var reference = db.collection("channels").document(selectedChannelId ?? "").collection("messages")
     private let myDeviceId = UserDefaults.standard.string(forKey: "DeviceId")
+    private var composeBar = ComposeBarView()
     var selectedChannelId: String?
     var titleText: String?
+    
+    override var inputAccessoryView: UIView? {
+        return composeBar
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         getMessages()
-        setupTableView()
+        setupUI()
+    }
+    
+    private func setupUI() {
         title = titleText
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: ThemeManager.shared.currentTheme.tintColor]
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(createNewMessage))
+        composeBar.sendButton.addTarget(self, action: #selector(sendNewMessage), for: .touchUpInside)
+        ThemeManager.shared.setBackgroundColor(for: view)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+        
+        setupTableView()
+        setupComposeBar()
+    }
+    
+    private func setupTableView() {
+        view.addSubview(tableView)
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+        tableView.register(MessageCell.self, forCellReuseIdentifier: cellIdentifier)
+        tableView.separatorStyle = .none
+    }
+    
+    private func setupComposeBar() {
+        view.addSubview(composeBar)
+        composeBar.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            composeBar.widthAnchor.constraint(equalTo: view.widthAnchor, constant: 0),
+            composeBar.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            composeBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
     }
     
     private func getMessages() {
         reference.addSnapshotListener { [weak self] snapshot, error in
             guard error == nil else {
-                print(error?.localizedDescription)
+                print(String(describing: error?.localizedDescription))
                 return
             }
             guard let snapshot = snapshot else { return }
@@ -47,38 +90,50 @@ class ConversationViewController: UIViewController {
             }
             self?.messages.sort { $0.created?.compare($1.created ?? Date()) == .orderedAscending }
             self?.tableView.reloadData()
+            self?.scrollToBottom()
         }
     }
     
-    @objc private func createNewMessage() {
-        let alert = UIAlertController(title: "Add message", message: nil, preferredStyle: .alert)
-        let createAction = UIAlertAction(title: "Create", style: .cancel) { [weak self] _ in
-            let text = alert.textFields?.first?.text
-            let message = Message(content: text, created: Date(), senderId: self?.myDeviceId, senderName: "")
-            self?.reference.addDocument(data: message.toDict)
-        }
-        alert.addAction(createAction)
-        let cancelAction = UIAlertAction(title: "Cancel", style: .default)
-        alert.addAction(cancelAction)
-        alert.addTextField { textField in
-            textField.placeholder = "Enter channel name"
-        }
-        present(alert, animated: true)
+    @objc private func dismissKeyboard() {
+        composeBar.textView.resignFirstResponder()
     }
     
-    private func setupTableView() {
-        view.addSubview(tableView)
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
-        tableView.register(MessageCell.self, forCellReuseIdentifier: cellIdentifier)
-        tableView.separatorStyle = .none
+    @objc private func sendNewMessage() {
+        let text = composeBar.textView.text
+        let message = Message(content: text, created: Date(), senderId: myDeviceId, senderName: "")
+        reference.addDocument(data: message.toDict)
+        dismissKeyboard()
+        composeBar.textView.text = Constants.textViewPlaceholder
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        scrollToBottom(animated: false)
+    }
+     
+    func scrollToBottom(animated: Bool) {
+        print(#function)
+        view.layoutIfNeeded()
+        let bottomOffset = CGPoint(x: 0, y: max(-tableView.contentInset.top, tableView.contentSize.height - (tableView.bounds.size.height - tableView.contentInset.bottom)))
+        tableView.setContentOffset(bottomOffset, animated: animated)
+    }
+    
+    @objc private func keyboardWillShow(notification: Notification) {
+        guard let userInfo = notification.userInfo else { return }
+        guard let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        let keyboardFrame = keyboardSize.cgRectValue
+        if self.view.frame.origin.y == 0 { self.view.frame.origin.y -= keyboardFrame.height * 0.85 }
+    }
+
+    @objc private func keyboardWillHide(notification: Notification) {
+        if self.view.frame.origin.y != 0 { self.view.frame.origin.y = 0 }
+    }
+    
+    private func scrollToBottom() {
+        DispatchQueue.main.async {
+            let indexPath = IndexPath(row: self.messages.count - 1, section: 0)
+            self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+        }
     }
 }
 
