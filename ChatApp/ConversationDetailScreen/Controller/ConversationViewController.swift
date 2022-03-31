@@ -25,6 +25,7 @@ class ConversationViewController: UIViewController {
         setupTableView()
         title = titleText
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: ThemeManager.shared.currentTheme.tintColor]
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(createNewMessage))
     }
     
     private func getMessages() {
@@ -34,6 +35,7 @@ class ConversationViewController: UIViewController {
                 return
             }
             guard let snapshot = snapshot else { return }
+            self?.messages = []
             snapshot.documents.forEach {
                 let date = ($0.data()["created"] as? Timestamp)?.dateValue()
                 let timestampDate = date != nil ? date : "2022-01-01T17:29:50Z".formattedDate
@@ -46,6 +48,22 @@ class ConversationViewController: UIViewController {
             self?.messages.sort { $0.created?.compare($1.created ?? Date()) == .orderedAscending }
             self?.tableView.reloadData()
         }
+    }
+    
+    @objc private func createNewMessage() {
+        let alert = UIAlertController(title: "Add message", message: nil, preferredStyle: .alert)
+        let createAction = UIAlertAction(title: "Create", style: .cancel) { [weak self] _ in
+            let text = alert.textFields?.first?.text
+            let message = Message(content: text, created: Date(), senderId: self?.myDeviceId, senderName: "")
+            self?.reference.addDocument(data: message.toDict)
+        }
+        alert.addAction(createAction)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default)
+        alert.addAction(cancelAction)
+        alert.addTextField { textField in
+            textField.placeholder = "Enter channel name"
+        }
+        present(alert, animated: true)
     }
     
     private func setupTableView() {

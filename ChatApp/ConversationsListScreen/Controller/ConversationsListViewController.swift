@@ -32,7 +32,9 @@ class ConversationsListViewController: UIViewController {
         var iconAvatarImage = UIImage(named: "avatar_icon")
         iconAvatarImage = iconAvatarImage?.withRenderingMode(.alwaysOriginal)
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: iconAvatarImage, style: .plain, target: self, action: #selector(openProfile))
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "icon_settings"), style: .plain, target: self, action: #selector(openThemes))
+        navigationItem.leftBarButtonItems = [
+            UIBarButtonItem(image: UIImage(named: "icon_settings"), style: .plain, target: self, action: #selector(openThemes)),
+            UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addChannel))]
         setupTableView()
     }
     
@@ -43,6 +45,7 @@ class ConversationsListViewController: UIViewController {
                 return
             }
             guard let snapshot = snapshot else { return }
+            self?.channels = []
             snapshot.documents.forEach {
                 let date = ($0.data()["lastActivity"] as? Timestamp)?.dateValue()
                 let timestampDate = date != nil ? date : "2022-01-01T17:29:50Z".formattedDate
@@ -81,6 +84,21 @@ class ConversationsListViewController: UIViewController {
     @objc private func openThemes() {
         let themesViewController = ThemesViewController()
         navigationController?.pushViewController(themesViewController, animated: true)
+    }
+    
+    @objc private func addChannel() {
+        let alert = UIAlertController(title: "Add channel name", message: nil, preferredStyle: .alert)
+        let createAction = UIAlertAction(title: "Create", style: .cancel) { [weak self] _ in
+            let channel = Channel(identifier: nil, name: alert.textFields?.first?.text, lastMessage: nil, lastActivity: Date())
+            self?.reference.addDocument(data: channel.toDict)
+        }
+        alert.addAction(createAction)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default)
+        alert.addAction(cancelAction)
+        alert.addTextField { textField in
+            textField.placeholder = "Enter channel name"
+        }
+        present(alert, animated: true)
     }
 }
 

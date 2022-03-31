@@ -13,3 +13,9 @@ import Foundation
      let lastMessage: String?
      let lastActivity: Date?
  }
+
+extension Channel {
+    var toDict: [String: Any] {
+        return ["identifier": identifier, "name": name, "lastMessage": lastMessage, "lastActivity": lastActivity]
+    }
+}

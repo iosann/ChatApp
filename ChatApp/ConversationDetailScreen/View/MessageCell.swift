@@ -39,6 +39,8 @@ class MessageCell: UITableViewCell, MessageCellConfiguration {
         return label
     }()
     var messageText: String?
+    private lazy var leadingConstraint = messageLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
+    private lazy var trailingConstraint = messageLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -62,15 +64,13 @@ class MessageCell: UITableViewCell, MessageCellConfiguration {
         timeLabel.text = date?.formattedDate
         if isIncomingMessage {
             ThemeManager.shared.setBackgroundColorForIncomingMessage(for: cellBackgroundView)
-            NSLayoutConstraint.activate([
-                messageLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
-            ])
+            trailingConstraint.isActive = true
+            leadingConstraint.isActive = false
         } else {
             ThemeManager.shared.setBackgroundColorForOutgoingMessage(for: cellBackgroundView)
             senderNameLabel.text = senderName
-            NSLayoutConstraint.activate([
-                messageLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
-            ])
+            trailingConstraint.isActive = false
+            leadingConstraint.isActive = true
         }
     }
     
@@ -91,10 +91,8 @@ class MessageCell: UITableViewCell, MessageCellConfiguration {
             senderNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
             senderNameLabel.leadingAnchor.constraint(equalTo: messageLabel.leadingAnchor),
             senderNameLabel.trailingAnchor.constraint(equalTo: messageLabel.trailingAnchor),
-            
             messageLabel.topAnchor.constraint(equalTo: senderNameLabel.bottomAnchor, constant: 8),
             messageLabel.widthAnchor.constraint(lessThanOrEqualToConstant: contentView.bounds.size.width * 0.75),
-            
             timeLabel.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 8),
             timeLabel.trailingAnchor.constraint(equalTo: messageLabel.trailingAnchor),
             timeLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
