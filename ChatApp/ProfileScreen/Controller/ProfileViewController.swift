@@ -63,6 +63,8 @@ class ProfileViewController: UIViewController {
         profileView.editPhotoButton.addTarget(self, action: #selector(editProfileImage), for: .touchUpInside)
         profileView.cancelButton.addTarget(self, action: #selector(cancelEditing), for: .touchUpInside)
         profileView.saveButton.addTarget(self, action: #selector(saveChanges), for: .touchUpInside)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        profileView.addGestureRecognizer(tap)
     }
     
     private func setupScrollView() {
@@ -87,11 +89,11 @@ class ProfileViewController: UIViewController {
     private func getStoredData() {
         delegate?.getStoredString(fileName: Constants.fullnameFilename) { [weak self] fullname in
             self?.storedFullName = fullname
-            DispatchQueue.main.async { self?.profileView.nameTextField.text = fullname }
+            DispatchQueue.main.async { self?.profileView.nameTextView.text = fullname }
         }
         delegate?.getStoredString(fileName: Constants.descriptionFileName) { [weak self] description in
             self?.storedDescription = description
-            DispatchQueue.main.async { self?.profileView.descriptionTextField.text = description }
+            DispatchQueue.main.async { self?.profileView.descriptionTextView.text = description }
         }
         delegate?.getStoredImage { [weak self] image in
             self?.storedPhoto = image
@@ -107,11 +109,11 @@ class ProfileViewController: UIViewController {
         activityIndicator.startAnimating()
         [profileView.saveButton, profileView.editPhotoButton, profileView.cancelButton].forEach { $0?.isEnabled = false }
         
-        if profileView.nameTextField.text != storedFullName {
-            newDataForSaving["newName"] = profileView.nameTextField.text
+        if profileView.nameTextView.text != storedFullName {
+            newDataForSaving["newName"] = profileView.nameTextView.text
         }
-        if profileView.descriptionTextField.text != storedDescription {
-            newDataForSaving["newDescription"] = profileView.descriptionTextField.text
+        if profileView.descriptionTextView.text != storedDescription {
+            newDataForSaving["newDescription"] = profileView.descriptionTextView.text
         }
         if profileView.photoImageView.image != nil, profileView.photoImageView.image != storedPhoto {
             newDataForSaving["newPhoto"] = profileView.photoImageView.image
@@ -136,8 +138,8 @@ class ProfileViewController: UIViewController {
     
     @objc private func cancelEditing() {
         profileView.isEditingMode = false
-        profileView.nameTextField.text = storedFullName
-        profileView.descriptionTextField.text = storedDescription
+        profileView.nameTextView.text = storedFullName
+        profileView.descriptionTextView.text = storedDescription
         profileView.photoImageView.image = storedPhoto
     }
     
@@ -162,13 +164,18 @@ class ProfileViewController: UIViewController {
         }
     }
     
+    @objc private func dismissKeyboard() {
+        profileView.nameTextView.resignFirstResponder()
+        profileView.descriptionTextView.resignFirstResponder()
+    }
+    
     @objc private func keyboardWillShow(notification: Notification) {
         guard let userInfo = notification.userInfo,
               let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
         else { return }
         let keyboardFrame = keyboardSize.cgRectValue
         
-        let offset = profileView.descriptionTextField.frame.maxY + (navigationController?.navigationBar.bounds.height ?? 0)
+        let offset = profileView.descriptionTextView.frame.maxY + (navigationController?.navigationBar.bounds.height ?? 0)
         if offset > keyboardFrame.minY {
             scrollView.contentOffset = CGPoint(x: 0, y: (offset - keyboardFrame.minY))
         }

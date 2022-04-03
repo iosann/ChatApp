@@ -12,11 +12,11 @@ class BaseProfileView: UIView {
     @IBOutlet private var contentView: UIView!
     @IBOutlet weak var photoImageView: UIImageView!
     @IBOutlet weak var editButton: UIButton!
-    @IBOutlet weak var nameTextField: UITextField!
-    @IBOutlet weak var descriptionTextField: UITextField!
     @IBOutlet private weak var buttonStackView: UIStackView!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var saveButton: UIButton!
+    @IBOutlet weak var nameTextView: UITextView!
+    @IBOutlet weak var descriptionTextView: UITextView!
     
     private(set) var editPhotoButton: UIButton = {
         let button = UIButton()
@@ -29,7 +29,7 @@ class BaseProfileView: UIView {
     var isEditingMode = false {
         didSet {
             if isEditingMode {
-                [nameTextField, descriptionTextField].forEach { $0?.isUserInteractionEnabled = true }
+                [nameTextView, descriptionTextView].forEach { $0?.isUserInteractionEnabled = true }
                 editButton.isHidden = true
                 buttonStackView.isHidden = false
             } else {
@@ -37,9 +37,16 @@ class BaseProfileView: UIView {
                 editButton.isHidden = false
                 saveButton.isEnabled = false
                 [editPhotoButton, cancelButton].forEach { $0.isEnabled = true }
-                [nameTextField, descriptionTextField].forEach { $0?.isUserInteractionEnabled = false }
+                [nameTextView, descriptionTextView].forEach { $0?.isUserInteractionEnabled = false }
             }
         }
+    }
+    
+    override var canBecomeFirstResponder: Bool {
+        return true
+    }
+    override var canResignFirstResponder: Bool {
+        return true
     }
     
     override init(frame: CGRect) {
@@ -65,15 +72,19 @@ class BaseProfileView: UIView {
     
     private func configureView() {
         contentView.backgroundColor = ThemeManager.shared.currentTheme.backgroundColor
-        nameTextField.delegate = self
-        descriptionTextField.delegate = self
-        nameTextField.font = UIFont(name: "SFProDisplay-Bold", size: 24)
-        descriptionTextField.font = UIFont(name: "SFProText-Regular", size: 16)
+        nameTextView.font = UIFont(name: "SFProDisplay-Bold", size: 24)
+        descriptionTextView.font = UIFont(name: "SFProText-Regular", size: 16)
+        [nameTextView, descriptionTextView].forEach {
+            $0?.delegate = self
+            $0?.layer.cornerRadius = 10
+            $0?.layer.borderWidth = 1
+            $0?.layer.borderColor = ThemeManager.shared.currentTheme.textColor.cgColor
+            $0?.textColor = ThemeManager.shared.currentTheme.textColor
+        }
         
-        editButton.layer.cornerRadius = 12
         editButton.titleLabel?.font = UIFont(name: "SFProText-Semibold", size: 19)
-        [cancelButton, saveButton].forEach { $0?.layer.cornerRadius = 12 }
         [cancelButton, saveButton, editButton].forEach {
+            $0?.layer.cornerRadius = 12
             $0?.backgroundColor = ThemeManager.shared.currentTheme.outgoingMessageColor
             $0?.setTitleColor(ThemeManager.shared.currentTheme.textColor, for: .normal)
         }
@@ -87,9 +98,9 @@ class BaseProfileView: UIView {
         ])
     }
     
-    @IBAction func editTextFields(_ sender: UIButton) {
+    @IBAction func editTextViews(_ sender: UIButton) {
         isEditingMode = true
-        if nameTextField.canBecomeFirstResponder { nameTextField.becomeFirstResponder() }
+        if nameTextView.canBecomeFirstResponder { nameTextView.becomeFirstResponder() }
     }
     
     override func layoutSubviews() {
@@ -99,19 +110,11 @@ class BaseProfileView: UIView {
     }
 }
 
-extension BaseProfileView: UITextFieldDelegate {
-
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        self.endEditing(true)
-    }
+extension BaseProfileView: UITextViewDelegate {
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView == nameTextView { nameTextView.becomeFirstResponder()
+        } else { descriptionTextView.becomeFirstResponder() }
         saveButton.isEnabled = true
     }
 }

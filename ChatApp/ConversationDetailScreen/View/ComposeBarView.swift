@@ -52,7 +52,7 @@ class ComposeBarView: UIView {
         sendButton.setTitle("", for: .normal)
     }
     
-    func textViewContentSize() -> CGSize {
+    private func textViewContentSize() -> CGSize {
         let size = CGSize(width: textView.bounds.width, height: CGFloat.greatestFiniteMagnitude)
         let textSize = textView.sizeThatFits(size)
         return CGSize(width: bounds.width, height: textSize.height)
