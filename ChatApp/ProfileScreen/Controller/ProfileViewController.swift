@@ -57,7 +57,7 @@ class ProfileViewController: UIViewController {
             .font: UIFont(name: "SFProDisplay-Bold", size: 26) ?? .boldSystemFont(ofSize: 26),
             .foregroundColor: ThemeManager.shared.currentTheme.tintColor], for: .normal)
         navigationItem.leftBarButtonItem = titleButton
-        ThemeManager.shared.setBackgroundColor(for: view)
+        view.backgroundColor = ThemeManager.shared.currentTheme.backgroundColor
         setupScrollView()
         profileView.addSubview(activityIndicator)
         profileView.editPhotoButton.addTarget(self, action: #selector(editProfileImage), for: .touchUpInside)

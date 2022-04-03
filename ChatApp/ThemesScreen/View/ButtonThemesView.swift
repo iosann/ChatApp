@@ -44,9 +44,6 @@ class ButtonThemesView: UIView {
             outgoingView.leadingAnchor.constraint(equalTo: self.centerXAnchor, constant: 10),
             outgoingView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10)
         ])
-        layer.cornerRadius = 10
-        layer.borderColor = UIColor.black.cgColor
-        layer.borderWidth = 1
         incomingView.layer.cornerRadius = 5
         outgoingView.layer.cornerRadius = 5
     }

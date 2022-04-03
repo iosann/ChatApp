@@ -64,7 +64,7 @@ class BaseProfileView: UIView {
     }
     
     private func configureView() {
-        ThemeManager.shared.setBackgroundColor(for: contentView)
+        contentView.backgroundColor = ThemeManager.shared.currentTheme.backgroundColor
         nameTextField.delegate = self
         descriptionTextField.delegate = self
         nameTextField.font = UIFont(name: "SFProDisplay-Bold", size: 24)
@@ -73,6 +73,10 @@ class BaseProfileView: UIView {
         editButton.layer.cornerRadius = 12
         editButton.titleLabel?.font = UIFont(name: "SFProText-Semibold", size: 19)
         [cancelButton, saveButton].forEach { $0?.layer.cornerRadius = 12 }
+        [cancelButton, saveButton, editButton].forEach {
+            $0?.backgroundColor = ThemeManager.shared.currentTheme.outgoingMessageColor
+            $0?.setTitleColor(ThemeManager.shared.currentTheme.textColor, for: .normal)
+        }
 
         contentView.addSubview(editPhotoButton)
         NSLayoutConstraint.activate([

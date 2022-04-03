@@ -40,7 +40,7 @@ class ConversationViewController: UIViewController {
         title = titleText
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: ThemeManager.shared.currentTheme.tintColor]
         composeBar.sendButton.addTarget(self, action: #selector(sendNewMessage), for: .touchUpInside)
-        ThemeManager.shared.setBackgroundColor(for: view)
+        view.backgroundColor = ThemeManager.shared.currentTheme.backgroundColor
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide),
                                                name: UIResponder.keyboardWillHideNotification,
                                                object: nil)
@@ -147,7 +147,7 @@ extension ConversationViewController: UITableViewDataSource, UITableViewDelegate
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
         guard let messageCell = cell as? MessageCell else { return cell }
         let message = messages[indexPath.row]
-        let isIncoming = message.senderId == myDeviceId ? true : false
+        let isIncoming = message.senderId == myDeviceId ? false : true
         messageCell.configure(messageText: message.content, date: message.created, isIncomingMessage: isIncoming, senderName: message.senderName)
         return messageCell
     }

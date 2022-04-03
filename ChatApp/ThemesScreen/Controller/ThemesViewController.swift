@@ -21,14 +21,13 @@ class ThemesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Settings"
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
         self.delegate = ThemeManager.shared
         // захват сильной ссылки на self (ThemesViewController) может создать retain cycle,
         // при котором ThemeManager будет держать ссылку на ThemesViewController и не даст ему деинициализироваться
         ThemeManager.shared.selectedThemeComplition = { [weak self] theme in
             self?.setTheme(theme: theme)
         }
-        ThemeManager.shared.setBackgroundColor(for: view)
+        setColors(theme: ThemeManager.shared.currentTheme)
         view.addSubview(myView)
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelScreen))
         customizeButtons()
@@ -43,6 +42,8 @@ class ThemesViewController: UIViewController {
             button.centerVertically(padding: 15)
         }
         myView.removeFromSuperview()
+        buttons[ThemeManager.shared.currentTheme.rawValue].imageView?.layer.borderColor = UIColor.blue.cgColor
+        buttons[ThemeManager.shared.currentTheme.rawValue].imageView?.layer.borderWidth = 3
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -60,8 +61,6 @@ class ThemesViewController: UIViewController {
         myView.setColors(backgroundColor: backgroundColor, incomingMessageColor: incomingMessageColor, outgoingMessageColor: outgoingMessageColor)
         let image = myView.asImage()
         button.setImage(image, for: .normal)
-        button.imageView?.layer.borderColor = UIColor.blue.cgColor
-        button.imageView?.layer.borderWidth = 0
         button.imageView?.layer.cornerRadius = 10
     }
 
@@ -70,7 +69,6 @@ class ThemesViewController: UIViewController {
             view.addSubview($0)
             $0.addTarget(self, action: #selector(chooseTheme), for: .touchUpInside)
             $0.titleLabel?.font = .boldSystemFont(ofSize: 22)
-            $0.setTitleColor(.black, for: .normal)
             $0.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
                 $0.widthAnchor.constraint(equalToConstant: 300),
@@ -87,13 +85,9 @@ class ThemesViewController: UIViewController {
     
     @objc private func chooseTheme(_ sender: UIButton) {
         let selectedTheme = ColorTheme(rawValue: sender.tag)
-        buttons.forEach {
-            $0.imageView?.layer.borderWidth = 1
-            $0.imageView?.layer.borderColor = UIColor.black.cgColor
-        }
+        setColors(theme: selectedTheme)
         sender.imageView?.layer.borderWidth = 3
         sender.imageView?.layer.borderColor = UIColor.blue.cgColor
-        view.backgroundColor = selectedTheme?.backgroundColor
  //       delegate?.currentTheme = selectedTheme
         ThemeManager.shared.selectedThemeComplition?(selectedTheme ?? .classic)
     }
@@ -101,6 +95,18 @@ class ThemesViewController: UIViewController {
     @objc private func cancelScreen() {
 //        delegate?.currentTheme = ThemeManager.saved
         ThemeManager.shared.selectedThemeComplition?(ThemeManager.saved)
-        ThemeManager.shared.setBackgroundColor(for: view)
+        setColors(theme: ThemeManager.saved)
+        buttons[ThemeManager.saved.rawValue].imageView?.layer.borderWidth = 3
+        buttons[ThemeManager.saved.rawValue].imageView?.layer.borderColor = UIColor.blue.cgColor
+    }
+    
+    private func setColors(theme: ColorTheme?) {
+        buttons.forEach {
+            $0.setTitleColor(theme?.textColor, for: .normal)
+            $0.imageView?.layer.borderWidth = 1
+            $0.imageView?.layer.borderColor = theme?.textColor.cgColor
+        }
+        view.backgroundColor = theme?.backgroundColor
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: theme?.tintColor ?? UIColor.black]
     }
 }

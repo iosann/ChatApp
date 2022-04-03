@@ -63,14 +63,14 @@ class MessageCell: UITableViewCell, MessageCellConfiguration {
         messageLabel.text = messageText
         timeLabel.text = date?.formattedDate
         if isIncomingMessage {
-            ThemeManager.shared.setBackgroundColorForIncomingMessage(for: cellBackgroundView)
-            trailingConstraint.isActive = true
-            leadingConstraint.isActive = false
-        } else {
-            ThemeManager.shared.setBackgroundColorForOutgoingMessage(for: cellBackgroundView)
-            senderNameLabel.text = senderName
+            cellBackgroundView.backgroundColor = ThemeManager.shared.currentTheme.incomingMessageColor
             trailingConstraint.isActive = false
             leadingConstraint.isActive = true
+        } else {
+            cellBackgroundView.backgroundColor = ThemeManager.shared.currentTheme.outgoingMessageColor
+            senderNameLabel.text = senderName
+            trailingConstraint.isActive = true
+            leadingConstraint.isActive = false
         }
     }
     
