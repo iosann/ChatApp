@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseFirestore
+import CoreData
 
 class ConversationsListViewController: UIViewController {
     
@@ -15,11 +16,18 @@ class ConversationsListViewController: UIViewController {
     private let db = Firestore.firestore()
     private lazy var reference = db.collection("channels")
     private var channels = [Channel]()
+    private let newCoreDataManager = NewCoreDataManager()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         getChannels()
         setupUI()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            let channels = self.newCoreDataManager.fetchChannels()
+            for channel in channels {
+                print(channel.name, channel.identifier, channel.lastMessage, channel.lastActivity)
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -58,6 +66,43 @@ class ConversationsListViewController: UIViewController {
             }
             self?.channels.sort { $0.lastActivity?.compare($1.lastActivity ?? Date()) == .orderedDescending }
             self?.tableView.reloadData()
+            
+            self?.newCoreDataManager.performSave { [weak self] context in
+                guard let self = self else { return }
+                for channel in self.channels {
+                    print(self.isExist(channel: channel), channel.name)
+                    if !self.isExist(channel: channel) {
+                        let dbChannel = DBChannel(context: context)
+                        dbChannel.name = channel.name
+                        dbChannel.lastMessage = channel.lastMessage
+                        dbChannel.lastActivity = channel.lastActivity
+                        dbChannel.identifier = channel.identifier
+                    }
+                }
+            }
+        }
+    }
+    
+    func isExist(channel: Channel) -> Bool {
+        let identifierPredicate = NSPredicate(format: "identifier == %@", channel.identifier ?? "")
+ //       let lastMessagePredicate = NSPredicate(format: "lastMessage == %@", channel.lastMessage ?? "")
+        let context = newCoreDataManager.persistentContainer.newBackgroundContext()
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "DBChannel")
+        request.predicate = identifierPredicate
+        do {
+            if Thread.isMainThread { print("is main do result")
+        } else { print("is background") }
+            let result = try context.count(for: request)
+            if Thread.isMainThread { print("is main after result")
+        } else { print("is background") }
+            if result > 0 {
+                return true
+            } else {
+                return false
+            }
+        } catch {
+            assertionFailure(error.localizedDescription)
+            return false
         }
     }
     
