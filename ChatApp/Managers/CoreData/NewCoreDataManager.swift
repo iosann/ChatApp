@@ -19,6 +19,8 @@ final class NewCoreDataManager: ICoreData {
         })
         return container
     }()
+    
+    lazy var readContext = persistentContainer.viewContext
 
     func performSave(_ block: @escaping(NSManagedObjectContext) -> Void) {
         let context = persistentContainer.newBackgroundContext()
@@ -40,7 +42,7 @@ final class NewCoreDataManager: ICoreData {
         let request = DBChannel.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(key: "lastActivity", ascending: false)]
         do {
-            let channels = try persistentContainer.viewContext.fetch(request)
+            let channels = try readContext.fetch(request)
             return channels
         } catch {
             assertionFailure(error.localizedDescription)
@@ -52,7 +54,7 @@ final class NewCoreDataManager: ICoreData {
         let request = DBMessage.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(key: "created", ascending: true)]
         do {
-            let messages = try persistentContainer.viewContext.fetch(request)
+            let messages = try readContext.fetch(request)
             return messages
         } catch {
             assertionFailure(error.localizedDescription)

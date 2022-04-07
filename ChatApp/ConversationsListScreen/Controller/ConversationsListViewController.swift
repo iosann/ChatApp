@@ -49,9 +49,12 @@ class ConversationsListViewController: UIViewController {
         reference.addSnapshotListener { [weak self] snapshot, error in
             guard error == nil else {
                 print(String(describing: error?.localizedDescription))
+                self?.getChannelsFromCoreData()
                 return
             }
-            guard let snapshot = snapshot else { return }
+            guard let snapshot = snapshot else {
+                self?.getChannelsFromCoreData()
+                return }
             self?.channels = []
             snapshot.documents.forEach {
                 let date = ($0.data()["lastActivity"] as? Timestamp)?.dateValue()
@@ -73,21 +76,21 @@ class ConversationsListViewController: UIViewController {
     
     private func getChannelsFromCoreData() {
         guard let dbchannels = self.delegate?.fetchChannels() else { return }
+        self.channels = []
         for dbchannel in dbchannels {
-            print(dbchannel.name, dbchannel.lastMessage, dbchannel.lastActivity)
+            let channel = Channel(identifier: dbchannel.identifier, name: dbchannel.name, lastMessage: dbchannel.lastMessage, lastActivity: dbchannel.lastActivity)
+            self.channels.append(channel)
         }
+        tableView.reloadData()
     }
     
-    func saveChannels(context: NSManagedObjectContext) {
+    private func saveChannels(context: NSManagedObjectContext) {
         for channel in channels {
-                let dbChannel = DBChannel(context: context)
-                dbChannel.name = channel.name
-                dbChannel.lastMessage = channel.lastMessage
-                dbChannel.lastActivity = channel.lastActivity
-                dbChannel.identifier = channel.identifier
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            self.getChannelsFromCoreData()
+            let dbChannel = DBChannel(context: context)
+            dbChannel.name = channel.name
+            dbChannel.lastMessage = channel.lastMessage
+            dbChannel.lastActivity = channel.lastActivity
+            dbChannel.identifier = channel.identifier
         }
     }
     
@@ -155,6 +158,7 @@ extension ConversationsListViewController: UITableViewDataSource, UITableViewDel
         let conversationViewController = ConversationViewController()
         conversationViewController.selectedChannelId = channels[indexPath.row].identifier
         conversationViewController.titleText = channels[indexPath.row].name
+        conversationViewController.delegate = delegate
         navigationController?.pushViewController(conversationViewController, animated: true)
     }
 }

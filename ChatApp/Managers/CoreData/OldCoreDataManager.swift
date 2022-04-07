@@ -12,6 +12,7 @@ protocol ICoreData: AnyObject {
     func fetchChannels() -> [DBChannel]
     func fetchMassages() -> [DBMessage]
     func performSave(_ block: @escaping(NSManagedObjectContext) -> Void)
+    var readContext: NSManagedObjectContext { get }
 }
 
 class OldCoreDataManager: ICoreData {
@@ -37,7 +38,7 @@ class OldCoreDataManager: ICoreData {
         return coordinator
     }()
     
-    private lazy var readContext: NSManagedObjectContext = {
+    lazy var readContext: NSManagedObjectContext = {
         let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.persistentStoreCoordinator = persistentStoreCoordinator
         return context

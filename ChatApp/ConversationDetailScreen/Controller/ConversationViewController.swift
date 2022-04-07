@@ -20,8 +20,6 @@ class ConversationViewController: UIViewController {
     private var composeBar = ComposeBarView()
     var selectedChannelId: String?
     var titleText: String?
-    private let newCoreDataManager = NewCoreDataManager()
-    private let oldCoreDataManager = OldCoreDataManager()
     weak var delegate: ICoreData?
     
     override var inputAccessoryView: UIView? {
@@ -30,9 +28,7 @@ class ConversationViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.delegate = newCoreDataManager
-//        self.delegate = oldCoreDataManager
-        getMessages()
+        getMessagesFromFirestore()
         setupUI()
     }
     
@@ -85,13 +81,16 @@ class ConversationViewController: UIViewController {
         ])
     }
     
-    private func getMessages() {
+    private func getMessagesFromFirestore() {
         reference.addSnapshotListener { [weak self] snapshot, error in
             guard error == nil else {
                 print(String(describing: error?.localizedDescription))
+                self?.getMessagesFromCoreData()
                 return
             }
-            guard let snapshot = snapshot else { return }
+            guard let snapshot = snapshot else {
+                self?.getMessagesFromCoreData()
+                return }
             self?.messages = []
             snapshot.documents.forEach {
                 let date = ($0.data()["created"] as? Timestamp)?.dateValue()
@@ -114,23 +113,45 @@ class ConversationViewController: UIViewController {
     }
     
     private func getMessagesFromCoreData() {
-        guard let dbmessages = self.delegate?.fetchMassages() else { return }
-        for dbmessage in dbmessages {
-            print(dbmessage.identifier, dbmessage.content, dbmessage.created, dbmessage.senderName, dbmessage.senderId)
-        }
+        let request = DBChannel.fetchRequest()
+        request.predicate = NSPredicate(format: "identifier == %@", selectedChannelId ?? "")
+        let context = delegate?.readContext
+            do {
+                guard let messageSet = try context?.fetch(request).first?.messages,
+                      let dbmessages = messageSet.allObjects as? [DBMessage]
+                else { return }
+                self.messages = []
+                for dbmessage in dbmessages {
+                    let message = Message(content: dbmessage.content,
+                                          created: dbmessage.created,
+                                          senderId: dbmessage.senderId,
+                                          senderName: dbmessage.senderName,
+                                          identifier: dbmessage.identifier)
+                    self.messages.append(message)
+                }
+                self.messages.sort { $0.created?.compare($1.created ?? Date()) == .orderedAscending }
+                tableView.reloadData()
+            } catch {
+                assertionFailure(error.localizedDescription)
+            }
     }
     
     func saveMessages(context: NSManagedObjectContext) {
-        for message in messages {
-            let dbmessage = DBMessage(context: context)
-            dbmessage.identifier = message.identifier
-            dbmessage.content = message.content
-            dbmessage.created = message.created
-            dbmessage.senderId = message.senderId
-            dbmessage.senderName = message.senderName
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            self.getMessagesFromCoreData()
+        let request = DBChannel.fetchRequest()
+        request.predicate = NSPredicate(format: "identifier == %@", selectedChannelId ?? "")
+        do {
+            let channel = try context.fetch(request).first
+            for message in messages {
+                let dbmessage = DBMessage(context: context)
+                dbmessage.identifier = message.identifier
+                dbmessage.content = message.content
+                dbmessage.created = message.created
+                dbmessage.senderId = message.senderId
+                dbmessage.senderName = message.senderName
+                dbmessage.channel = channel
+            }
+        } catch {
+            assertionFailure(error.localizedDescription)
         }
     }
     
@@ -144,7 +165,6 @@ class ConversationViewController: UIViewController {
         let text = composeBar.textView.text
         let message = Message(content: text, created: Date(), senderId: myDeviceId, senderName: "", identifier: nil)
         reference.addDocument(data: message.toDict)
-        print(message.toDict)
         dismissKeyboard()
     }
 
