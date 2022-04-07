@@ -84,7 +84,6 @@ class ConversationViewController: UIViewController {
     private func getMessagesFromFirestore() {
         reference.addSnapshotListener { [weak self] snapshot, error in
             guard error == nil else {
-                print(String(describing: error?.localizedDescription))
                 self?.getMessagesFromCoreData()
                 return
             }
@@ -136,6 +135,22 @@ class ConversationViewController: UIViewController {
             }
     }
     
+    private func printDataFromCoreData() {
+        let request = DBChannel.fetchRequest()
+        request.predicate = NSPredicate(format: "identifier == %@", selectedChannelId ?? "")
+        let context = delegate?.readContext
+        do {
+            guard let messageSet = try context?.fetch(request).first?.messages,
+                  let dbmessages = messageSet.allObjects as? [DBMessage]
+            else { return }
+            dbmessages.forEach {
+                NSLog("\($0.content ?? ""), \(String(describing: $0.created)), \($0.senderName ?? ""), \($0.senderId ?? "")")
+            }
+        } catch {
+            assertionFailure(error.localizedDescription)
+        }
+    }
+    
     func saveMessages(context: NSManagedObjectContext) {
         let request = DBChannel.fetchRequest()
         request.predicate = NSPredicate(format: "identifier == %@", selectedChannelId ?? "")
@@ -153,6 +168,7 @@ class ConversationViewController: UIViewController {
         } catch {
             assertionFailure(error.localizedDescription)
         }
+        printDataFromCoreData()
     }
     
     @objc private func dismissKeyboard() {

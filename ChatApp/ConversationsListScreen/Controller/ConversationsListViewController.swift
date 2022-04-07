@@ -31,7 +31,6 @@ class ConversationsListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: ThemeManager.shared.currentTheme.tintColor]
-        tableView.reloadData()
     }
     
     private func setupUI() {
@@ -48,7 +47,6 @@ class ConversationsListViewController: UIViewController {
     private func getChannelsFromFirestore() {
         reference.addSnapshotListener { [weak self] snapshot, error in
             guard error == nil else {
-                print(String(describing: error?.localizedDescription))
                 self?.getChannelsFromCoreData()
                 return
             }
@@ -78,7 +76,10 @@ class ConversationsListViewController: UIViewController {
         guard let dbchannels = self.delegate?.fetchChannels() else { return }
         self.channels = []
         for dbchannel in dbchannels {
-            let channel = Channel(identifier: dbchannel.identifier, name: dbchannel.name, lastMessage: dbchannel.lastMessage, lastActivity: dbchannel.lastActivity)
+            let channel = Channel(identifier: dbchannel.identifier,
+                                  name: dbchannel.name,
+                                  lastMessage: dbchannel.lastMessage,
+                                  lastActivity: dbchannel.lastActivity)
             self.channels.append(channel)
         }
         tableView.reloadData()
@@ -91,6 +92,14 @@ class ConversationsListViewController: UIViewController {
             dbChannel.lastMessage = channel.lastMessage
             dbChannel.lastActivity = channel.lastActivity
             dbChannel.identifier = channel.identifier
+        }
+        printDataFromCoreData()
+    }
+    
+    private func printDataFromCoreData() {
+        guard let dbchannels = self.delegate?.fetchChannels() else { return }
+        dbchannels.forEach {
+            NSLog("\($0.identifier ?? ""), \($0.name ?? ""), \(String(describing: $0.lastActivity)), \($0.lastMessage ?? "")")
         }
     }
     

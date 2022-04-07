@@ -66,9 +66,9 @@ class MessageCell: UITableViewCell, MessageCellConfiguration {
             cellBackgroundView.backgroundColor = ThemeManager.shared.currentTheme.incomingMessageColor
             trailingConstraint.isActive = false
             leadingConstraint.isActive = true
+            senderNameLabel.text = senderName
         } else {
             cellBackgroundView.backgroundColor = ThemeManager.shared.currentTheme.outgoingMessageColor
-            senderNameLabel.text = senderName
             trailingConstraint.isActive = true
             leadingConstraint.isActive = false
         }
