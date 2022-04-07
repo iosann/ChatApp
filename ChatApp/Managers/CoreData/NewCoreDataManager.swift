@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-final class NewCoreDataManager {
+final class NewCoreDataManager: ICoreData {
     
     var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "DatabaseModel")
@@ -22,6 +22,7 @@ final class NewCoreDataManager {
 
     func performSave(_ block: @escaping(NSManagedObjectContext) -> Void) {
         let context = persistentContainer.newBackgroundContext()
+        context.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
         context.perform {
             block(context)
             if context.hasChanges {
@@ -37,6 +38,7 @@ final class NewCoreDataManager {
     
     func fetchChannels() -> [DBChannel] {
         let request = DBChannel.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(key: "lastActivity", ascending: false)]
         do {
             let channels = try persistentContainer.viewContext.fetch(request)
             return channels

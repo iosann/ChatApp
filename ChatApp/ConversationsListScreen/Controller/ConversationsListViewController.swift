@@ -17,17 +17,15 @@ class ConversationsListViewController: UIViewController {
     private lazy var reference = db.collection("channels")
     private var channels = [Channel]()
     private let newCoreDataManager = NewCoreDataManager()
+    private let oldCoreDataManager = OldCoreDataManager()
+    weak var delegate: ICoreData?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        getChannels()
+        self.delegate = newCoreDataManager
+//        self.delegate = oldCoreDataManager
+        getChannelsFromFirestore()
         setupUI()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            let channels = self.newCoreDataManager.fetchChannels()
-            for channel in channels {
-                print(channel.name, channel.identifier, channel.lastMessage, channel.lastActivity)
-            }
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -47,14 +45,15 @@ class ConversationsListViewController: UIViewController {
         setupTableView()
     }
     
-    private func getChannels() {
+    private func getChannelsFromFirestore() {
         reference.addSnapshotListener { [weak self] snapshot, error in
+            guard let self = self else { return }
             guard error == nil else {
                 print(String(describing: error?.localizedDescription))
                 return
             }
             guard let snapshot = snapshot else { return }
-            self?.channels = []
+            self.channels = []
             snapshot.documents.forEach {
                 let date = ($0.data()["lastActivity"] as? Timestamp)?.dateValue()
                 let timestampDate = date != nil ? date : "2022-01-01T17:29:50Z".formattedDate
@@ -62,47 +61,34 @@ class ConversationsListViewController: UIViewController {
                                       name: $0.data()["name"] as? String,
                                       lastMessage: $0.data()["lastMessage"] as? String,
                                       lastActivity: timestampDate)
-                self?.channels.append(channel)
+                self.channels.append(channel)
             }
-            self?.channels.sort { $0.lastActivity?.compare($1.lastActivity ?? Date()) == .orderedDescending }
-            self?.tableView.reloadData()
+            self.channels.sort { $0.lastActivity?.compare($1.lastActivity ?? Date()) == .orderedDescending }
+            self.tableView.reloadData()
             
-            self?.newCoreDataManager.performSave { [weak self] context in
-                guard let self = self else { return }
-                for channel in self.channels {
-                    print(self.isExist(channel: channel), channel.name)
-                    if !self.isExist(channel: channel) {
-                        let dbChannel = DBChannel(context: context)
-                        dbChannel.name = channel.name
-                        dbChannel.lastMessage = channel.lastMessage
-                        dbChannel.lastActivity = channel.lastActivity
-                        dbChannel.identifier = channel.identifier
-                    }
-                }
+            self.delegate?.performSave { [weak self] context in
+                self?.saveChannels(context: context)
             }
         }
     }
     
-    func isExist(channel: Channel) -> Bool {
-        let identifierPredicate = NSPredicate(format: "identifier == %@", channel.identifier ?? "")
- //       let lastMessagePredicate = NSPredicate(format: "lastMessage == %@", channel.lastMessage ?? "")
-        let context = newCoreDataManager.persistentContainer.newBackgroundContext()
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "DBChannel")
-        request.predicate = identifierPredicate
-        do {
-            if Thread.isMainThread { print("is main do result")
-        } else { print("is background") }
-            let result = try context.count(for: request)
-            if Thread.isMainThread { print("is main after result")
-        } else { print("is background") }
-            if result > 0 {
-                return true
-            } else {
-                return false
-            }
-        } catch {
-            assertionFailure(error.localizedDescription)
-            return false
+    private func getChannelsFromCoreData() {
+        guard let dbchannels = self.delegate?.fetchChannels() else { return }
+        for dbchannel in dbchannels {
+            print(dbchannel.name, dbchannel.lastMessage, dbchannel.lastActivity)
+        }
+    }
+    
+    func saveChannels(context: NSManagedObjectContext) {
+        for channel in channels {
+                let dbChannel = DBChannel(context: context)
+                dbChannel.name = channel.name
+                dbChannel.lastMessage = channel.lastMessage
+                dbChannel.lastActivity = channel.lastActivity
+                dbChannel.identifier = channel.identifier
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            self.getChannelsFromCoreData()
         }
     }
     
