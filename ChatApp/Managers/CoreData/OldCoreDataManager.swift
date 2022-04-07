@@ -10,6 +10,7 @@ import CoreData
 
 protocol ICoreData: AnyObject {
     func fetchChannels() -> [DBChannel]
+    func fetchMassages() -> [DBMessage]
     func performSave(_ block: @escaping(NSManagedObjectContext) -> Void)
 }
 
@@ -45,7 +46,7 @@ class OldCoreDataManager: ICoreData {
     lazy var writeContext: NSManagedObjectContext = {
         let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         context.persistentStoreCoordinator = persistentStoreCoordinator
-        context.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
+        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         return context
     }()
     
@@ -57,8 +58,20 @@ class OldCoreDataManager: ICoreData {
             return channels
         } catch {
             assertionFailure(error.localizedDescription)
+            return [DBChannel]()
         }
-        return [DBChannel]()
+    }
+    
+    func fetchMassages() -> [DBMessage] {
+        let request = DBMessage.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(key: "created", ascending: true)]
+        do {
+            let messages = try readContext.fetch(request)
+            return messages
+        } catch {
+            assertionFailure(error.localizedDescription)
+            return [DBMessage]()
+        }
     }
     
     func performSave(_ block: @escaping(NSManagedObjectContext) -> Void) {

@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import CoreData
 
 class ConversationViewController: UIViewController {
     
@@ -19,6 +20,9 @@ class ConversationViewController: UIViewController {
     private var composeBar = ComposeBarView()
     var selectedChannelId: String?
     var titleText: String?
+    private let newCoreDataManager = NewCoreDataManager()
+    private let oldCoreDataManager = OldCoreDataManager()
+    weak var delegate: ICoreData?
     
     override var inputAccessoryView: UIView? {
         return composeBar
@@ -26,6 +30,8 @@ class ConversationViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.delegate = newCoreDataManager
+//        self.delegate = oldCoreDataManager
         getMessages()
         setupUI()
     }
@@ -93,12 +99,38 @@ class ConversationViewController: UIViewController {
                 let message = Message(content: $0.data()["content"] as? String,
                                       created: timestampDate,
                                       senderId: $0.data()["senderID"] as? String,
-                                      senderName: $0.data()["senderName"] as? String)
+                                      senderName: $0.data()["senderName"] as? String,
+                                      identifier: $0.documentID)
                 self?.messages.append(message)
             }
             self?.messages.sort { $0.created?.compare($1.created ?? Date()) == .orderedAscending }
             self?.tableView.reloadData()
             self?.scrollToBottom()
+            
+            self?.delegate?.performSave { context in
+                self?.saveMessages(context: context)
+            }
+        }
+    }
+    
+    private func getMessagesFromCoreData() {
+        guard let dbmessages = self.delegate?.fetchMassages() else { return }
+        for dbmessage in dbmessages {
+            print(dbmessage.identifier, dbmessage.content, dbmessage.created, dbmessage.senderName, dbmessage.senderId)
+        }
+    }
+    
+    func saveMessages(context: NSManagedObjectContext) {
+        for message in messages {
+            let dbmessage = DBMessage(context: context)
+            dbmessage.identifier = message.identifier
+            dbmessage.content = message.content
+            dbmessage.created = message.created
+            dbmessage.senderId = message.senderId
+            dbmessage.senderName = message.senderName
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            self.getMessagesFromCoreData()
         }
     }
     
@@ -110,8 +142,9 @@ class ConversationViewController: UIViewController {
     
     @objc private func sendNewMessage() {
         let text = composeBar.textView.text
-        let message = Message(content: text, created: Date(), senderId: myDeviceId, senderName: "")
+        let message = Message(content: text, created: Date(), senderId: myDeviceId, senderName: "", identifier: nil)
         reference.addDocument(data: message.toDict)
+        print(message.toDict)
         dismissKeyboard()
     }
 

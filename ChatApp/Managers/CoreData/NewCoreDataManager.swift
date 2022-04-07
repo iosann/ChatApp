@@ -22,7 +22,7 @@ final class NewCoreDataManager: ICoreData {
 
     func performSave(_ block: @escaping(NSManagedObjectContext) -> Void) {
         let context = persistentContainer.newBackgroundContext()
-        context.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
+        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         context.perform {
             block(context)
             if context.hasChanges {
@@ -45,6 +45,18 @@ final class NewCoreDataManager: ICoreData {
         } catch {
             assertionFailure(error.localizedDescription)
             return [DBChannel]()
+        }
+    }
+    
+    func fetchMassages() -> [DBMessage] {
+        let request = DBMessage.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(key: "created", ascending: true)]
+        do {
+            let messages = try persistentContainer.viewContext.fetch(request)
+            return messages
+        } catch {
+            assertionFailure(error.localizedDescription)
+            return [DBMessage]()
         }
     }
 }

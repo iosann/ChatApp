@@ -47,13 +47,12 @@ class ConversationsListViewController: UIViewController {
     
     private func getChannelsFromFirestore() {
         reference.addSnapshotListener { [weak self] snapshot, error in
-            guard let self = self else { return }
             guard error == nil else {
                 print(String(describing: error?.localizedDescription))
                 return
             }
             guard let snapshot = snapshot else { return }
-            self.channels = []
+            self?.channels = []
             snapshot.documents.forEach {
                 let date = ($0.data()["lastActivity"] as? Timestamp)?.dateValue()
                 let timestampDate = date != nil ? date : "2022-01-01T17:29:50Z".formattedDate
@@ -61,12 +60,12 @@ class ConversationsListViewController: UIViewController {
                                       name: $0.data()["name"] as? String,
                                       lastMessage: $0.data()["lastMessage"] as? String,
                                       lastActivity: timestampDate)
-                self.channels.append(channel)
+                self?.channels.append(channel)
             }
-            self.channels.sort { $0.lastActivity?.compare($1.lastActivity ?? Date()) == .orderedDescending }
-            self.tableView.reloadData()
+            self?.channels.sort { $0.lastActivity?.compare($1.lastActivity ?? Date()) == .orderedDescending }
+            self?.tableView.reloadData()
             
-            self.delegate?.performSave { [weak self] context in
+            self?.delegate?.performSave { [weak self] context in
                 self?.saveChannels(context: context)
             }
         }
