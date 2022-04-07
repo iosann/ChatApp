@@ -165,10 +165,10 @@ class ConversationViewController: UIViewController {
                 dbmessage.senderName = message.senderName
                 dbmessage.channel = channel
             }
+            printDataFromCoreData()
         } catch {
             assertionFailure(error.localizedDescription)
         }
-        printDataFromCoreData()
     }
     
     @objc private func dismissKeyboard() {
