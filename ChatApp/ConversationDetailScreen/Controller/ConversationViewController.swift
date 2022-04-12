@@ -13,7 +13,6 @@ class ConversationViewController: UIViewController {
     
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     private let cellIdentifier = "MessageCell"
-    private var messages = [Message]()
     private let db = Firestore.firestore()
     private lazy var reference = db.collection("channels").document(selectedChannelId ?? "").collection("messages")
     private let myDeviceId = UserDefaults.standard.string(forKey: "DeviceId")
@@ -25,6 +24,21 @@ class ConversationViewController: UIViewController {
     override var inputAccessoryView: UIView? {
         return composeBar
     }
+    
+    private lazy var fetchedResultsCintroller: NSFetchedResultsController<DBMessage> = {
+        guard let context = delegate?.readContext else { return NSFetchedResultsController<DBMessage>() }
+        let fetchRequest = DBMessage.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(DBMessage.created), ascending: true)]
+        
+        let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        controller.delegate = self
+        do {
+            try controller.performFetch()
+        } catch {
+            assertionFailure(error.localizedDescription)
+        }
+        return controller
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -84,93 +98,40 @@ class ConversationViewController: UIViewController {
     private func getMessagesFromFirestore() {
         reference.addSnapshotListener { [weak self] snapshot, error in
             guard error == nil else {
-                self?.getMessagesFromCoreData()
+                assertionFailure(error?.localizedDescription ?? "")
                 return
             }
-            guard let snapshot = snapshot else {
-                self?.getMessagesFromCoreData()
-                return }
-            self?.messages = []
-            snapshot.documents.forEach {
-                let date = ($0.data()["created"] as? Timestamp)?.dateValue()
-                let timestampDate = date != nil ? date : "2022-01-01T17:29:50Z".formattedDate
-                let message = Message(content: $0.data()["content"] as? String,
-                                      created: timestampDate,
-                                      senderId: $0.data()["senderID"] as? String,
-                                      senderName: $0.data()["senderName"] as? String,
-                                      identifier: $0.documentID)
-                self?.messages.append(message)
-            }
-            self?.messages.sort { $0.created?.compare($1.created ?? Date()) == .orderedAscending }
-            self?.tableView.reloadData()
-            self?.scrollToBottom()
+            guard let snapshot = snapshot else { return }
             
             self?.delegate?.performSave { context in
-                self?.saveMessages(context: context)
+                self?.saveMessages(snapshot: snapshot, context: context)
             }
         }
     }
     
-    private func getMessagesFromCoreData() {
-        let request = DBChannel.fetchRequest()
-        request.predicate = NSPredicate(format: "identifier == %@", selectedChannelId ?? "")
-        let context = delegate?.readContext
-            do {
-                guard let messageSet = try context?.fetch(request).first?.messages,
-                      let dbmessages = messageSet.allObjects as? [DBMessage]
-                else { return }
-                self.messages = []
-                for dbmessage in dbmessages {
-                    let message = Message(content: dbmessage.content,
-                                          created: dbmessage.created,
-                                          senderId: dbmessage.senderId,
-                                          senderName: dbmessage.senderName,
-                                          identifier: dbmessage.identifier)
-                    self.messages.append(message)
-                }
-                self.messages.sort { $0.created?.compare($1.created ?? Date()) == .orderedAscending }
-                tableView.reloadData()
-            } catch {
-                assertionFailure(error.localizedDescription)
-            }
-    }
-    
-    private func printDataFromCoreData() {
-        let request = DBChannel.fetchRequest()
-        request.predicate = NSPredicate(format: "identifier == %@", selectedChannelId ?? "")
-        let context = delegate?.readContext
-        do {
-            guard let messageSet = try context?.fetch(request).first?.messages,
-                  let dbmessages = messageSet.allObjects as? [DBMessage]
-            else { return }
-            dbmessages.forEach {
-                NSLog("\($0.content ?? ""), \(String(describing: $0.created)), \($0.senderName ?? ""), \($0.senderId ?? "")")
-            }
-        } catch {
-            assertionFailure(error.localizedDescription)
-        }
-    }
-    
-    func saveMessages(context: NSManagedObjectContext) {
+    private func saveMessages(snapshot: QuerySnapshot, context: NSManagedObjectContext) {
         let request = DBChannel.fetchRequest()
         request.predicate = NSPredicate(format: "identifier == %@", selectedChannelId ?? "")
         do {
             let channel = try context.fetch(request).first
-            for message in messages {
+            
+            snapshot.documents.forEach {
+                let timestampDate = ($0.data()["created"] as? Timestamp)?.dateValue()
+                let date = timestampDate != nil ? timestampDate : "2022-01-01T17:29:50Z".formattedDate
+                
                 let dbmessage = DBMessage(context: context)
-                dbmessage.identifier = message.identifier
-                dbmessage.content = message.content
-                dbmessage.created = message.created
-                dbmessage.senderId = message.senderId
-                dbmessage.senderName = message.senderName
+                dbmessage.identifier = $0.documentID
+                dbmessage.content = $0.data()["content"] as? String
+                dbmessage.created = date
+                dbmessage.senderId = $0.data()["senderID"] as? String
+                dbmessage.senderName = $0.data()["senderName"] as? String
                 dbmessage.channel = channel
             }
-            printDataFromCoreData()
         } catch {
             assertionFailure(error.localizedDescription)
         }
     }
-    
+     
     @objc private func dismissKeyboard() {
         composeBar.textView.resignFirstResponder()
         composeBar.textView.text = Constants.textViewPlaceholder
@@ -179,7 +140,7 @@ class ConversationViewController: UIViewController {
     
     @objc private func sendNewMessage() {
         let text = composeBar.textView.text
-        let message = Message(content: text, created: Date(), senderId: myDeviceId, senderName: "", identifier: nil)
+        let message = Message(content: text, created: Date(), senderId: myDeviceId, senderName: "")
         reference.addDocument(data: message.toDict)
         dismissKeyboard()
     }
@@ -198,26 +159,62 @@ class ConversationViewController: UIViewController {
     }
     
     private func scrollToBottom() {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self, !self.messages.isEmpty else { return }
-            let indexPath = IndexPath(row: self.messages.count - 1, section: 0)
-            self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
-        }
+//        DispatchQueue.main.async { [weak self] in
+//            guard let self = self, !self.messages.isEmpty else { return }
+//            let indexPath = IndexPath(row: self.messages.count - 1, section: 0)
+//            self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
+//        }
     }
 }
 
 extension ConversationViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return messages.count
+        guard let sections = fetchedResultsCintroller.sections else { return 0 }
+        return sections[section].numberOfObjects
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
         guard let messageCell = cell as? MessageCell else { return cell }
-        let message = messages[indexPath.row]
+        let message = fetchedResultsCintroller.object(at: indexPath)
         let isIncoming = message.senderId == myDeviceId ? false : true
         messageCell.configure(messageText: message.content, date: message.created, isIncomingMessage: isIncoming, senderName: message.senderName)
         return messageCell
+    }
+}
+
+extension ConversationViewController: NSFetchedResultsControllerDelegate {
+    
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                    didChange anObject: Any,
+                    at indexPath: IndexPath?,
+                    for type: NSFetchedResultsChangeType,
+                    newIndexPath: IndexPath?) {
+        
+        switch type {
+        case .insert:
+            guard let newIndexPath = newIndexPath else { return }
+            tableView.insertRows(at: [newIndexPath], with: .automatic)
+        case .delete:
+            guard let indexPath = indexPath else { return }
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        case .move:
+            guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            tableView.insertRows(at: [newIndexPath], with: .automatic)
+        case .update:
+            guard let indexPath = indexPath else { return }
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        @unknown default: return
+        }
     }
 }

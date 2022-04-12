@@ -15,10 +15,23 @@ class ConversationsListViewController: UIViewController {
     private let cellIdentifier = "ConversationCell"
     private let db = Firestore.firestore()
     private lazy var reference = db.collection("channels")
-    private var channels = [Channel]()
     private let newCoreDataManager = NewCoreDataManager()
     private let oldCoreDataManager = OldCoreDataManager()
     weak var delegate: ICoreData?
+    
+    private lazy var fetchedResultsCintroller: NSFetchedResultsController<DBChannel> = {
+        guard let context = delegate?.readContext else { return NSFetchedResultsController<DBChannel>() }
+        let fetchRequest = DBChannel.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(DBChannel.lastActivity), ascending: false)]
+        let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        controller.delegate = self
+        do {
+            try controller.performFetch()
+        } catch {
+            assertionFailure(error.localizedDescription)
+        }
+        return controller
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,59 +60,27 @@ class ConversationsListViewController: UIViewController {
     private func getChannelsFromFirestore() {
         reference.addSnapshotListener { [weak self] snapshot, error in
             guard error == nil else {
-                self?.getChannelsFromCoreData()
+                assertionFailure(error?.localizedDescription ?? "")
                 return
             }
-            guard let snapshot = snapshot else {
-                self?.getChannelsFromCoreData()
-                return }
-            self?.channels = []
-            snapshot.documents.forEach {
-                let date = ($0.data()["lastActivity"] as? Timestamp)?.dateValue()
-                let timestampDate = date != nil ? date : "2022-01-01T17:29:50Z".formattedDate
-                let channel = Channel(identifier: $0.documentID,
-                                      name: $0.data()["name"] as? String,
-                                      lastMessage: $0.data()["lastMessage"] as? String,
-                                      lastActivity: timestampDate)
-                self?.channels.append(channel)
+            guard let snapshot = snapshot else { return }
+
+            self?.delegate?.performSave { context in
+                self?.saveChannels(snapshot: snapshot, context: context)
             }
-            self?.channels.sort { $0.lastActivity?.compare($1.lastActivity ?? Date()) == .orderedDescending }
-            self?.tableView.reloadData()
+        }
+    }
+    
+    private func saveChannels(snapshot: QuerySnapshot, context: NSManagedObjectContext) {
+        snapshot.documents.forEach {
+            let timestampDate = ($0.data()["lastActivity"] as? Timestamp)?.dateValue()
+            let date = timestampDate != nil ? timestampDate : "2022-01-01T17:29:50Z".formattedDate
             
-            self?.delegate?.performSave { [weak self] context in
-                self?.saveChannels(context: context)
-            }
-        }
-    }
-    
-    private func getChannelsFromCoreData() {
-        guard let dbchannels = self.delegate?.fetchChannels() else { return }
-        self.channels = []
-        for dbchannel in dbchannels {
-            let channel = Channel(identifier: dbchannel.identifier,
-                                  name: dbchannel.name,
-                                  lastMessage: dbchannel.lastMessage,
-                                  lastActivity: dbchannel.lastActivity)
-            self.channels.append(channel)
-        }
-        tableView.reloadData()
-    }
-    
-    private func saveChannels(context: NSManagedObjectContext) {
-        for channel in channels {
-            let dbChannel = DBChannel(context: context)
-            dbChannel.name = channel.name
-            dbChannel.lastMessage = channel.lastMessage
-            dbChannel.lastActivity = channel.lastActivity
-            dbChannel.identifier = channel.identifier
-        }
-        printDataFromCoreData()
-    }
-    
-    private func printDataFromCoreData() {
-        guard let dbchannels = self.delegate?.fetchChannels() else { return }
-        dbchannels.forEach {
-            NSLog("\($0.identifier ?? ""), \($0.name ?? ""), \(String(describing: $0.lastActivity)), \($0.lastMessage ?? "")")
+            let dbchannel = DBChannel(context: context)
+            dbchannel.identifier = $0.documentID
+            dbchannel.name = $0.data()["name"] as? String
+            dbchannel.lastMessage = $0.data()["lastMessage"] as? String
+            dbchannel.lastActivity = date
         }
     }
     
@@ -132,7 +113,7 @@ class ConversationsListViewController: UIViewController {
     @objc private func addChannel() {
         let alert = UIAlertController(title: "Add channel name", message: nil, preferredStyle: .alert)
         let createAction = UIAlertAction(title: "Create", style: .cancel) { [weak self] _ in
-            let channel = Channel(identifier: nil, name: alert.textFields?.first?.text, lastMessage: nil, lastActivity: Date())
+            let channel = Channel(name: alert.textFields?.first?.text, lastActivity: Date())
             self?.reference.addDocument(data: channel.toDict)
         }
         alert.addAction(createAction)
@@ -148,13 +129,14 @@ class ConversationsListViewController: UIViewController {
 extension ConversationsListViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return channels.count
+        guard let sections = fetchedResultsCintroller.sections else { return 0 }
+        return sections[section].numberOfObjects
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
         guard let conversationCell = cell as? ConversationCell else { return cell }
-        let channel = channels[indexPath.row]
+        let channel = fetchedResultsCintroller.object(at: indexPath)
         conversationCell.configure(name: channel.name, message: channel.lastMessage, date: channel.lastActivity)
         return conversationCell
     }
@@ -165,9 +147,44 @@ extension ConversationsListViewController: UITableViewDataSource, UITableViewDel
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let conversationViewController = ConversationViewController()
-        conversationViewController.selectedChannelId = channels[indexPath.row].identifier
-        conversationViewController.titleText = channels[indexPath.row].name
+        conversationViewController.selectedChannelId = fetchedResultsCintroller.object(at: indexPath).identifier
+        conversationViewController.titleText = fetchedResultsCintroller.object(at: indexPath).name
         conversationViewController.delegate = delegate
         navigationController?.pushViewController(conversationViewController, animated: true)
+    }
+}
+
+extension ConversationsListViewController: NSFetchedResultsControllerDelegate {
+    
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                    didChange anObject: Any,
+                    at indexPath: IndexPath?,
+                    for type: NSFetchedResultsChangeType,
+                    newIndexPath: IndexPath?) {
+        
+        switch type {
+        case .insert:
+            guard let newIndexPath = newIndexPath else { return }
+            tableView.insertRows(at: [newIndexPath], with: .automatic)
+        case .delete:
+            guard let indexPath = indexPath else { return }
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        case .move:
+            guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            tableView.insertRows(at: [newIndexPath], with: .automatic)
+        case .update:
+            guard let indexPath = indexPath else { return }
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        @unknown default: return
+        }
     }
 }

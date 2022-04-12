@@ -12,7 +12,7 @@ struct Message {
     let created: Date?
     let senderId: String?
     let senderName: String?
-    let identifier: String?
+    let identifier: String? = nil
 }
 
 extension Message {

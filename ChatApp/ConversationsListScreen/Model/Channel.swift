@@ -8,9 +8,9 @@
 import Foundation
 
  struct Channel {
-     let identifier: String?
+     let identifier: String? = nil
      let name: String?
-     let lastMessage: String?
+     let lastMessage: String? = nil
      let lastActivity: Date?
  }
 
