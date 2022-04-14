@@ -19,10 +19,11 @@ class ConversationsListViewController: UIViewController {
     private let oldCoreDataManager = OldCoreDataManager()
     weak var delegate: ICoreData?
     
-    private lazy var fetchedResultsCintroller: NSFetchedResultsController<DBChannel> = {
+    private lazy var fetchedResultsController: NSFetchedResultsController<DBChannel> = {
         guard let context = delegate?.readContext else { return NSFetchedResultsController<DBChannel>() }
         let fetchRequest = DBChannel.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(DBChannel.lastActivity), ascending: false)]
+        fetchRequest.fetchBatchSize = 15
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
         controller.delegate = self
         do {
@@ -59,12 +60,10 @@ class ConversationsListViewController: UIViewController {
     
     private func getChannelsFromFirestore() {
         reference.addSnapshotListener { [weak self] snapshot, error in
-            guard error == nil else {
+            guard error == nil, let snapshot = snapshot else {
                 assertionFailure(error?.localizedDescription ?? "")
                 return
             }
-            guard let snapshot = snapshot else { return }
-
             self?.delegate?.performSave { context in
                 self?.saveChannels(snapshot: snapshot, context: context)
             }
@@ -129,14 +128,14 @@ class ConversationsListViewController: UIViewController {
 extension ConversationsListViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let sections = fetchedResultsCintroller.sections else { return 0 }
+        guard let sections = fetchedResultsController.sections else { return 0 }
         return sections[section].numberOfObjects
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
         guard let conversationCell = cell as? ConversationCell else { return cell }
-        let channel = fetchedResultsCintroller.object(at: indexPath)
+        let channel = fetchedResultsController.object(at: indexPath)
         conversationCell.configure(name: channel.name, message: channel.lastMessage, date: channel.lastActivity)
         return conversationCell
     }
@@ -147,8 +146,7 @@ extension ConversationsListViewController: UITableViewDataSource, UITableViewDel
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let conversationViewController = ConversationViewController()
-        conversationViewController.selectedChannelId = fetchedResultsCintroller.object(at: indexPath).identifier
-        conversationViewController.titleText = fetchedResultsCintroller.object(at: indexPath).name
+        conversationViewController.selectedChannel = fetchedResultsController.object(at: indexPath)
         conversationViewController.delegate = delegate
         navigationController?.pushViewController(conversationViewController, animated: true)
     }
@@ -171,6 +169,9 @@ extension ConversationsListViewController: NSFetchedResultsControllerDelegate {
                     newIndexPath: IndexPath?) {
         
         switch type {
+        case .update:
+            guard let indexPath = indexPath else { return }
+            tableView.reloadRows(at: [indexPath], with: .automatic)
         case .insert:
             guard let newIndexPath = newIndexPath else { return }
             tableView.insertRows(at: [newIndexPath], with: .automatic)
@@ -181,9 +182,6 @@ extension ConversationsListViewController: NSFetchedResultsControllerDelegate {
             guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
             tableView.deleteRows(at: [indexPath], with: .automatic)
             tableView.insertRows(at: [newIndexPath], with: .automatic)
-        case .update:
-            guard let indexPath = indexPath else { return }
-            tableView.reloadRows(at: [indexPath], with: .automatic)
         @unknown default: return
         }
     }

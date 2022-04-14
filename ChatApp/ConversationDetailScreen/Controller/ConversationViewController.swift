@@ -14,22 +14,22 @@ class ConversationViewController: UIViewController {
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     private let cellIdentifier = "MessageCell"
     private let db = Firestore.firestore()
-    private lazy var reference = db.collection("channels").document(selectedChannelId ?? "").collection("messages")
+    private lazy var reference = db.collection("channels").document(selectedChannel?.identifier ?? "").collection("messages")
     private let myDeviceId = UserDefaults.standard.string(forKey: "DeviceId")
     private var composeBar = ComposeBarView()
-    var selectedChannelId: String?
-    var titleText: String?
+    var selectedChannel: DBChannel?
     weak var delegate: ICoreData?
     
     override var inputAccessoryView: UIView? {
         return composeBar
     }
     
-    private lazy var fetchedResultsCintroller: NSFetchedResultsController<DBMessage> = {
+    private lazy var fetchedResultsController: NSFetchedResultsController<DBMessage> = {
         guard let context = delegate?.readContext else { return NSFetchedResultsController<DBMessage>() }
         let fetchRequest = DBMessage.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "channel == %@", selectedChannel ?? DBChannel())
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(DBMessage.created), ascending: true)]
-        
+
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
         controller.delegate = self
         do {
@@ -53,7 +53,7 @@ class ConversationViewController: UIViewController {
     }
     
     private func setupUI() {
-        title = titleText
+        title = selectedChannel?.name
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: ThemeManager.shared.currentTheme.tintColor]
         composeBar.sendButton.addTarget(self, action: #selector(sendNewMessage), for: .touchUpInside)
         view.backgroundColor = ThemeManager.shared.currentTheme.backgroundColor
@@ -97,12 +97,10 @@ class ConversationViewController: UIViewController {
     
     private func getMessagesFromFirestore() {
         reference.addSnapshotListener { [weak self] snapshot, error in
-            guard error == nil else {
+            guard error == nil, let snapshot = snapshot else {
                 assertionFailure(error?.localizedDescription ?? "")
                 return
             }
-            guard let snapshot = snapshot else { return }
-            
             self?.delegate?.performSave { context in
                 self?.saveMessages(snapshot: snapshot, context: context)
             }
@@ -111,14 +109,14 @@ class ConversationViewController: UIViewController {
     
     private func saveMessages(snapshot: QuerySnapshot, context: NSManagedObjectContext) {
         let request = DBChannel.fetchRequest()
-        request.predicate = NSPredicate(format: "identifier == %@", selectedChannelId ?? "")
+        request.predicate = NSPredicate(format: "identifier == %@", selectedChannel?.identifier ?? "")
         do {
             let channel = try context.fetch(request).first
-            
+
             snapshot.documents.forEach {
                 let timestampDate = ($0.data()["created"] as? Timestamp)?.dateValue()
                 let date = timestampDate != nil ? timestampDate : "2022-01-01T17:29:50Z".formattedDate
-                
+
                 let dbmessage = DBMessage(context: context)
                 dbmessage.identifier = $0.documentID
                 dbmessage.content = $0.data()["content"] as? String
@@ -170,14 +168,15 @@ class ConversationViewController: UIViewController {
 extension ConversationViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let sections = fetchedResultsCintroller.sections else { return 0 }
+        guard let sections = fetchedResultsController.sections else { return 0 }
         return sections[section].numberOfObjects
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
         guard let messageCell = cell as? MessageCell else { return cell }
-        let message = fetchedResultsCintroller.object(at: indexPath)
+
+        let message = fetchedResultsController.object(at: indexPath)
         let isIncoming = message.senderId == myDeviceId ? false : true
         messageCell.configure(messageText: message.content, date: message.created, isIncomingMessage: isIncoming, senderName: message.senderName)
         return messageCell
@@ -201,19 +200,19 @@ extension ConversationViewController: NSFetchedResultsControllerDelegate {
                     newIndexPath: IndexPath?) {
         
         switch type {
+        case .update:
+            guard let indexPath = indexPath else { return }
+            tableView.reloadRows(at: [indexPath], with: .fade)
         case .insert:
             guard let newIndexPath = newIndexPath else { return }
-            tableView.insertRows(at: [newIndexPath], with: .automatic)
+            tableView.insertRows(at: [newIndexPath], with: .fade)
         case .delete:
             guard let indexPath = indexPath else { return }
             tableView.deleteRows(at: [indexPath], with: .automatic)
         case .move:
             guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
             tableView.deleteRows(at: [indexPath], with: .automatic)
-            tableView.insertRows(at: [newIndexPath], with: .automatic)
-        case .update:
-            guard let indexPath = indexPath else { return }
-            tableView.reloadRows(at: [indexPath], with: .automatic)
+            tableView.insertRows(at: [newIndexPath], with: .fade)
         @unknown default: return
         }
     }
