@@ -47,7 +47,7 @@ class ConversationsListViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: ThemeManager.shared.currentTheme.tintColor]
     }
-    
+
     private func setupUI() {
         title = "Channels"
         var iconAvatarImage = UIImage(named: "avatar_icon")
@@ -125,9 +125,22 @@ class ConversationsListViewController: UIViewController {
         present(alert, animated: true)
     }
     
-    @objc func updateMainContext(_ notification: Notification) {
+    @objc private func updateMainContext(_ notification: Notification) {
         guard let context = notification.object as? NSManagedObjectContext, context != delegate?.readContext else { return }
         delegate?.readContext.mergeChanges(fromContextDidSave: notification)
+    }
+    
+    private func deleteChannelAndNestedMessages(identifier: String?) {
+        guard let identifier = identifier else { return }
+        reference.document(identifier).delete()
+        let messagesReference = reference.document(identifier).collection("messages")
+        messagesReference.getDocuments { snapshot, error in
+            guard error == nil, let snapshot = snapshot else {
+                assertionFailure(error?.localizedDescription ?? "")
+                return
+            }
+            snapshot.documents.forEach { messagesReference.document($0.documentID).delete() }
+        }
     }
 }
 
@@ -155,6 +168,22 @@ extension ConversationsListViewController: UITableViewDataSource, UITableViewDel
         conversationViewController.selectedChannel = fetchedResultsController.object(at: indexPath)
         conversationViewController.delegate = delegate
         navigationController?.pushViewController(conversationViewController, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let channelIdentifier = fetchedResultsController.object(at: indexPath).identifier
+            delegate?.readContext.delete(fetchedResultsController.object(at: indexPath))
+            do {
+                try delegate?.readContext.save()
+            } catch {
+                assertionFailure(error.localizedDescription)
+            }
+            
+            DispatchQueue.global(qos: .background).async { [weak self] in
+                self?.deleteChannelAndNestedMessages(identifier: channelIdentifier)
+            }
+        }
     }
 }
 
