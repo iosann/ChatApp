@@ -108,25 +108,17 @@ class ConversationViewController: UIViewController {
     }
     
     private func saveMessages(snapshot: QuerySnapshot, context: NSManagedObjectContext) {
-        let request = DBChannel.fetchRequest()
-        request.predicate = NSPredicate(format: "identifier == %@", selectedChannel?.identifier ?? "")
-        do {
-            let channel = try context.fetch(request).first
+        snapshot.documents.forEach {
+            let timestampDate = ($0.data()["created"] as? Timestamp)?.dateValue()
+            let date = timestampDate != nil ? timestampDate : "2022-01-01T17:29:50Z".formattedDate
 
-            snapshot.documents.forEach {
-                let timestampDate = ($0.data()["created"] as? Timestamp)?.dateValue()
-                let date = timestampDate != nil ? timestampDate : "2022-01-01T17:29:50Z".formattedDate
-
-                let dbmessage = DBMessage(context: context)
-                dbmessage.identifier = $0.documentID
-                dbmessage.content = $0.data()["content"] as? String
-                dbmessage.created = date
-                dbmessage.senderId = $0.data()["senderID"] as? String
-                dbmessage.senderName = $0.data()["senderName"] as? String
-                dbmessage.channel = channel
-            }
-        } catch {
-            assertionFailure(error.localizedDescription)
+            let dbmessage = DBMessage(context: context)
+            dbmessage.identifier = $0.documentID
+            dbmessage.content = $0.data()["content"] as? String
+            dbmessage.created = date
+            dbmessage.senderId = $0.data()["senderID"] as? String
+            dbmessage.senderName = $0.data()["senderName"] as? String
+            dbmessage.channel = selectedChannel
         }
     }
      
