@@ -38,6 +38,7 @@ class ConversationsListViewController: UIViewController {
         super.viewDidLoad()
         self.delegate = newCoreDataManager
 //        self.delegate = oldCoreDataManager
+        NotificationCenter.default.addObserver(self, selector: #selector(updateMainContext), name: .NSManagedObjectContextDidSave, object: nil)
         getChannelsFromFirestore()
         setupUI()
     }
@@ -122,6 +123,11 @@ class ConversationsListViewController: UIViewController {
             textField.placeholder = "Enter channel name"
         }
         present(alert, animated: true)
+    }
+    
+    @objc func updateMainContext(_ notification: Notification) {
+        guard let context = notification.object as? NSManagedObjectContext, context != delegate?.readContext else { return }
+        delegate?.readContext.mergeChanges(fromContextDidSave: notification)
     }
 }
 
