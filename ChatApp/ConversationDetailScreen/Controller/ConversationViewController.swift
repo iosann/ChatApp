@@ -9,9 +9,8 @@ import UIKit
 import Firebase
 import CoreData
 
-class ConversationViewController: UIViewController {
+class ConversationViewController: FetchedResultsViewController {
     
-    private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     private let cellIdentifier = "MessageCell"
     private let db = Firestore.firestore()
     private lazy var reference = db.collection("channels").document(selectedChannel?.identifier ?? "").collection("messages")
@@ -180,40 +179,5 @@ extension ConversationViewController: UITableViewDataSource, UITableViewDelegate
         let isIncoming = message.senderId == myDeviceId ? false : true
         messageCell.configure(messageText: message.content, date: message.created, isIncomingMessage: isIncoming, senderName: message.senderName)
         return messageCell
-    }
-}
-
-extension ConversationViewController: NSFetchedResultsControllerDelegate {
-    
-    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.beginUpdates()
-    }
-    
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.endUpdates()
-    }
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
-                    didChange anObject: Any,
-                    at indexPath: IndexPath?,
-                    for type: NSFetchedResultsChangeType,
-                    newIndexPath: IndexPath?) {
-        
-        switch type {
-        case .update:
-            guard let indexPath = indexPath else { return }
-            tableView.reloadRows(at: [indexPath], with: .automatic)
-        case .insert:
-            guard let newIndexPath = newIndexPath else { return }
-            tableView.insertRows(at: [newIndexPath], with: .automatic)
-        case .delete:
-            guard let indexPath = indexPath else { return }
-            tableView.deleteRows(at: [indexPath], with: .automatic)
-        case .move:
-            guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
-            tableView.deleteRows(at: [indexPath], with: .automatic)
-            tableView.insertRows(at: [newIndexPath], with: .automatic)
-        @unknown default: return
-        }
     }
 }

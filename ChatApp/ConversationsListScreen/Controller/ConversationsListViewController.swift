@@ -9,9 +9,8 @@ import UIKit
 import FirebaseFirestore
 import CoreData
 
-class ConversationsListViewController: UIViewController {
+class ConversationsListViewController: FetchedResultsViewController {
     
-    private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     private let cellIdentifier = "ConversationCell"
     private let db = Firestore.firestore()
     private lazy var reference = db.collection("channels")
@@ -183,41 +182,6 @@ extension ConversationsListViewController: UITableViewDataSource, UITableViewDel
             DispatchQueue.global(qos: .background).async { [weak self] in
                 self?.deleteChannelAndNestedMessages(identifier: channelIdentifier)
             }
-        }
-    }
-}
-
-extension ConversationsListViewController: NSFetchedResultsControllerDelegate {
-    
-    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.beginUpdates()
-    }
-    
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.endUpdates()
-    }
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
-                    didChange anObject: Any,
-                    at indexPath: IndexPath?,
-                    for type: NSFetchedResultsChangeType,
-                    newIndexPath: IndexPath?) {
-        
-        switch type {
-        case .update:
-            guard let indexPath = indexPath else { return }
-            tableView.reloadRows(at: [indexPath], with: .automatic)
-        case .insert:
-            guard let newIndexPath = newIndexPath else { return }
-            tableView.insertRows(at: [newIndexPath], with: .automatic)
-        case .delete:
-            guard let indexPath = indexPath else { return }
-            tableView.deleteRows(at: [indexPath], with: .automatic)
-        case .move:
-            guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
-            tableView.deleteRows(at: [indexPath], with: .automatic)
-            tableView.insertRows(at: [newIndexPath], with: .automatic)
-        @unknown default: return
         }
     }
 }

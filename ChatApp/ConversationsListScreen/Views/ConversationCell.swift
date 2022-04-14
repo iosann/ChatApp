@@ -33,7 +33,7 @@ class ConversationCell: UITableViewCell, ConversationCellConfiguration {
                                             ? .white
                                             : ThemeManager.shared.currentTheme.incomingMessageColor
         if hasUnreadMessages { messageLabel.font = .boldSystemFont(ofSize: 14) }
-        if message == nil {
+        if message == nil || message == "" {
             messageLabel.text = "No messages yet"
             messageLabel.font = UIFont(name: "SFProDisplay-RegularItalic", size: 14)
         } else {
