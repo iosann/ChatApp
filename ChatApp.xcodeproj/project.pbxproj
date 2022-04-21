@@ -29,8 +29,8 @@
 		DB8BCD8827D02C8D00054A95 /* SFProText-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB8BCD8527D02C8D00054A95 /* SFProText-Regular.ttf */; };
 		DB945AC227DB577F00BBFBA3 /* SFProDisplay-RegularItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB945AC127DB577F00BBFBA3 /* SFProDisplay-RegularItalic.ttf */; };
 		DBA00BC027FC7A94006F02ED /* DatabaseModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DBA00BBE27FC7A94006F02ED /* DatabaseModel.xcdatamodeld */; };
-		DBA00BE527FC8DB6006F02ED /* NewCoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA00BE427FC8DB6006F02ED /* NewCoreDataManager.swift */; };
-		DBA00BE727FE3F83006F02ED /* OldCoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA00BE627FE3F83006F02ED /* OldCoreDataManager.swift */; };
+		DBA00BE527FC8DB6006F02ED /* NewCoreDataContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA00BE427FC8DB6006F02ED /* NewCoreDataContainer.swift */; };
+		DBA00BE727FE3F83006F02ED /* OldCoreDataCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA00BE627FE3F83006F02ED /* OldCoreDataCoordinator.swift */; };
 		DBB5AF5B28117928002B29CC /* TableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB5AF5A28117928002B29CC /* TableViewDataSource.swift */; };
 		DBB5AF5D2811829A002B29CC /* FirestoreDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB5AF5C2811829A002B29CC /* FirestoreDatabase.swift */; };
 		DBB5AF5F281182F8002B29CC /* ChannelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB5AF5E281182F8002B29CC /* ChannelService.swift */; };
@@ -75,8 +75,8 @@
 		DB8BCD8527D02C8D00054A95 /* SFProText-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Regular.ttf"; sourceTree = "<group>"; };
 		DB945AC127DB577F00BBFBA3 /* SFProDisplay-RegularItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProDisplay-RegularItalic.ttf"; sourceTree = "<group>"; };
 		DBA00BBF27FC7A94006F02ED /* DatabaseModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DatabaseModel.xcdatamodel; sourceTree = "<group>"; };
-		DBA00BE427FC8DB6006F02ED /* NewCoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCoreDataManager.swift; sourceTree = "<group>"; };
-		DBA00BE627FE3F83006F02ED /* OldCoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldCoreDataManager.swift; sourceTree = "<group>"; };
+		DBA00BE427FC8DB6006F02ED /* NewCoreDataContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCoreDataContainer.swift; sourceTree = "<group>"; };
+		DBA00BE627FE3F83006F02ED /* OldCoreDataCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldCoreDataCoordinator.swift; sourceTree = "<group>"; };
 		DBB5AF5A28117928002B29CC /* TableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDataSource.swift; sourceTree = "<group>"; };
 		DBB5AF5C2811829A002B29CC /* FirestoreDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreDatabase.swift; sourceTree = "<group>"; };
 		DBB5AF5E281182F8002B29CC /* ChannelService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelService.swift; sourceTree = "<group>"; };
@@ -307,8 +307,8 @@
 		DBA00BEA27FEE6AF006F02ED /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				DBA00BE427FC8DB6006F02ED /* NewCoreDataManager.swift */,
-				DBA00BE627FE3F83006F02ED /* OldCoreDataManager.swift */,
+				DBA00BE427FC8DB6006F02ED /* NewCoreDataContainer.swift */,
+				DBA00BE627FE3F83006F02ED /* OldCoreDataCoordinator.swift */,
 				DBA00BBE27FC7A94006F02ED /* DatabaseModel.xcdatamodeld */,
 			);
 			path = CoreData;
@@ -521,7 +521,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DBFFEE9327EC8FFD00F194D9 /* DataSaving.swift in Sources */,
-				DBA00BE527FC8DB6006F02ED /* NewCoreDataManager.swift in Sources */,
+				DBA00BE527FC8DB6006F02ED /* NewCoreDataContainer.swift in Sources */,
 				DBE6239727F3705E00EA22F4 /* Channel.swift in Sources */,
 				DB745A5327D0FA8C007534FA /* BaseProfileView.swift in Sources */,
 				DB504C3E27D96AD5004B0CCE /* MessageCell.swift in Sources */,
@@ -536,7 +536,7 @@
 				DB647017281190C4003C97CC /* MessageService.swift in Sources */,
 				DB86836A27C2A9F100D82F48 /* AppDelegate.swift in Sources */,
 				DB8512E927E2477D00F26830 /* ColorTheme.swift in Sources */,
-				DBA00BE727FE3F83006F02ED /* OldCoreDataManager.swift in Sources */,
+				DBA00BE727FE3F83006F02ED /* OldCoreDataCoordinator.swift in Sources */,
 				DB504C2B27D93E39004B0CCE /* ConversationsListViewController.swift in Sources */,
 				DBC9757727F5F48C009CC84C /* ComposeBarView.swift in Sources */,
 				DBFFEE8B27EBA9FD00F194D9 /* SavingByGCD.swift in Sources */,
