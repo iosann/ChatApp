@@ -58,24 +58,20 @@ class ConversationsListViewController: FetchedResultsViewController {
             UIBarButtonItem(image: UIImage(named: "icon_settings"), style: .plain, target: self, action: #selector(openThemes)),
             UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addChannel))]
         setupTableView()
+        configureTableView()
     }
     
     private func loadChannels() {
         channelService?.loadAndSaveChannels()
     }
     
-    private func setupTableView() {
-        view.addSubview(tableView)
+    private func configureTableView() {
         tableView.delegate = self
-        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.register(UINib(nibName: cellIdentifier, bundle: nil), forCellReuseIdentifier: cellIdentifier)
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-        tableView.register(UINib(nibName: cellIdentifier, bundle: nil), forCellReuseIdentifier: cellIdentifier)
-        tableView.separatorStyle = .none
     }
     
     @objc private func openProfile() {
@@ -117,8 +113,8 @@ extension ConversationsListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let conversationViewController = ConversationViewController()
-        conversationViewController.selectedChannel = dataSource.fetchedResultsController?.object(at: indexPath)
-        conversationViewController.context = serviceContext
+        conversationViewController.selectedChannel = dataSource.fetchedResultsController?.object(at: indexPath) as? DBChannel
+ //       conversationViewController.context = serviceContext
         navigationController?.pushViewController(conversationViewController, animated: true)
     }
     

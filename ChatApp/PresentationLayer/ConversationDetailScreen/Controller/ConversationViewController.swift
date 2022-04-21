@@ -16,9 +16,12 @@ class ConversationViewController: FetchedResultsViewController {
     private var composeBar = ComposeBarView()
     var selectedChannel: DBChannel?
     weak var context: IServiceCoreDataContext?
+    private let channelServiceInstance = ChannelService()
     
     private let messageServiceInstance = MessageService()
-    weak var messageService: IMessageService?
+    private weak var messageService: IMessageService?
+    
+    private let dataSource = MessageTableViewDataSource()
     
     override var inputAccessoryView: UIView? {
         return composeBar
@@ -43,6 +46,9 @@ class ConversationViewController: FetchedResultsViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.messageService = messageServiceInstance
+        self.context = channelServiceInstance
+        dataSource.cellIdentifier = cellIdentifier
+        dataSource.fetchedResultsController = fetchedResultsController
         loadMessages()
         setupUI()
     }
@@ -68,22 +74,17 @@ class ConversationViewController: FetchedResultsViewController {
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
         setupTableView()
+        configureTableView()
         setupComposeBar()
     }
     
-    private func setupTableView() {
-        view.addSubview(tableView)
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.translatesAutoresizingMaskIntoConstraints = false
+    private func configureTableView() {
+        tableView.dataSource = dataSource
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -45)
         ])
         tableView.register(MessageCell.self, forCellReuseIdentifier: cellIdentifier)
-        tableView.separatorStyle = .none
     }
     
     private func setupComposeBar() {
@@ -124,31 +125,5 @@ class ConversationViewController: FetchedResultsViewController {
         if keyboardFrame.height > 100, self.view.frame.origin.y > -100 {
             self.view.frame.origin.y -= keyboardFrame.height * 0.85
         }
-    }
-    
-    private func scrollToBottom() {
-//        DispatchQueue.main.async { [weak self] in
-//            guard let self = self, !self.messages.isEmpty else { return }
-//            let indexPath = IndexPath(row: self.messages.count - 1, section: 0)
-//            self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
-//        }
-    }
-}
-
-extension ConversationViewController: UITableViewDataSource, UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let sections = fetchedResultsController.sections else { return 0 }
-        return sections[section].numberOfObjects
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
-        guard let messageCell = cell as? MessageCell else { return cell }
-
-        let message = fetchedResultsController.object(at: indexPath)
-        let isIncoming = message.senderId == myDeviceId ? false : true
-        messageCell.configure(messageText: message.content, date: message.created, isIncomingMessage: isIncoming, senderName: message.senderName)
-        return messageCell
     }
 }

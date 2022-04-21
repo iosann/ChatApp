@@ -11,6 +11,16 @@ import CoreData
 class FetchedResultsViewController: UIViewController {
     
     let tableView = UITableView(frame: .zero, style: .insetGrouped)
+    
+    func setupTableView() {
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+        tableView.separatorStyle = .none
+    }
 }
 
 extension FetchedResultsViewController: NSFetchedResultsControllerDelegate {

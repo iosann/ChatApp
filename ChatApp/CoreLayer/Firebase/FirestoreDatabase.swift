@@ -43,10 +43,6 @@ extension FirestoreDatabase: IFirestoreChannels {
     
     func loadChannels( _ completion: @escaping(SnapshotResult) -> Void) {
         loadData(reference: referenceToChannels) { result in
-            switch result {
-            case .success(let snapshot): print(snapshot.documents.count)
-            case .failure(let error): print(error.localizedDescription)
-            }
             completion(result)
         }
     }

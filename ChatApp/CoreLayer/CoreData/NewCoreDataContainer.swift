@@ -18,7 +18,7 @@ protocol ICoreDataContext {
 
 final class NewCoreDataContainer: ISavingToCoreData, ICoreDataContext {
     
-    var persistentContainer: NSPersistentContainer = {
+    static var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "DatabaseModel")
         container.loadPersistentStores(completionHandler: { _, error in
             if let error = error as NSError? {
@@ -28,17 +28,16 @@ final class NewCoreDataContainer: ISavingToCoreData, ICoreDataContext {
         return container
     }()
     
-    lazy var readContext = persistentContainer.viewContext
+    lazy var readContext = Self.persistentContainer.viewContext
 
     func performSave(_ block: @escaping(NSManagedObjectContext) -> Void) {
-        let context = persistentContainer.newBackgroundContext()
+        let context = Self.persistentContainer.newBackgroundContext()
         context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         context.perform {
             block(context)
             if context.hasChanges {
                 do {
                     try context.save()
-                    print(#function, "try save")
                 } catch {
                     let nserror = error as NSError
                     assertionFailure("Unresolved error \(nserror), \(nserror.userInfo)")
