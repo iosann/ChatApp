@@ -9,10 +9,13 @@ import UIKit
 import CoreData
 import Firebase
 
-protocol IChannelService: AnyObject {
+protocol IGettingChannel: AnyObject {
     func loadAndSaveChannels()
-    func addChannel(data: [String: Any])
     func mergeChanges(_ notification: Notification)
+}
+
+protocol IEditingChannels: AnyObject {
+    func addChannel(data: [String: Any])
     func deleteChannel(_ channel: DBChannel?)
 }
 
@@ -30,11 +33,7 @@ class ChannelService: IServiceCoreDataContext {
 //    private let iCoreDataContext: ICoreDataContext? = OldCoreDataCoordinator()
 }
 
-extension ChannelService: IChannelService {
-    
-    func addChannel(data: [String: Any]) {
-        firestoreDatabase?.addChannel(data: data)
-    }
+extension ChannelService: IGettingChannel {
     
     func loadAndSaveChannels() {
         firestoreDatabase?.loadChannels { [weak self] result in
@@ -65,6 +64,13 @@ extension ChannelService: IChannelService {
     func mergeChanges(_ notification: Notification) {
         guard let context = notification.object as? NSManagedObjectContext, context != coreDataContext?.readContext else { return }
         coreDataContext?.readContext.mergeChanges(fromContextDidSave: notification)
+    }
+}
+
+extension ChannelService: IEditingChannels {
+    
+    func addChannel(data: [String: Any]) {
+        firestoreDatabase?.addChannel(data: data)
     }
     
     func deleteChannel(_ channel: DBChannel?) {

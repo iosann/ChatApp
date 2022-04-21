@@ -14,8 +14,9 @@ class ConversationsListViewController: FetchedResultsViewController {
     private let cellIdentifier = "ConversationCell"
     private let dataSource = TableViewDataSource()
     private let channelServiceInstance = ChannelService()
-    weak var channelService: IChannelService?
+    weak var gettingChannelService: IGettingChannel?
     weak var serviceContext: IServiceCoreDataContext?
+    weak var editingChannelService: IEditingChannels?
     
     private lazy var fetchedResultsController: NSFetchedResultsController<DBChannel> = {
         guard let context = serviceContext?.coreDataContext?.readContext else { return NSFetchedResultsController<DBChannel>() }
@@ -35,7 +36,8 @@ class ConversationsListViewController: FetchedResultsViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.serviceContext = channelServiceInstance
-        self.channelService = channelServiceInstance
+        self.gettingChannelService = channelServiceInstance
+        self.editingChannelService = channelServiceInstance
         dataSource.cellIdentifier = cellIdentifier
         dataSource.fetchedResultsController = fetchedResultsController
         tableView.dataSource = dataSource
@@ -46,7 +48,7 @@ class ConversationsListViewController: FetchedResultsViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: ThemeManager.currentTheme?.tintColor]
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: ThemeManager.currentTheme?.tintColor as Any]
     }
 
     private func setupUI() {
@@ -62,7 +64,7 @@ class ConversationsListViewController: FetchedResultsViewController {
     }
     
     private func loadChannels() {
-        channelService?.loadAndSaveChannels()
+        gettingChannelService?.loadAndSaveChannels()
     }
     
     private func configureTableView() {
@@ -89,7 +91,7 @@ class ConversationsListViewController: FetchedResultsViewController {
         let alert = UIAlertController(title: "Add channel name", message: nil, preferredStyle: .alert)
         let createAction = UIAlertAction(title: "Create", style: .cancel) { [weak self] _ in
             let channel = Channel(name: alert.textFields?.first?.text, lastActivity: Date())
-            self?.channelService?.addChannel(data: channel.toDict)
+            self?.editingChannelService?.addChannel(data: channel.toDict)
         }
         alert.addAction(createAction)
         let cancelAction = UIAlertAction(title: "Cancel", style: .default)
@@ -101,7 +103,7 @@ class ConversationsListViewController: FetchedResultsViewController {
     }
     
     @objc private func updateMainContext(_ notification: Notification) {
-        channelService?.mergeChanges(notification)
+        gettingChannelService?.mergeChanges(notification)
     }
 }
 
@@ -113,15 +115,15 @@ extension ConversationsListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let conversationViewController = ConversationViewController()
-        conversationViewController.selectedChannel = dataSource.fetchedResultsController?.object(at: indexPath) as? DBChannel
- //       conversationViewController.context = serviceContext
+        conversationViewController.selectedChannel = dataSource.fetchedResultsController?.object(at: indexPath)
+        conversationViewController.context = serviceContext
         navigationController?.pushViewController(conversationViewController, animated: true)
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _, _, _ in
             let channel = self?.dataSource.fetchedResultsController?.object(at: indexPath)
-            self?.channelService?.deleteChannel(channel)
+            self?.editingChannelService?.deleteChannel(channel)
            }
            deleteAction.backgroundColor = .red
            let configuration = UISwipeActionsConfiguration(actions: [deleteAction])

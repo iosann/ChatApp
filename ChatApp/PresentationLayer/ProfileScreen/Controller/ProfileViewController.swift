@@ -55,7 +55,7 @@ class ProfileViewController: UIViewController {
         let titleButton = UIBarButtonItem(title: "My Profile", style: .plain, target: self, action: nil)
         titleButton.setTitleTextAttributes([
             .font: UIFont(name: "SFProDisplay-Bold", size: 26) ?? .boldSystemFont(ofSize: 26),
-            .foregroundColor: ThemeManager.currentTheme?.tintColor], for: .normal)
+            .foregroundColor: ThemeManager.currentTheme?.tintColor as Any], for: .normal)
         navigationItem.leftBarButtonItem = titleButton
         view.backgroundColor = ThemeManager.currentTheme?.backgroundColor
         setupScrollView()

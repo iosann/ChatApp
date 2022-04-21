@@ -15,8 +15,7 @@ class ConversationViewController: FetchedResultsViewController {
     private let myDeviceId = UserDefaults.standard.string(forKey: "DeviceId")
     private var composeBar = ComposeBarView()
     var selectedChannel: DBChannel?
-    weak var context: IServiceCoreDataContext?
-    private let channelServiceInstance = ChannelService()
+    var context: IServiceCoreDataContext?
     
     private let messageServiceInstance = MessageService()
     private weak var messageService: IMessageService?
@@ -46,7 +45,6 @@ class ConversationViewController: FetchedResultsViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.messageService = messageServiceInstance
-        self.context = channelServiceInstance
         dataSource.cellIdentifier = cellIdentifier
         dataSource.fetchedResultsController = fetchedResultsController
         loadMessages()
@@ -61,7 +59,7 @@ class ConversationViewController: FetchedResultsViewController {
     
     private func setupUI() {
         title = selectedChannel?.name
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: ThemeManager.currentTheme?.tintColor]
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: ThemeManager.currentTheme?.tintColor as Any]
         composeBar.sendButton.addTarget(self, action: #selector(sendNewMessage), for: .touchUpInside)
         view.backgroundColor = ThemeManager.currentTheme?.backgroundColor
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide),
