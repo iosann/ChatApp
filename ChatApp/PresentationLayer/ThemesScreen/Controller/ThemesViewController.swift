@@ -14,20 +14,21 @@ class ThemesViewController: UIViewController {
     private let bottomButton = UIButton()
     private lazy var buttons = [topButton, middleButton, bottomButton]
     private let myView = ButtonThemesView(frame: CGRect(x: 0, y: 0, width: 300, height: 70))
+    private let themeManager = ThemeManager()
     
     // сильная ссылка на делегат может создать retain cycle
-    private weak var delegate: ChangeThemeProtocol?
+    private weak var delegate: IChangingTheme?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Settings"
-        self.delegate = ThemeManager.shared
+        self.delegate = themeManager
         // захват сильной ссылки на self (ThemesViewController) может создать retain cycle,
         // при котором ThemeManager будет держать ссылку на ThemesViewController и не даст ему деинициализироваться
-        ThemeManager.shared.selectedThemeComplition = { [weak self] theme in
+        themeManager.selectedThemeComplition = { [weak self] theme in
             self?.setTheme(theme: theme)
         }
-        setColors(theme: ThemeManager.shared.currentTheme)
+        setColors(theme: ThemeManager.currentTheme)
         view.addSubview(myView)
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelScreen))
         customizeButtons()
@@ -42,19 +43,19 @@ class ThemesViewController: UIViewController {
             button.centerVertically(padding: 15)
         }
         myView.removeFromSuperview()
-        buttons[ThemeManager.shared.currentTheme.rawValue].imageView?.layer.borderColor = UIColor.blue.cgColor
-        buttons[ThemeManager.shared.currentTheme.rawValue].imageView?.layer.borderWidth = 3
+        buttons[ThemeManager.currentTheme?.rawValue ?? 0].imageView?.layer.borderColor = UIColor.blue.cgColor
+        buttons[ThemeManager.currentTheme?.rawValue ?? 0].imageView?.layer.borderWidth = 3
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         if self.isMovingFromParent {
-            ThemeManager.shared.save()
+            ThemeManager.save()
         }
     }
     
     private func setTheme(theme: ColorTheme) {
-        ThemeManager.shared.currentTheme = theme
+        ThemeManager.currentTheme = theme
     }
     
     private func setButtonImage(backgroundColor: UIColor, incomingMessageColor: UIColor, outgoingMessageColor: UIColor, forButton button: UIButton) {
@@ -88,13 +89,13 @@ class ThemesViewController: UIViewController {
         setColors(theme: selectedTheme)
         sender.imageView?.layer.borderWidth = 3
         sender.imageView?.layer.borderColor = UIColor.blue.cgColor
- //       delegate?.currentTheme = selectedTheme
-        ThemeManager.shared.selectedThemeComplition?(selectedTheme ?? .classic)
+        delegate?.theme = selectedTheme
+//        themeManager.selectedThemeComplition?(selectedTheme ?? .classic)
     }
     
     @objc private func cancelScreen() {
-//        delegate?.currentTheme = ThemeManager.saved
-        ThemeManager.shared.selectedThemeComplition?(ThemeManager.saved)
+        delegate?.theme = ThemeManager.saved
+ //       themeManager.selectedThemeComplition?(ThemeManager.saved)
         setColors(theme: ThemeManager.saved)
         buttons[ThemeManager.saved.rawValue].imageView?.layer.borderWidth = 3
         buttons[ThemeManager.saved.rawValue].imageView?.layer.borderColor = UIColor.blue.cgColor

@@ -31,7 +31,7 @@ class ConversationCell: UITableViewCell, ConversationCellConfiguration {
     func configure(name: String?, message: String?, date: Date?) {
         cellBackgroundView.backgroundColor = online
                                             ? .white
-                                            : ThemeManager.shared.currentTheme.incomingMessageColor
+                                            : ThemeManager.currentTheme?.incomingMessageColor
         if hasUnreadMessages { messageLabel.font = .boldSystemFont(ofSize: 14) }
         if message == nil || message == "" {
             messageLabel.text = "No messages yet"

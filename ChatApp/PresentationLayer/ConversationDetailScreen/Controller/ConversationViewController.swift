@@ -55,9 +55,9 @@ class ConversationViewController: FetchedResultsViewController {
     
     private func setupUI() {
         title = selectedChannel?.name
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: ThemeManager.shared.currentTheme.tintColor]
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: ThemeManager.currentTheme?.tintColor]
         composeBar.sendButton.addTarget(self, action: #selector(sendNewMessage), for: .touchUpInside)
-        view.backgroundColor = ThemeManager.shared.currentTheme.backgroundColor
+        view.backgroundColor = ThemeManager.currentTheme?.backgroundColor
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide),
                                                name: UIResponder.keyboardWillHideNotification,
                                                object: nil)

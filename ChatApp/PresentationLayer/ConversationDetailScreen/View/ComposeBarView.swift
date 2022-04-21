@@ -47,8 +47,8 @@ class ComposeBarView: UIView {
         textView.delegate = self
         textView.layer.cornerRadius = 10
         textView.layer.borderWidth = 1
-        textView.layer.borderColor = ThemeManager.shared.currentTheme.textColor.cgColor
-        textView.textColor = ThemeManager.shared.currentTheme.textColor
+        textView.layer.borderColor = ThemeManager.currentTheme?.textColor.cgColor
+        textView.textColor = ThemeManager.currentTheme?.textColor
         sendButton.setTitle("", for: .normal)
     }
     

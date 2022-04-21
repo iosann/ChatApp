@@ -55,9 +55,9 @@ class ProfileViewController: UIViewController {
         let titleButton = UIBarButtonItem(title: "My Profile", style: .plain, target: self, action: nil)
         titleButton.setTitleTextAttributes([
             .font: UIFont(name: "SFProDisplay-Bold", size: 26) ?? .boldSystemFont(ofSize: 26),
-            .foregroundColor: ThemeManager.shared.currentTheme.tintColor], for: .normal)
+            .foregroundColor: ThemeManager.currentTheme?.tintColor], for: .normal)
         navigationItem.leftBarButtonItem = titleButton
-        view.backgroundColor = ThemeManager.shared.currentTheme.backgroundColor
+        view.backgroundColor = ThemeManager.currentTheme?.backgroundColor
         setupScrollView()
         profileView.addSubview(activityIndicator)
         profileView.editPhotoButton.addTarget(self, action: #selector(editProfileImage), for: .touchUpInside)

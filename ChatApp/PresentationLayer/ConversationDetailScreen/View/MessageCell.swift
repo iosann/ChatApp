@@ -19,7 +19,7 @@ class MessageCell: UITableViewCell, MessageCellConfiguration {
         label.font = .systemFont(ofSize: 15)
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
-        label.textColor = ThemeManager.shared.currentTheme.textColor
+        label.textColor = ThemeManager.currentTheme?.textColor
         return label
     }()
     private let senderNameLabel: UILabel = {
@@ -27,7 +27,7 @@ class MessageCell: UITableViewCell, MessageCellConfiguration {
         label.font = .boldSystemFont(ofSize: 16)
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
-        label.textColor = ThemeManager.shared.currentTheme.textColor
+        label.textColor = ThemeManager.currentTheme?.textColor
         return label
     }()
     private let timeLabel: UILabel = {
@@ -35,7 +35,7 @@ class MessageCell: UITableViewCell, MessageCellConfiguration {
         label.font = .systemFont(ofSize: 12)
         label.numberOfLines = 1
         label.textAlignment = .right
-        label.textColor = ThemeManager.shared.currentTheme.textColor
+        label.textColor = ThemeManager.currentTheme?.textColor
         return label
     }()
     var messageText: String?
@@ -63,12 +63,12 @@ class MessageCell: UITableViewCell, MessageCellConfiguration {
         messageLabel.text = messageText
         timeLabel.text = date?.formattedDate
         if isIncomingMessage {
-            cellBackgroundView.backgroundColor = ThemeManager.shared.currentTheme.incomingMessageColor
+            cellBackgroundView.backgroundColor = ThemeManager.currentTheme?.incomingMessageColor
             trailingConstraint.isActive = false
             leadingConstraint.isActive = true
             senderNameLabel.text = senderName
         } else {
-            cellBackgroundView.backgroundColor = ThemeManager.shared.currentTheme.outgoingMessageColor
+            cellBackgroundView.backgroundColor = ThemeManager.currentTheme?.outgoingMessageColor
             trailingConstraint.isActive = true
             leadingConstraint.isActive = false
         }
