@@ -12,19 +12,20 @@ import CoreData
 class ConversationViewController: FetchedResultsViewController {
     
     private let cellIdentifier = "MessageCell"
-    private let db = Firestore.firestore()
-    private lazy var reference = db.collection("channels").document(selectedChannel?.identifier ?? "").collection("messages")
     private let myDeviceId = UserDefaults.standard.string(forKey: "DeviceId")
     private var composeBar = ComposeBarView()
     var selectedChannel: DBChannel?
-    weak var delegate: ICoreData?
+    weak var context: IServiceCoreDataContext?
+    
+    private let messageServiceInstance = MessageService()
+    weak var messageService: IMessageService?
     
     override var inputAccessoryView: UIView? {
         return composeBar
     }
     
     private lazy var fetchedResultsController: NSFetchedResultsController<DBMessage> = {
-        guard let context = delegate?.readContext else { return NSFetchedResultsController<DBMessage>() }
+        guard let context = context?.coreDataContext?.readContext else { return NSFetchedResultsController<DBMessage>() }
         let fetchRequest = DBMessage.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "channel == %@", selectedChannel ?? DBChannel())
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(DBMessage.created), ascending: true)]
@@ -41,7 +42,8 @@ class ConversationViewController: FetchedResultsViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        getMessagesFromFirestore()
+        self.messageService = messageServiceInstance
+        loadMessages()
         setupUI()
     }
     
@@ -94,39 +96,8 @@ class ConversationViewController: FetchedResultsViewController {
         ])
     }
 
-    private func getMessagesFromFirestore() {
-        reference.addSnapshotListener { [weak self] snapshot, error in
-            guard error == nil, let snapshot = snapshot else {
-                assertionFailure(error?.localizedDescription ?? "")
-                return
-            }
-            self?.delegate?.performSave { context in
-                self?.saveMessages(snapshot: snapshot, context: context)
-            }
-        }
-    }
-    
-    private func saveMessages(snapshot: QuerySnapshot, context: NSManagedObjectContext) {
-        let request = DBChannel.fetchRequest()
-        request.predicate = NSPredicate(format: "identifier == %@", selectedChannel?.identifier ?? "")
-        do {
-            let channel = try context.fetch(request).first
-             
-            snapshot.documents.forEach {
-                let timestampDate = ($0.data()["created"] as? Timestamp)?.dateValue()
-                let date = timestampDate != nil ? timestampDate : "2022-01-01T17:29:50Z".formattedDate
-
-                let dbmessage = DBMessage(context: context)
-                dbmessage.identifier = $0.documentID
-                dbmessage.content = $0.data()["content"] as? String
-                dbmessage.created = date
-                dbmessage.senderId = $0.data()["senderID"] as? String
-                dbmessage.senderName = $0.data()["senderName"] as? String
-                dbmessage.channel = channel
-            }
-        } catch {
-              assertionFailure(error.localizedDescription)
-        }
+    private func loadMessages() {
+        messageService?.loadAndSaveMessages(selectedChannelId: selectedChannel?.identifier)
     }
      
     @objc private func dismissKeyboard() {
@@ -138,7 +109,7 @@ class ConversationViewController: FetchedResultsViewController {
     @objc private func sendNewMessage() {
         let text = composeBar.textView.text
         let message = Message(content: text, created: Date(), senderId: myDeviceId, senderName: "")
-        reference.addDocument(data: message.toDict)
+        messageService?.addMessage(data: message.toDict)
         dismissKeyboard()
     }
 

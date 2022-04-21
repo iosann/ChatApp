@@ -17,12 +17,10 @@ extension FetchedResultsViewController: NSFetchedResultsControllerDelegate {
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
-        print(#function)
     }
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
-        print(#function)
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,

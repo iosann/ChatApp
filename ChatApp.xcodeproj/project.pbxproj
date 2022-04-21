@@ -14,6 +14,7 @@
 		DB504C2F27D94152004B0CCE /* ConversationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB504C2D27D94152004B0CCE /* ConversationCell.xib */; };
 		DB504C3B27D96727004B0CCE /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB504C3A27D96727004B0CCE /* ConversationViewController.swift */; };
 		DB504C3E27D96AD5004B0CCE /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB504C3D27D96AD5004B0CCE /* MessageCell.swift */; };
+		DB647017281190C4003C97CC /* MessageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB647016281190C4003C97CC /* MessageService.swift */; };
 		DB68B6A42808AF810093327C /* FetchedResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB68B6A32808AF810093327C /* FetchedResultsViewController.swift */; };
 		DB745A5127D0FA74007534FA /* BaseProfileView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB745A5027D0FA74007534FA /* BaseProfileView.xib */; };
 		DB745A5327D0FA8C007534FA /* BaseProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB745A5227D0FA8C007534FA /* BaseProfileView.swift */; };
@@ -57,6 +58,7 @@
 		DB504C2D27D94152004B0CCE /* ConversationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConversationCell.xib; sourceTree = "<group>"; };
 		DB504C3A27D96727004B0CCE /* ConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationViewController.swift; sourceTree = "<group>"; };
 		DB504C3D27D96AD5004B0CCE /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
+		DB647016281190C4003C97CC /* MessageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageService.swift; sourceTree = "<group>"; };
 		DB68B6A32808AF810093327C /* FetchedResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchedResultsViewController.swift; sourceTree = "<group>"; };
 		DB745A5027D0FA74007534FA /* BaseProfileView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BaseProfileView.xib; sourceTree = "<group>"; };
 		DB745A5227D0FA8C007534FA /* BaseProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProfileView.swift; sourceTree = "<group>"; };
@@ -328,6 +330,7 @@
 			isa = PBXGroup;
 			children = (
 				DBB5AF5E281182F8002B29CC /* ChannelService.swift */,
+				DB647016281190C4003C97CC /* MessageService.swift */,
 			);
 			path = ServiceLayer;
 			sourceTree = "<group>";
@@ -530,6 +533,7 @@
 				DBBD175327C6682A0093B548 /* Extensions.swift in Sources */,
 				DB8BCD8227D026FC00054A95 /* ProfileViewController.swift in Sources */,
 				DBD232BE27E13FEF00484E0B /* ButtonThemesView.swift in Sources */,
+				DB647017281190C4003C97CC /* MessageService.swift in Sources */,
 				DB86836A27C2A9F100D82F48 /* AppDelegate.swift in Sources */,
 				DB8512E927E2477D00F26830 /* ColorTheme.swift in Sources */,
 				DBA00BE727FE3F83006F02ED /* OldCoreDataManager.swift in Sources */,

@@ -63,14 +63,13 @@ extension ChannelService: IChannelService {
     }
     
     func mergeChanges(_ notification: Notification) {
-        print(#function)
         guard let context = notification.object as? NSManagedObjectContext, context != coreDataContext?.readContext else { return }
-        print("after context")
         coreDataContext?.readContext.mergeChanges(fromContextDidSave: notification)
     }
     
     func deleteChannel(_ channel: DBChannel?) {
         guard let channel = channel else { return }
+        let channelId = channel.identifier
         coreDataContext?.readContext.delete(channel)
         do {
             try coreDataContext?.readContext.save()
@@ -79,7 +78,7 @@ extension ChannelService: IChannelService {
         }
         
         DispatchQueue.global(qos: .background).async { [weak self] in
-            self?.firestoreDatabase?.deleteChannelAndNestedMessages(channelId: channel.identifier)
+            self?.firestoreDatabase?.deleteChannelAndNestedMessages(channelId: channelId)
         }
     }
 }

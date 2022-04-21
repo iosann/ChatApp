@@ -74,7 +74,7 @@ class ConversationsListViewController: FetchedResultsViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-        tableView.register(UINib(nibName: "ConversationCell", bundle: nil), forCellReuseIdentifier: cellIdentifier)
+        tableView.register(UINib(nibName: cellIdentifier, bundle: nil), forCellReuseIdentifier: cellIdentifier)
         tableView.separatorStyle = .none
     }
     
@@ -118,7 +118,7 @@ extension ConversationsListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let conversationViewController = ConversationViewController()
         conversationViewController.selectedChannel = dataSource.fetchedResultsController?.object(at: indexPath)
-//        conversationViewController.delegate = delegate
+        conversationViewController.context = serviceContext
         navigationController?.pushViewController(conversationViewController, animated: true)
     }
     

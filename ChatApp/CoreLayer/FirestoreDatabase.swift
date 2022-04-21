@@ -17,15 +17,16 @@ protocol IFirestoreChannels {
 }
 
 protocol IFirestoreMessages {
+    var selectedChannelId: String? { get set }
     func loadMessages( _ completion: @escaping(SnapshotResult) -> Void)
     func addMessage(data: [String: Any])
 }
 
 final class FirestoreDatabase {
-    var selectedChannelId = ""
+    var selectedChannelId: String?
     private let db = Firestore.firestore()
     private lazy var referenceToChannels = db.collection("channels")
-    private lazy var referenceToMessages = referenceToChannels.document(selectedChannelId).collection("messages")
+    private lazy var referenceToMessages = referenceToChannels.document(selectedChannelId ?? "").collection("messages")
     
     private func loadData(reference: CollectionReference, _ completion: @escaping(SnapshotResult) -> Void) {
         reference.addSnapshotListener { snapshot, error in
@@ -57,7 +58,7 @@ extension FirestoreDatabase: IFirestoreChannels {
     func deleteChannelAndNestedMessages(channelId: String?) {
         guard let channelId = channelId else { return }
         referenceToChannels.document(channelId).delete()
-        let messagesReference = referenceToMessages.document(channelId).collection("messages")
+        let messagesReference = referenceToChannels.document(channelId).collection("messages")
         messagesReference.getDocuments { snapshot, error in
             guard error == nil, let snapshot = snapshot else {
                 assertionFailure(error?.localizedDescription ?? "")
