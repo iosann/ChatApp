@@ -12,14 +12,13 @@ import CoreData
 class ConversationsListViewController: FetchedResultsViewController {
     
     private let cellIdentifier = "ConversationCell"
-    private let db = Firestore.firestore()
-    private lazy var reference = db.collection("channels")
-    private let newCoreDataManager = NewCoreDataManager()
-    private let oldCoreDataManager = OldCoreDataManager()
-    weak var delegate: ICoreData?
+    private let dataSource = TableViewDataSource()
+    private let channelServiceInstance = ChannelService()
+    weak var channelService: IChannelService?
+    weak var serviceContext: IServiceCoreDataContext?
     
     private lazy var fetchedResultsController: NSFetchedResultsController<DBChannel> = {
-        guard let context = delegate?.readContext else { return NSFetchedResultsController<DBChannel>() }
+        guard let context = serviceContext?.coreDataContext?.readContext else { return NSFetchedResultsController<DBChannel>() }
         let fetchRequest = DBChannel.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(DBChannel.lastActivity), ascending: false)]
         fetchRequest.fetchBatchSize = 15
@@ -35,10 +34,13 @@ class ConversationsListViewController: FetchedResultsViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.delegate = newCoreDataManager
-//        self.delegate = oldCoreDataManager
+        self.serviceContext = channelServiceInstance
+        self.channelService = channelServiceInstance
+        dataSource.cellIdentifier = cellIdentifier
+        dataSource.fetchedResultsController = fetchedResultsController
+        tableView.dataSource = dataSource
         NotificationCenter.default.addObserver(self, selector: #selector(updateMainContext), name: .NSManagedObjectContextDidSave, object: nil)
-        getChannelsFromFirestore()
+        loadChannels()
         setupUI()
     }
     
@@ -58,34 +60,12 @@ class ConversationsListViewController: FetchedResultsViewController {
         setupTableView()
     }
     
-    private func getChannelsFromFirestore() {
-        reference.addSnapshotListener { [weak self] snapshot, error in
-            guard error == nil, let snapshot = snapshot else {
-                assertionFailure(error?.localizedDescription ?? "")
-                return
-            }
-            self?.delegate?.performSave { context in
-                self?.saveChannels(snapshot: snapshot, context: context)
-            }
-        }
-    }
-    
-    private func saveChannels(snapshot: QuerySnapshot, context: NSManagedObjectContext) {
-        snapshot.documents.forEach {
-            let timestampDate = ($0.data()["lastActivity"] as? Timestamp)?.dateValue()
-            let date = timestampDate != nil ? timestampDate : "2022-01-01T17:29:50Z".formattedDate
-            
-            let dbchannel = DBChannel(context: context)
-            dbchannel.identifier = $0.documentID
-            dbchannel.name = $0.data()["name"] as? String
-            dbchannel.lastMessage = $0.data()["lastMessage"] as? String
-            dbchannel.lastActivity = date
-        }
+    private func loadChannels() {
+        channelService?.loadAndSaveChannels()
     }
     
     private func setupTableView() {
         view.addSubview(tableView)
-        tableView.dataSource = self
         tableView.delegate = self
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -113,7 +93,7 @@ class ConversationsListViewController: FetchedResultsViewController {
         let alert = UIAlertController(title: "Add channel name", message: nil, preferredStyle: .alert)
         let createAction = UIAlertAction(title: "Create", style: .cancel) { [weak self] _ in
             let channel = Channel(name: alert.textFields?.first?.text, lastActivity: Date())
-            self?.reference.addDocument(data: channel.toDict)
+            self?.channelService?.addChannel(data: channel.toDict)
         }
         alert.addAction(createAction)
         let cancelAction = UIAlertAction(title: "Cancel", style: .default)
@@ -125,38 +105,11 @@ class ConversationsListViewController: FetchedResultsViewController {
     }
     
     @objc private func updateMainContext(_ notification: Notification) {
-        guard let context = notification.object as? NSManagedObjectContext, context != delegate?.readContext else { return }
-        delegate?.readContext.mergeChanges(fromContextDidSave: notification)
-    }
-    
-    private func deleteChannelAndNestedMessages(identifier: String?) {
-        guard let identifier = identifier else { return }
-        reference.document(identifier).delete()
-        let messagesReference = reference.document(identifier).collection("messages")
-        messagesReference.getDocuments { snapshot, error in
-            guard error == nil, let snapshot = snapshot else {
-                assertionFailure(error?.localizedDescription ?? "")
-                return
-            }
-            snapshot.documents.forEach { messagesReference.document($0.documentID).delete() }
-        }
+        channelService?.mergeChanges(notification)
     }
 }
 
-extension ConversationsListViewController: UITableViewDataSource, UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let sections = fetchedResultsController.sections else { return 0 }
-        return sections[section].numberOfObjects
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
-        guard let conversationCell = cell as? ConversationCell else { return cell }
-        let channel = fetchedResultsController.object(at: indexPath)
-        conversationCell.configure(name: channel.name, message: channel.lastMessage, date: channel.lastActivity)
-        return conversationCell
-    }
+extension ConversationsListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 90
@@ -164,24 +117,18 @@ extension ConversationsListViewController: UITableViewDataSource, UITableViewDel
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let conversationViewController = ConversationViewController()
-        conversationViewController.selectedChannel = fetchedResultsController.object(at: indexPath)
-        conversationViewController.delegate = delegate
+        conversationViewController.selectedChannel = dataSource.fetchedResultsController?.object(at: indexPath)
+//        conversationViewController.delegate = delegate
         navigationController?.pushViewController(conversationViewController, animated: true)
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            let channelIdentifier = fetchedResultsController.object(at: indexPath).identifier
-            delegate?.readContext.delete(fetchedResultsController.object(at: indexPath))
-            do {
-                try delegate?.readContext.save()
-            } catch {
-                assertionFailure(error.localizedDescription)
-            }
-            
-            DispatchQueue.global(qos: .background).async { [weak self] in
-                self?.deleteChannelAndNestedMessages(identifier: channelIdentifier)
-            }
-        }
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _, _, _ in
+            let channel = self?.dataSource.fetchedResultsController?.object(at: indexPath)
+            self?.channelService?.deleteChannel(channel)
+           }
+           deleteAction.backgroundColor = .red
+           let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+           return configuration
     }
 }

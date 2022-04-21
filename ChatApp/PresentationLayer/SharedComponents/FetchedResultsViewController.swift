@@ -17,10 +17,12 @@ extension FetchedResultsViewController: NSFetchedResultsControllerDelegate {
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
+        print(#function)
     }
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
+        print(#function)
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
@@ -33,6 +35,7 @@ extension FetchedResultsViewController: NSFetchedResultsControllerDelegate {
         case .update:
             guard let indexPath = indexPath else { return }
             tableView.reloadRows(at: [indexPath], with: .automatic)
+    
         case .insert:
             guard let newIndexPath = newIndexPath else { return }
             tableView.insertRows(at: [newIndexPath], with: .automatic)
