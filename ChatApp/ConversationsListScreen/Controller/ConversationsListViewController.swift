@@ -6,27 +6,81 @@
 //
 
 import UIKit
+import FirebaseFirestore
+import CoreData
 
-class ConversationsListViewController: UIViewController {
+class ConversationsListViewController: FetchedResultsViewController {
     
-    private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     private let cellIdentifier = "ConversationCell"
-    private var allContacts = [[Conversation](), [Conversation]()]
+    private let db = Firestore.firestore()
+    private lazy var reference = db.collection("channels")
+    private let newCoreDataManager = NewCoreDataManager()
+    private let oldCoreDataManager = OldCoreDataManager()
+    weak var delegate: ICoreData?
+    
+    private lazy var fetchedResultsController: NSFetchedResultsController<DBChannel> = {
+        guard let context = delegate?.readContext else { return NSFetchedResultsController<DBChannel>() }
+        let fetchRequest = DBChannel.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(DBChannel.lastActivity), ascending: false)]
+        fetchRequest.fetchBatchSize = 15
+        let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        controller.delegate = self
+        do {
+            try controller.performFetch()
+        } catch {
+            assertionFailure(error.localizedDescription)
+        }
+        return controller
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Tinkoff Chat"
-        var iconAvatarImage = UIImage(named: "avatar_icon")
-        iconAvatarImage = iconAvatarImage?.withRenderingMode(.alwaysOriginal)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: iconAvatarImage, style: .plain, target: self, action: #selector(openProfile))
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "icon_settings"), style: .plain, target: self, action: #selector(openThemes))
-        setupTableView()
-        prepareData()
+        self.delegate = newCoreDataManager
+//        self.delegate = oldCoreDataManager
+        NotificationCenter.default.addObserver(self, selector: #selector(updateMainContext), name: .NSManagedObjectContextDidSave, object: nil)
+        getChannelsFromFirestore()
+        setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: ThemeManager.shared.currentTheme.tintColor]
+    }
+
+    private func setupUI() {
+        title = "Channels"
+        var iconAvatarImage = UIImage(named: "avatar_icon")
+        iconAvatarImage = iconAvatarImage?.withRenderingMode(.alwaysOriginal)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: iconAvatarImage, style: .plain, target: self, action: #selector(openProfile))
+        navigationItem.leftBarButtonItems = [
+            UIBarButtonItem(image: UIImage(named: "icon_settings"), style: .plain, target: self, action: #selector(openThemes)),
+            UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addChannel))]
+        setupTableView()
+    }
+    
+    private func getChannelsFromFirestore() {
+        reference.addSnapshotListener { [weak self] snapshot, error in
+            guard error == nil, let snapshot = snapshot else {
+                assertionFailure(error?.localizedDescription ?? "")
+                return
+            }
+            self?.delegate?.performSave { context in
+                self?.saveChannels(snapshot: snapshot, context: context)
+            }
+        }
+    }
+    
+    private func saveChannels(snapshot: QuerySnapshot, context: NSManagedObjectContext) {
+        snapshot.documents.forEach {
+            let timestampDate = ($0.data()["lastActivity"] as? Timestamp)?.dateValue()
+            let date = timestampDate != nil ? timestampDate : "2022-01-01T17:29:50Z".formattedDate
+            
+            let dbchannel = DBChannel(context: context)
+            dbchannel.identifier = $0.documentID
+            dbchannel.name = $0.data()["name"] as? String
+            dbchannel.lastMessage = $0.data()["lastMessage"] as? String
+            dbchannel.lastActivity = date
+        }
     }
     
     private func setupTableView() {
@@ -44,15 +98,6 @@ class ConversationsListViewController: UIViewController {
         tableView.separatorStyle = .none
     }
     
-    private func prepareData() {
-        for contact in Conversation.allContacts {
-            if contact.online { allContacts[0].append(contact) }
-            else if contact.message != nil { allContacts[1].append(contact) }
-        }
-        allContacts[0].sort { $0.date?.compare($1.date ?? Date()) == .orderedDescending }
-        allContacts[1].sort { $0.date?.compare($1.date ?? Date()) == .orderedDescending }
-    }
-    
     @objc private func openProfile() {
         let profileViewController = ProfileViewController()
         let navigationController = UINavigationController(rootViewController: profileViewController)
@@ -63,29 +108,54 @@ class ConversationsListViewController: UIViewController {
         let themesViewController = ThemesViewController()
         navigationController?.pushViewController(themesViewController, animated: true)
     }
+    
+    @objc private func addChannel() {
+        let alert = UIAlertController(title: "Add channel name", message: nil, preferredStyle: .alert)
+        let createAction = UIAlertAction(title: "Create", style: .cancel) { [weak self] _ in
+            let channel = Channel(name: alert.textFields?.first?.text, lastActivity: Date())
+            self?.reference.addDocument(data: channel.toDict)
+        }
+        alert.addAction(createAction)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default)
+        alert.addAction(cancelAction)
+        alert.addTextField { textField in
+            textField.placeholder = "Enter channel name"
+        }
+        present(alert, animated: true)
+    }
+    
+    @objc private func updateMainContext(_ notification: Notification) {
+        guard let context = notification.object as? NSManagedObjectContext, context != delegate?.readContext else { return }
+        delegate?.readContext.mergeChanges(fromContextDidSave: notification)
+    }
+    
+    private func deleteChannelAndNestedMessages(identifier: String?) {
+        guard let identifier = identifier else { return }
+        reference.document(identifier).delete()
+        let messagesReference = reference.document(identifier).collection("messages")
+        messagesReference.getDocuments { snapshot, error in
+            guard error == nil, let snapshot = snapshot else {
+                assertionFailure(error?.localizedDescription ?? "")
+                return
+            }
+            snapshot.documents.forEach { messagesReference.document($0.documentID).delete() }
+        }
+    }
 }
 
 extension ConversationsListViewController: UITableViewDataSource, UITableViewDelegate {
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return allContacts.count
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return allContacts[section].count
+        guard let sections = fetchedResultsController.sections else { return 0 }
+        return sections[section].numberOfObjects
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
         guard let conversationCell = cell as? ConversationCell else { return cell }
-        let contact = allContacts[indexPath.section][indexPath.row]
-        conversationCell.configure(name: contact.name, message: contact.message, date: contact.date, online: contact.online, hasUnreadMessages: contact.hasUnreadMessages)
+        let channel = fetchedResultsController.object(at: indexPath)
+        conversationCell.configure(name: channel.name, message: channel.lastMessage, date: channel.lastActivity)
         return conversationCell
-    }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 { return "Online" }
-        else { return "History" }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -93,10 +163,25 @@ extension ConversationsListViewController: UITableViewDataSource, UITableViewDel
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let contact = allContacts[indexPath.section][indexPath.row]
         let conversationViewController = ConversationViewController()
-        conversationViewController.contactTitle = contact.name
-        conversationViewController.isMessageEmpty = (contact.message == nil) ? true : false
+        conversationViewController.selectedChannel = fetchedResultsController.object(at: indexPath)
+        conversationViewController.delegate = delegate
         navigationController?.pushViewController(conversationViewController, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let channelIdentifier = fetchedResultsController.object(at: indexPath).identifier
+            delegate?.readContext.delete(fetchedResultsController.object(at: indexPath))
+            do {
+                try delegate?.readContext.save()
+            } catch {
+                assertionFailure(error.localizedDescription)
+            }
+            
+            DispatchQueue.global(qos: .background).async { [weak self] in
+                self?.deleteChannelAndNestedMessages(identifier: channelIdentifier)
+            }
+        }
     }
 }

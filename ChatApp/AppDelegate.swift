@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -13,8 +14,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var lastState = UIApplication.shared.applicationState
     
-    func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        NSLog("Application moved from not running to \(application.applicationState.name): \(#function)")
+    func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+        FirebaseApp.configure()
+        if UserDefaults.standard.string(forKey: "DeviceId") == nil, let uuid = UIDevice.current.identifierForVendor?.uuidString {
+                UserDefaults.standard.setValue(uuid, forKey: "DeviceId")
+            }
+//        NSLog("Application moved from not running to \(application.applicationState.name): \(#function)")
         lastState = application.applicationState
         return true
     }
@@ -26,36 +31,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
 //        UIBarButtonItem.appearance().setTitlePositionAdjustment(UIOffset(horizontal: 0, vertical: 30), for: .default)
-//        UIBarButtonItem.appearance().tintColor = .black
         ThemeManager.shared.apply()
         
-        NSLog("Application moved from \(lastState.name) to \(application.applicationState.name): \(#function)")
+//        NSLog("Application moved from \(lastState.name) to \(application.applicationState.name): \(#function)")
         lastState = application.applicationState
         return true
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
-        NSLog("Application moved from \(lastState.name) to \(application.applicationState.name): \(#function)")
+//        NSLog("Application moved from \(lastState.name) to \(application.applicationState.name): \(#function)")
         lastState = application.applicationState
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
-        NSLog("Application moved from \(lastState.name) to \(application.applicationState.name): \(#function)")
+//        NSLog("Application moved from \(lastState.name) to \(application.applicationState.name): \(#function)")
         lastState = application.applicationState
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
-        NSLog("Application moved from \(lastState.name) to \(application.applicationState.name): \(#function)")
+//        NSLog("Application moved from \(lastState.name) to \(application.applicationState.name): \(#function)")
         lastState = application.applicationState
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
-        NSLog("Application moved from \(lastState.name) to \(application.applicationState.name): \(#function)")
+//        NSLog("Application moved from \(lastState.name) to \(application.applicationState.name): \(#function)")
         lastState = application.applicationState
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
-        NSLog("Application moved from \(lastState.name) to \(application.applicationState.name): \(#function)")
+//        NSLog("Application moved from \(lastState.name) to \(application.applicationState.name): \(#function)")
         lastState = application.applicationState
     }
 }

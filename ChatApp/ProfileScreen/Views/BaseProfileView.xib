@@ -5,6 +5,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -13,12 +14,11 @@
                 <outlet property="buttonStackView" destination="BsK-B9-Mny" id="bTt-xp-gwA"/>
                 <outlet property="cancelButton" destination="yqg-Ys-k12" id="qT6-8f-ndS"/>
                 <outlet property="contentView" destination="iN0-l3-epB" id="7rr-7G-gc4"/>
-                <outlet property="descriptionTextField" destination="u36-DO-IfH" id="iDe-4u-rbr"/>
+                <outlet property="descriptionTextView" destination="hy4-ow-z2t" id="TlO-KG-Hut"/>
                 <outlet property="editButton" destination="EcB-ia-T8z" id="5ij-ec-xjX"/>
-                <outlet property="nameTextField" destination="6Am-kD-Hn3" id="WzO-NN-K7y"/>
+                <outlet property="nameTextView" destination="DfG-NB-AyS" id="vOw-28-puA"/>
                 <outlet property="photoImageView" destination="PzQ-fx-tFX" id="Cnf-ex-b7D"/>
-                <outletCollection property="saveButtons" destination="AZJ-00-Vs9" collectionClass="NSMutableArray" id="DIk-Jq-ALE"/>
-                <outletCollection property="saveButtons" destination="dSL-8q-Jih" collectionClass="NSMutableArray" id="pwi-c4-Mpg"/>
+                <outlet property="saveButton" destination="dSL-8q-Jih" id="yMx-75-5yv"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -32,26 +32,17 @@
                         <constraint firstAttribute="width" secondItem="PzQ-fx-tFX" secondAttribute="height" multiplier="1:1" id="op2-CL-trW"/>
                     </constraints>
                 </imageView>
-                <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Full name" textAlignment="natural" minimumFontSize="14" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="6Am-kD-Hn3">
-                    <rect key="frame" x="67.666666666666686" y="323" width="240" height="34"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
-                </textField>
-                <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Description" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="u36-DO-IfH">
-                    <rect key="frame" x="67.666666666666686" y="389" width="240" height="34"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
-                </textField>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EcB-ia-T8z">
                     <rect key="frame" x="56.333333333333343" y="708" width="262.33333333333326" height="40"/>
                     <color key="backgroundColor" red="0.96470588239999999" green="0.96470588239999999" blue="0.96470588239999999" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="AfJ-lo-q2e"/>
                     </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                     <state key="normal" title="Edit"/>
                     <connections>
-                        <action selector="editTextFields:" destination="-1" eventType="touchUpInside" id="BqC-1K-eWX"/>
+                        <action selector="editTextViews:" destination="-1" eventType="touchUpInside" id="gkl-r6-86w"/>
                     </connections>
                 </button>
                 <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="BsK-B9-Mny">
@@ -60,51 +51,61 @@
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yqg-Ys-k12">
                             <rect key="frame" x="0.0" y="0.0" width="335" height="40"/>
                             <color key="backgroundColor" red="0.96470588235294119" green="0.96470588235294119" blue="0.96470588235294119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                             <state key="normal" title="Cancel"/>
                         </button>
-                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="XKf-Iy-dHF">
+                        <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dSL-8q-Jih">
                             <rect key="frame" x="0.0" y="50" width="335" height="40"/>
-                            <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AZJ-00-Vs9">
-                                    <rect key="frame" x="0.0" y="0.0" width="162.66666666666666" height="40"/>
-                                    <color key="backgroundColor" red="0.96470588235294119" green="0.96470588235294119" blue="0.96470588235294119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                    <state key="normal" title="Save GCD"/>
-                                </button>
-                                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dSL-8q-Jih">
-                                    <rect key="frame" x="172.66666666666663" y="0.0" width="162.33333333333337" height="40"/>
-                                    <color key="backgroundColor" red="0.96470588235294119" green="0.96470588235294119" blue="0.96470588235294119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="40" id="RY3-36-qR5"/>
-                                    </constraints>
-                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                    <state key="normal" title="Save Operations"/>
-                                </button>
-                            </subviews>
-                        </stackView>
+                            <color key="backgroundColor" red="0.96470588235294119" green="0.96470588235294119" blue="0.96470588235294119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="RY3-36-qR5"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" title="Save Operations"/>
+                        </button>
                     </subviews>
                 </stackView>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" scrollEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DfG-NB-AyS">
+                    <rect key="frame" x="67.666666666666686" y="323" width="240" height="33"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="textColor" systemColor="labelColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" scrollEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hy4-ow-z2t">
+                    <rect key="frame" x="67.666666666666686" y="376" width="240" height="33"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="textColor" systemColor="labelColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <constraints>
+                <constraint firstItem="DfG-NB-AyS" firstAttribute="width" secondItem="PzQ-fx-tFX" secondAttribute="width" id="7SZ-qX-phN"/>
+                <constraint firstItem="hy4-ow-z2t" firstAttribute="width" secondItem="DfG-NB-AyS" secondAttribute="width" id="8vn-cC-o7C"/>
                 <constraint firstItem="EcB-ia-T8z" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="GaC-FE-tKe"/>
                 <constraint firstItem="PzQ-fx-tFX" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="7" id="JtU-Cl-YTm"/>
-                <constraint firstItem="u36-DO-IfH" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="L10-9v-M5Y"/>
                 <constraint firstItem="PzQ-fx-tFX" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.64" id="Mnt-IL-rN7"/>
-                <constraint firstItem="6Am-kD-Hn3" firstAttribute="top" secondItem="PzQ-fx-tFX" secondAttribute="bottom" constant="32" id="Paf-a7-0Sx"/>
-                <constraint firstItem="6Am-kD-Hn3" firstAttribute="width" secondItem="PzQ-fx-tFX" secondAttribute="width" id="UeM-Yr-pm3"/>
+                <constraint firstItem="hy4-ow-z2t" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Pnf-ju-ze7"/>
+                <constraint firstItem="DfG-NB-AyS" firstAttribute="top" secondItem="PzQ-fx-tFX" secondAttribute="bottom" constant="32" id="QxA-ji-Mdy"/>
+                <constraint firstItem="hy4-ow-z2t" firstAttribute="top" secondItem="DfG-NB-AyS" secondAttribute="bottom" constant="20" id="VT3-jw-kJa"/>
                 <constraint firstItem="EcB-ia-T8z" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.7" id="XHi-w4-Si4"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="BsK-B9-Mny" secondAttribute="trailing" constant="20" id="ep1-Py-ZDl"/>
-                <constraint firstItem="6Am-kD-Hn3" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="fAQ-wb-N50"/>
-                <constraint firstItem="u36-DO-IfH" firstAttribute="top" secondItem="6Am-kD-Hn3" secondAttribute="bottom" constant="32" id="haw-mS-bN5"/>
                 <constraint firstItem="PzQ-fx-tFX" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="hex-wD-UW3"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="EcB-ia-T8z" secondAttribute="bottom" constant="30" id="kFW-VP-lhb"/>
-                <constraint firstItem="u36-DO-IfH" firstAttribute="width" secondItem="6Am-kD-Hn3" secondAttribute="width" id="n99-5d-0xq"/>
                 <constraint firstItem="BsK-B9-Mny" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="q4e-7A-UlU"/>
+                <constraint firstItem="DfG-NB-AyS" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="qfw-vz-aHn"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="BsK-B9-Mny" secondAttribute="bottom" constant="20" id="wrf-rD-4wO"/>
             </constraints>
             <point key="canvasLocation" x="136.80000000000001" y="45.073891625615765"/>
         </view>
     </objects>
+    <resources>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>

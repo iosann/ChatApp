@@ -40,26 +40,4 @@ class ThemeManager: ChangeThemeProtocol {
             UserDefaults.standard.set(self?.currentTheme.rawValue, forKey: "CurrentTheme")
         }
     }
-    
-    func applyTheme(theme: ColorTheme) {
-        currentTheme = theme
-    }
-    
-    func setBackgroundColor(for view: UIView) {
-        view.backgroundColor = currentTheme.backgroundColor
-    }
-    
-    func setBackgroundColorForIncomingMessage(for view: UIView) {
-        view.backgroundColor = currentTheme.incomingMessageColor
-    }
-    
-    func setBackgroundColorForOutgoingMessage(for view: UIView) {
-        view.backgroundColor = currentTheme.outgoingMessageColor
-    }
 }
-
-
-
-
-
-
