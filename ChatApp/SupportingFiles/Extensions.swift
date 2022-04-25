@@ -45,6 +45,16 @@ extension UIView {
             layer.render(in: rendererContext.cgContext)
         }
     }
+    
+    func addActivityIndicator() -> UIActivityIndicatorView {
+        let activityIndicator = UIActivityIndicatorView()
+        activityIndicator.style = .large
+        activityIndicator.color = .black
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.center = self.center
+        self.addSubview(activityIndicator)
+        return activityIndicator
+    }
 }
 
 extension UIButton {

@@ -1,29 +1,13 @@
 //
-//  FetchedResultsViewController.swift
+//  ConversationFRCDelegate.swift
 //  ChatApp
 //
-//  Created by Anna Belousova on 14.04.2022.
+//  Created by Anna Belousova on 25.04.2022.
 //
 
-import UIKit
 import CoreData
 
-class FetchedResultsViewController: UIViewController {
-    
-    let tableView = UITableView(frame: .zero, style: .insetGrouped)
-    
-    func setupTableView() {
-        view.addSubview(tableView)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
-        tableView.separatorStyle = .none
-    }
-}
-
-extension FetchedResultsViewController: NSFetchedResultsControllerDelegate {
+extension ConversationViewController: NSFetchedResultsControllerDelegate {
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()

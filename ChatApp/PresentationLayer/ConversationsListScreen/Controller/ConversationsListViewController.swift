@@ -9,7 +9,7 @@ import UIKit
 import FirebaseFirestore
 import CoreData
 
-class ConversationsListViewController: FetchedResultsViewController {
+class ConversationsListViewController: UIViewController {
     
     private let cellIdentifier = "ConversationCell"
     private let dataSource = TableViewDataSource()
@@ -17,6 +17,8 @@ class ConversationsListViewController: FetchedResultsViewController {
     weak var gettingChannelService: IGettingChannel?
     weak var serviceContext: IServiceCoreDataContext?
     weak var editingChannelService: IEditingChannels?
+    
+    let tableView = UITableView(frame: .zero, style: .insetGrouped)
     
     private lazy var fetchedResultsController: NSFetchedResultsController<DBChannel> = {
         guard let context = serviceContext?.coreDataContext?.readContext else { return NSFetchedResultsController<DBChannel>() }
@@ -60,20 +62,24 @@ class ConversationsListViewController: FetchedResultsViewController {
             UIBarButtonItem(image: UIImage(named: "icon_settings"), style: .plain, target: self, action: #selector(openThemes)),
             UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addChannel))]
         setupTableView()
-        configureTableView()
+    }
+    
+    private func setupTableView() {
+        view.addSubview(tableView)
+        tableView.delegate = self
+        tableView.register(UINib(nibName: cellIdentifier, bundle: nil), forCellReuseIdentifier: cellIdentifier)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        tableView.separatorStyle = .none
     }
     
     private func loadChannels() {
         gettingChannelService?.loadAndSaveChannels()
-    }
-    
-    private func configureTableView() {
-        tableView.delegate = self
-        tableView.register(UINib(nibName: cellIdentifier, bundle: nil), forCellReuseIdentifier: cellIdentifier)
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
     }
     
     @objc private func openProfile() {

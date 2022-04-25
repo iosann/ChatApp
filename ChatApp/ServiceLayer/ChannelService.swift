@@ -82,9 +82,6 @@ extension ChannelService: IEditingChannels {
         } catch {
             assertionFailure(error.localizedDescription)
         }
-        
-        DispatchQueue.global(qos: .background).async { [weak self] in
-            self?.firestoreDatabase?.deleteChannelAndNestedMessages(channelId: channelId)
-        }
+        firestoreDatabase?.deleteChannelAndNestedMessages(channelId: channelId)
     }
 }

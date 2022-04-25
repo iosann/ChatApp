@@ -7,10 +7,6 @@
 
 import UIKit
 
-enum ServiceError: Error {
-    case `default`
-}
-
 protocol ISavingData: AnyObject {
     func writeData(fullName: String?, description: String?, image: UIImage?, _ completion: @escaping(Bool) -> Void)
     func getStoredString(fileName: String, _ completion: @escaping(String) -> Void)
@@ -23,11 +19,11 @@ class DataSaving {
     private var errors = [Error]()
     
     func writeData(fullName: String?, description: String?, image: UIImage?, _ completion: @escaping (Bool) -> Void) {
-            if fullName != nil { self.writeString(string: fullName ?? "", pathName: Constants.fullnameFilename) }
-            if description != nil { self.writeString(string: description ?? "", pathName: Constants.descriptionFileName) }
+            if fullName != nil { self.writeString(string: fullName ?? "", pathName: TextConstants.fullnameFilename) }
+            if description != nil { self.writeString(string: description ?? "", pathName: TextConstants.descriptionFileName) }
             if image != nil { self.writeImage(image: image ?? UIImage()) }
 // sleep() добавлен, чтобы во время записи данных увидеть activityIndicator и убедиться в назаблокированности экрана
- //           sleep(2)
+            sleep(3)
             if self.errors.isEmpty {
                 completion(true)
             } else { completion(false) }

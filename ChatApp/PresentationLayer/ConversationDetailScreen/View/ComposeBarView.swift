@@ -62,7 +62,7 @@ class ComposeBarView: UIView {
 extension ComposeBarView: UITextViewDelegate {
 
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.text == Constants.textViewPlaceholder { textView.text = "" }
+        if textView.text == TextConstants.textViewPlaceholder { textView.text = "" }
         textView.becomeFirstResponder()
     }
     

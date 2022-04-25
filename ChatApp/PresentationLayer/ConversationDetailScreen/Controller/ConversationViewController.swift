@@ -9,13 +9,15 @@ import UIKit
 import Firebase
 import CoreData
 
-class ConversationViewController: FetchedResultsViewController {
+class ConversationViewController: UIViewController {
     
     private let cellIdentifier = "MessageCell"
     private let myDeviceId = UserDefaults.standard.string(forKey: "DeviceId")
     private var composeBar = ComposeBarView()
     var selectedChannel: DBChannel?
     var context: IServiceCoreDataContext?
+    
+    let tableView = UITableView(frame: .zero, style: .insetGrouped)
     
     private let messageServiceInstance = MessageService()
     private weak var messageService: IMessageService?
@@ -72,17 +74,21 @@ class ConversationViewController: FetchedResultsViewController {
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
         setupTableView()
-        configureTableView()
         setupComposeBar()
     }
     
-    private func configureTableView() {
+    private func setupTableView() {
+        view.addSubview(tableView)
         tableView.dataSource = dataSource
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -45)
         ])
         tableView.register(MessageCell.self, forCellReuseIdentifier: cellIdentifier)
+        tableView.separatorStyle = .none
     }
     
     private func setupComposeBar() {
@@ -101,7 +107,7 @@ class ConversationViewController: FetchedResultsViewController {
      
     @objc private func dismissKeyboard() {
         composeBar.textView.resignFirstResponder()
-        composeBar.textView.text = Constants.textViewPlaceholder
+        composeBar.textView.text = TextConstants.textViewPlaceholder
         composeBar.textViewHeight.constant = 38
     }
     

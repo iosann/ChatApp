@@ -17,15 +17,7 @@ class ProfileViewController: UIViewController {
         label.text = "My Profile"
         return label
     }()
-    private lazy var activityIndicator: UIActivityIndicatorView = {
-        let activityIndicator = UIActivityIndicatorView()
-        activityIndicator.style = .large
-        activityIndicator.color = .black
-        activityIndicator.hidesWhenStopped = true
-        activityIndicator.center = view.center
-        return activityIndicator
-    }()
-    
+    private var activityIndicator = UIActivityIndicatorView()
     private let saveByOperations = SavingByOperations()
     private var storedFullName: String?
     private var storedDescription: String?
@@ -59,7 +51,7 @@ class ProfileViewController: UIViewController {
         navigationItem.leftBarButtonItem = titleButton
         view.backgroundColor = ThemeManager.currentTheme?.backgroundColor
         setupScrollView()
-        profileView.addSubview(activityIndicator)
+        activityIndicator = profileView.addActivityIndicator()
         profileView.editPhotoButton.addTarget(self, action: #selector(editProfileImage), for: .touchUpInside)
         profileView.cancelButton.addTarget(self, action: #selector(cancelEditing), for: .touchUpInside)
         profileView.saveButton.addTarget(self, action: #selector(saveChanges), for: .touchUpInside)
@@ -87,11 +79,11 @@ class ProfileViewController: UIViewController {
     }
     
     private func getStoredData() {
-        delegate?.getStoredString(fileName: Constants.fullnameFilename) { [weak self] fullname in
+        delegate?.getStoredString(fileName: TextConstants.fullnameFilename) { [weak self] fullname in
             self?.storedFullName = fullname
             DispatchQueue.main.async { self?.profileView.nameTextView.text = fullname }
         }
-        delegate?.getStoredString(fileName: Constants.descriptionFileName) { [weak self] description in
+        delegate?.getStoredString(fileName: TextConstants.descriptionFileName) { [weak self] description in
             self?.storedDescription = description
             DispatchQueue.main.async { self?.profileView.descriptionTextView.text = description }
         }
@@ -215,6 +207,12 @@ class ProfileViewController: UIViewController {
             }
             alert.addAction(photoLibraryAction)
         }
+        let loadAction = UIAlertAction(title: "Load", style: .default) { _ in
+            let imagesController = ImagesCollectionViewController()
+            self.present(imagesController, animated: true)
+        }
+        alert.addAction(loadAction)
+        
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         alert.addAction(cancelAction)
         present(alert, animated: true)
