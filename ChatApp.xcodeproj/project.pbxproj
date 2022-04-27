@@ -11,7 +11,6 @@
 		DB398A5D2805F7FB006BE07E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DB398A5C2805F7FB006BE07E /* GoogleService-Info.plist */; };
 		DB482C572817212400676DE9 /* ConversationsListFRCDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C562817212400676DE9 /* ConversationsListFRCDelegate.swift */; };
 		DB482C59281722DA00676DE9 /* ConversationFRCDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C58281722DA00676DE9 /* ConversationFRCDelegate.swift */; };
-		DB482C5B28172A1000676DE9 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C5A28172A1000676DE9 /* APIManager.swift */; };
 		DB482C5D28172BE800676DE9 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C5C28172BE800676DE9 /* Errors.swift */; };
 		DB482C5F2817335400676DE9 /* ImagesResponce.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C5E2817335400676DE9 /* ImagesResponce.swift */; };
 		DB482C6328194EB700676DE9 /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C6228194EB700676DE9 /* FirestoreService.swift */; };
@@ -19,6 +18,12 @@
 		DB482C672819585000676DE9 /* ConversationsListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C662819585000676DE9 /* ConversationsListModel.swift */; };
 		DB482C692819743000676DE9 /* ConversationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C682819743000676DE9 /* ConversationModel.swift */; };
 		DB482C6C281980D600676DE9 /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C6B281980D600676DE9 /* ProfileModel.swift */; };
+		DB482C6E28198D7A00676DE9 /* RequestSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C6D28198D7A00676DE9 /* RequestSender.swift */; };
+		DB482C702819929700676DE9 /* ImagesURLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C6F2819929700676DE9 /* ImagesURLParser.swift */; };
+		DB482C72281997BB00676DE9 /* RequestConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C71281997BB00676DE9 /* RequestConfiguration.swift */; };
+		DB482C742819A09700676DE9 /* ImageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C732819A09700676DE9 /* ImageRequest.swift */; };
+		DB482C762819A14600676DE9 /* NetworkImagesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C752819A14600676DE9 /* NetworkImagesService.swift */; };
+		DB482C782819A3A000676DE9 /* ImagesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C772819A3A000676DE9 /* ImagesModel.swift */; };
 		DB504C2B27D93E39004B0CCE /* ConversationsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB504C2A27D93E39004B0CCE /* ConversationsListViewController.swift */; };
 		DB504C2E27D94152004B0CCE /* ConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB504C2C27D94152004B0CCE /* ConversationCell.swift */; };
 		DB504C2F27D94152004B0CCE /* ConversationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB504C2D27D94152004B0CCE /* ConversationCell.xib */; };
@@ -65,7 +70,6 @@
 		DB398A5C2805F7FB006BE07E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DB482C562817212400676DE9 /* ConversationsListFRCDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsListFRCDelegate.swift; sourceTree = "<group>"; };
 		DB482C58281722DA00676DE9 /* ConversationFRCDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationFRCDelegate.swift; sourceTree = "<group>"; };
-		DB482C5A28172A1000676DE9 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		DB482C5C28172BE800676DE9 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		DB482C5E2817335400676DE9 /* ImagesResponce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesResponce.swift; sourceTree = "<group>"; };
 		DB482C6228194EB700676DE9 /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
@@ -73,6 +77,12 @@
 		DB482C662819585000676DE9 /* ConversationsListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsListModel.swift; sourceTree = "<group>"; };
 		DB482C682819743000676DE9 /* ConversationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationModel.swift; sourceTree = "<group>"; };
 		DB482C6B281980D600676DE9 /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
+		DB482C6D28198D7A00676DE9 /* RequestSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestSender.swift; sourceTree = "<group>"; };
+		DB482C6F2819929700676DE9 /* ImagesURLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesURLParser.swift; sourceTree = "<group>"; };
+		DB482C71281997BB00676DE9 /* RequestConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestConfiguration.swift; sourceTree = "<group>"; };
+		DB482C732819A09700676DE9 /* ImageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageRequest.swift; sourceTree = "<group>"; };
+		DB482C752819A14600676DE9 /* NetworkImagesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkImagesService.swift; sourceTree = "<group>"; };
+		DB482C772819A3A000676DE9 /* ImagesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesModel.swift; sourceTree = "<group>"; };
 		DB504C2A27D93E39004B0CCE /* ConversationsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsListViewController.swift; sourceTree = "<group>"; };
 		DB504C2C27D94152004B0CCE /* ConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationCell.swift; sourceTree = "<group>"; };
 		DB504C2D27D94152004B0CCE /* ConversationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConversationCell.xib; sourceTree = "<group>"; };
@@ -163,6 +173,14 @@
 			isa = PBXGroup;
 			children = (
 				DB482C6B281980D600676DE9 /* ProfileModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DB482C792819A3A600676DE9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DB482C772819A3A000676DE9 /* ImagesModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -259,9 +277,12 @@
 			isa = PBXGroup;
 			children = (
 				DBB5AF5C2811829A002B29CC /* FirestoreDatabase.swift */,
-				DB482C5A28172A1000676DE9 /* APIManager.swift */,
 				DB482C5C28172BE800676DE9 /* Errors.swift */,
 				DB482C5E2817335400676DE9 /* ImagesResponce.swift */,
+				DB482C6D28198D7A00676DE9 /* RequestSender.swift */,
+				DB482C6F2819929700676DE9 /* ImagesURLParser.swift */,
+				DB482C71281997BB00676DE9 /* RequestConfiguration.swift */,
+				DB482C732819A09700676DE9 /* ImageRequest.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -271,6 +292,7 @@
 			children = (
 				DB482C6028173E1100676DE9 /* Controller */,
 				DB482C6128173E1900676DE9 /* Views */,
+				DB482C792819A3A600676DE9 /* Model */,
 			);
 			path = ImagesScreen;
 			sourceTree = "<group>";
@@ -403,6 +425,7 @@
 				DBFFEE8C27EBACD600F194D9 /* OperationStorageService.swift */,
 				DB482C6228194EB700676DE9 /* FirestoreService.swift */,
 				DB482C6428194EC300676DE9 /* CoreDataService.swift */,
+				DB482C752819A14600676DE9 /* NetworkImagesService.swift */,
 			);
 			path = ServiceLayer;
 			sourceTree = "<group>";
@@ -590,12 +613,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB482C5B28172A1000676DE9 /* APIManager.swift in Sources */,
 				DBFFEE9327EC8FFD00F194D9 /* FileManagerStorage.swift in Sources */,
+				DB482C6E28198D7A00676DE9 /* RequestSender.swift in Sources */,
 				DBA00BE527FC8DB6006F02ED /* NewCoreDataContainer.swift in Sources */,
 				DB482C59281722DA00676DE9 /* ConversationFRCDelegate.swift in Sources */,
+				DB482C702819929700676DE9 /* ImagesURLParser.swift in Sources */,
 				DBE6239727F3705E00EA22F4 /* Channel.swift in Sources */,
 				DB745A5327D0FA8C007534FA /* BaseProfileView.swift in Sources */,
+				DB482C742819A09700676DE9 /* ImageRequest.swift in Sources */,
 				DB504C3E27D96AD5004B0CCE /* MessageCell.swift in Sources */,
 				DB482C5D28172BE800676DE9 /* Errors.swift in Sources */,
 				DBB5AF5D2811829A002B29CC /* FirestoreDatabase.swift in Sources */,
@@ -617,6 +642,7 @@
 				DB86836A27C2A9F100D82F48 /* AppDelegate.swift in Sources */,
 				DB8512E927E2477D00F26830 /* ColorTheme.swift in Sources */,
 				DB482C6C281980D600676DE9 /* ProfileModel.swift in Sources */,
+				DB482C782819A3A000676DE9 /* ImagesModel.swift in Sources */,
 				DBA00BE727FE3F83006F02ED /* OldCoreDataCoordinator.swift in Sources */,
 				DB504C2B27D93E39004B0CCE /* ConversationsListViewController.swift in Sources */,
 				DBC9757727F5F48C009CC84C /* ComposeBarView.swift in Sources */,
@@ -626,6 +652,8 @@
 				DBA00BC027FC7A94006F02ED /* DatabaseModel.xcdatamodeld in Sources */,
 				DBD232BA27E137E800484E0B /* ThemesViewController.swift in Sources */,
 				DB504C2E27D94152004B0CCE /* ConversationCell.swift in Sources */,
+				DB482C762819A14600676DE9 /* NetworkImagesService.swift in Sources */,
+				DB482C72281997BB00676DE9 /* RequestConfiguration.swift in Sources */,
 				DBFFEE9127EC751E00F194D9 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
