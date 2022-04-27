@@ -1,37 +1,28 @@
 //
-//  MessageService.swift
+//  ConversationModel.swift
 //  ChatApp
 //
-//  Created by Anna Belousova on 21.04.2022.
+//  Created by Anna Belousova on 27.04.2022.
 //
 
-import Foundation
 import Firebase
 import CoreData
 
-protocol IMessageService: AnyObject {
-    func loadAndSaveMessages(selectedChannelId: String?)
-    func addMessage(data: [String: Any])
+protocol IConversationModel: AnyObject {
+    func loadMessages(selectedChannelId: String?)
+    func addMessage(selectedChannelId: String?, data: [String: Any])
 }
 
-class MessageService {
+class ConversationModel: IConversationModel {
     
-    private var firestoreDatabase: IFirestoreMessages? = FirestoreDatabase()
-    private let coreDataStorage: ISavingToCoreData? = NewCoreDataContainer()
-}
+    private let loadingFirestoreServise: ILoadingFirestoreServise? = FirestoreService()
+    private let coreDataService: ICoreDataService? = CoreDataService()
 
-extension MessageService: IMessageService {
-    
-    func addMessage(data: [String: Any]) {
-        firestoreDatabase?.addMessage(data: data)
-    }
-    
-    func loadAndSaveMessages(selectedChannelId: String?) {
-        firestoreDatabase?.selectedChannelId = selectedChannelId
-        firestoreDatabase?.loadMessages { [weak self] result in
+    func loadMessages(selectedChannelId: String?) {
+        loadingFirestoreServise?.loadData(reference: URLConstants.referenceToChannels.document(selectedChannelId ?? "").collection("messages")) { [weak self] result in
             switch result {
             case .success(let snapshot):
-                self?.coreDataStorage?.performSave { context in
+                self?.coreDataService?.saveData { context in
                     self?.saveMessages(selectedChannelId: selectedChannelId, snapshot: snapshot, context: context)
                 }
             case .failure(let error):
@@ -40,13 +31,17 @@ extension MessageService: IMessageService {
         }
     }
     
+    func addMessage(selectedChannelId: String?, data: [String: Any]) {
+        loadingFirestoreServise?.addDocument(reference: URLConstants.referenceToChannels.document(selectedChannelId ?? "").collection("messages"), data: data)
+    }
+                                          
     private func saveMessages(selectedChannelId: String?, snapshot: QuerySnapshot, context: NSManagedObjectContext) {
         guard let selectedChannelId = selectedChannelId else { return }
         let request = DBChannel.fetchRequest()
         request.predicate = NSPredicate(format: "identifier == %@", selectedChannelId)
         do {
             let channel = try context.fetch(request).first
-             
+
             snapshot.documents.forEach {
                 let timestampDate = ($0.data()["created"] as? Timestamp)?.dateValue()
                 let date = timestampDate != nil ? timestampDate : "2022-01-01T17:29:50Z".formattedDate

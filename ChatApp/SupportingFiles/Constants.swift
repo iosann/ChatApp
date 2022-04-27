@@ -5,7 +5,7 @@
 //  Created by Anna Belousova on 24.03.2022.
 //
 
-import Foundation
+import Firebase
 
 struct TextConstants {
     static let fullnameFilename = "FullName.txt"
@@ -14,6 +14,7 @@ struct TextConstants {
 }
 
 struct URLConstants {
+    static let referenceToChannels = Firestore.firestore().collection("channels")
     static let pixabay = "https://pixabay.com/api/"
 }
 

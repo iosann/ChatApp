@@ -15,21 +15,18 @@ class ConversationViewController: UIViewController {
     private let myDeviceId = UserDefaults.standard.string(forKey: "DeviceId")
     private var composeBar = ComposeBarView()
     var selectedChannel: DBChannel?
-    var context: IServiceCoreDataContext?
-    
+    var context: NSManagedObjectContext?
     let tableView = UITableView(frame: .zero, style: .insetGrouped)
-    
-    private let messageServiceInstance = MessageService()
-    private weak var messageService: IMessageService?
-    
+
     private let dataSource = MessageTableViewDataSource()
+    let model: IConversationModel? = ConversationModel()
     
     override var inputAccessoryView: UIView? {
         return composeBar
     }
     
     private lazy var fetchedResultsController: NSFetchedResultsController<DBMessage> = {
-        guard let context = context?.coreDataContext?.readContext else { return NSFetchedResultsController<DBMessage>() }
+        guard let context = context else { return NSFetchedResultsController<DBMessage>() }
         let fetchRequest = DBMessage.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "channel == %@", selectedChannel ?? DBChannel())
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(DBMessage.created), ascending: true)]
@@ -46,7 +43,6 @@ class ConversationViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.messageService = messageServiceInstance
         dataSource.cellIdentifier = cellIdentifier
         dataSource.fetchedResultsController = fetchedResultsController
         loadMessages()
@@ -102,7 +98,7 @@ class ConversationViewController: UIViewController {
     }
 
     private func loadMessages() {
-        messageService?.loadAndSaveMessages(selectedChannelId: selectedChannel?.identifier)
+        model?.loadMessages(selectedChannelId: selectedChannel?.identifier)
     }
      
     @objc private func dismissKeyboard() {
@@ -114,7 +110,7 @@ class ConversationViewController: UIViewController {
     @objc private func sendNewMessage() {
         let text = composeBar.textView.text
         let message = Message(content: text, created: Date(), senderId: myDeviceId, senderName: "")
-        messageService?.addMessage(data: message.toDict)
+        model?.addMessage(selectedChannelId: selectedChannel?.identifier, data: message.toDict)
         dismissKeyboard()
     }
 
