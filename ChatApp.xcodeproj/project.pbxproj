@@ -21,9 +21,10 @@
 		DB482C6E28198D7A00676DE9 /* RequestSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C6D28198D7A00676DE9 /* RequestSender.swift */; };
 		DB482C702819929700676DE9 /* ImagesURLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C6F2819929700676DE9 /* ImagesURLParser.swift */; };
 		DB482C72281997BB00676DE9 /* RequestConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C71281997BB00676DE9 /* RequestConfiguration.swift */; };
-		DB482C742819A09700676DE9 /* ImageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C732819A09700676DE9 /* ImageRequest.swift */; };
+		DB482C742819A09700676DE9 /* URLRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C732819A09700676DE9 /* URLRequests.swift */; };
 		DB482C762819A14600676DE9 /* NetworkImagesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C752819A14600676DE9 /* NetworkImagesService.swift */; };
 		DB482C782819A3A000676DE9 /* ImagesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C772819A3A000676DE9 /* ImagesModel.swift */; };
+		DB482C7B2819B7DB00676DE9 /* ImageParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C7A2819B7DB00676DE9 /* ImageParser.swift */; };
 		DB504C2B27D93E39004B0CCE /* ConversationsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB504C2A27D93E39004B0CCE /* ConversationsListViewController.swift */; };
 		DB504C2E27D94152004B0CCE /* ConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB504C2C27D94152004B0CCE /* ConversationCell.swift */; };
 		DB504C2F27D94152004B0CCE /* ConversationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB504C2D27D94152004B0CCE /* ConversationCell.xib */; };
@@ -80,9 +81,10 @@
 		DB482C6D28198D7A00676DE9 /* RequestSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestSender.swift; sourceTree = "<group>"; };
 		DB482C6F2819929700676DE9 /* ImagesURLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesURLParser.swift; sourceTree = "<group>"; };
 		DB482C71281997BB00676DE9 /* RequestConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestConfiguration.swift; sourceTree = "<group>"; };
-		DB482C732819A09700676DE9 /* ImageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageRequest.swift; sourceTree = "<group>"; };
+		DB482C732819A09700676DE9 /* URLRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequests.swift; sourceTree = "<group>"; };
 		DB482C752819A14600676DE9 /* NetworkImagesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkImagesService.swift; sourceTree = "<group>"; };
 		DB482C772819A3A000676DE9 /* ImagesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesModel.swift; sourceTree = "<group>"; };
+		DB482C7A2819B7DB00676DE9 /* ImageParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageParser.swift; sourceTree = "<group>"; };
 		DB504C2A27D93E39004B0CCE /* ConversationsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsListViewController.swift; sourceTree = "<group>"; };
 		DB504C2C27D94152004B0CCE /* ConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationCell.swift; sourceTree = "<group>"; };
 		DB504C2D27D94152004B0CCE /* ConversationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConversationCell.xib; sourceTree = "<group>"; };
@@ -185,6 +187,15 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		DB482C7C2819C2CF00676DE9 /* Parsers */ = {
+			isa = PBXGroup;
+			children = (
+				DB482C6F2819929700676DE9 /* ImagesURLParser.swift */,
+				DB482C7A2819B7DB00676DE9 /* ImageParser.swift */,
+			);
+			path = Parsers;
+			sourceTree = "<group>";
+		};
 		DB504C3027D948F1004B0CCE /* ProfileScreen */ = {
 			isa = PBXGroup;
 			children = (
@@ -280,9 +291,8 @@
 				DB482C5C28172BE800676DE9 /* Errors.swift */,
 				DB482C5E2817335400676DE9 /* ImagesResponce.swift */,
 				DB482C6D28198D7A00676DE9 /* RequestSender.swift */,
-				DB482C6F2819929700676DE9 /* ImagesURLParser.swift */,
 				DB482C71281997BB00676DE9 /* RequestConfiguration.swift */,
-				DB482C732819A09700676DE9 /* ImageRequest.swift */,
+				DB482C732819A09700676DE9 /* URLRequests.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -442,6 +452,7 @@
 			children = (
 				DBA00BE927FEE6A2006F02ED /* Storage */,
 				DBA00BEA27FEE6AF006F02ED /* CoreData */,
+				DB482C7C2819C2CF00676DE9 /* Parsers */,
 				DB6470182811B26D003C97CC /* Network */,
 			);
 			path = CoreLayer;
@@ -617,10 +628,11 @@
 				DB482C6E28198D7A00676DE9 /* RequestSender.swift in Sources */,
 				DBA00BE527FC8DB6006F02ED /* NewCoreDataContainer.swift in Sources */,
 				DB482C59281722DA00676DE9 /* ConversationFRCDelegate.swift in Sources */,
+				DB482C7B2819B7DB00676DE9 /* ImageParser.swift in Sources */,
 				DB482C702819929700676DE9 /* ImagesURLParser.swift in Sources */,
 				DBE6239727F3705E00EA22F4 /* Channel.swift in Sources */,
 				DB745A5327D0FA8C007534FA /* BaseProfileView.swift in Sources */,
-				DB482C742819A09700676DE9 /* ImageRequest.swift in Sources */,
+				DB482C742819A09700676DE9 /* URLRequests.swift in Sources */,
 				DB504C3E27D96AD5004B0CCE /* MessageCell.swift in Sources */,
 				DB482C5D28172BE800676DE9 /* Errors.swift in Sources */,
 				DBB5AF5D2811829A002B29CC /* FirestoreDatabase.swift in Sources */,

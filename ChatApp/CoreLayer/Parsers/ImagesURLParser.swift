@@ -20,7 +20,8 @@ class ImagesURLParser: IParser {
         do {
             let responce = try JSONDecoder().decode(ImagesResponce.self, from: data)
             responce.hits?.forEach {
-                if let previewURL = $0.previewURL { imagesUrl.append(previewURL) }
+ //               if let previewURL = $0.previewURL { imagesUrl.append(previewURL) }
+                if let url = $0.largeImageURL { imagesUrl.append(url) }
             }
             return imagesUrl
         } catch {

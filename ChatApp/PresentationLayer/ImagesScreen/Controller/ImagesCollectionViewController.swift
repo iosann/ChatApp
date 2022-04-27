@@ -41,16 +41,23 @@ class ImagesCollectionViewController: UICollectionViewController {
         }
     }
 
-    // MARK: UICollectionViewDataSource
-
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return images.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? ImageCollectionViewCell
-        cell?.imageView.backgroundColor = .red
-        print(images[indexPath.row])
+        model?.getImage(from: images[indexPath.row]) { result in
+            switch result {
+            case .success(let image):
+                DispatchQueue.main.async {
+                    cell?.imageView.image = image
+                    cell?.imageView.sizeToFit()
+                }
+            case .failure(let error):
+                assertionFailure(error.localizedDescription)
+            }
+        }
         return cell ?? UICollectionViewCell()
     }
 

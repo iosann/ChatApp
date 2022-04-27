@@ -15,6 +15,10 @@ struct RequestConfiguration<Parser> where Parser: IParser {
 struct RequestFactory {
     
     static func imagesURLConfiguration() -> RequestConfiguration<ImagesURLParser> {
-        return RequestConfiguration<ImagesURLParser>(request: ImageRequest(), parser: ImagesURLParser())
+        return RequestConfiguration<ImagesURLParser>(request: ImageListRequest(), parser: ImagesURLParser())
+    }
+    
+    static func imageConfiguration(urlString: String?) -> RequestConfiguration<ImageParser> {
+        return RequestConfiguration<ImageParser>(request: ImageRequest(urlString: urlString), parser: ImageParser())
     }
 }

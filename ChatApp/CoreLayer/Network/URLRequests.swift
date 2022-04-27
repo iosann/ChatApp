@@ -5,15 +5,16 @@
 //  Created by Anna Belousova on 27.04.2022.
 //
 
-import Foundation
+import UIKit
 
 typealias ImagesURLResult = Result<[String], Error>
+typealias ImageResult = Result<UIImage, Error>
 
 protocol IRequest {
     var urlRequest: URLRequest? { get }
 }
 
-class ImageRequest: IRequest {
+class ImageListRequest: IRequest {
     
     var urlRequest: URLRequest? {
         guard let baseUrl = URL(string: URLConstants.pixabay) else { return nil }
@@ -27,5 +28,18 @@ class ImageRequest: IRequest {
         guard let url = urlComponents?.url else { return nil }
         
         return URLRequest(url: url, timeoutInterval: 10)
+    }
+}
+
+class ImageRequest: IRequest {
+
+    var urlString: String?
+    var urlRequest: URLRequest? {
+        guard let urlString = urlString, let url = URL(string: urlString) else { return nil }
+        return URLRequest(url: url, timeoutInterval: 10)
+    }
+    
+    init(urlString: String?) {
+        self.urlString = urlString
     }
 }
