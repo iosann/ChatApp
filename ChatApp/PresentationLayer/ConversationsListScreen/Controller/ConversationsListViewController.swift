@@ -14,7 +14,6 @@ class ConversationsListViewController: UIViewController {
     private let cellIdentifier = "ConversationCell"
     private let dataSource = TableViewDataSource()
     let tableView = UITableView(frame: .zero, style: .insetGrouped)
-//    private weak var model: IConversationsListModel?
     let model: IConversationsListModel? = ConversationsListModel()
     
     private lazy var fetchedResultsController: NSFetchedResultsController<DBChannel> = {

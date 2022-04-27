@@ -14,16 +14,17 @@ protocol IImagesModel {
 
 class ImagesModel: IImagesModel {
     
-    private let imagesService: INetworkImagesService = NetworkImagesService()
+    private let imagesListService: INetworkImagesListService = NetworkImagesService()
+    private let imageService: INetworkImageService = NetworkImagesService()
     
     func getImagesURL(_ completion: @escaping(ImagesURLResult) -> Void) {
-        imagesService.getImagesList { result in
+        imagesListService.getImagesList { result in
             completion(result)
         }
     }
     
     func getImage(from urlString: String?, _ completion: @escaping(ImageResult) -> Void) {
-        imagesService.getImage(from: urlString) { result in
+        imageService.getImage(from: urlString) { result in
             completion(result)
         }
     }

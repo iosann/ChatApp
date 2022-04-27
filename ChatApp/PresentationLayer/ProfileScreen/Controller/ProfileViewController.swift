@@ -55,7 +55,6 @@ class ProfileViewController: UIViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         profileView.addGestureRecognizer(tap)
         profileView.addSubview(activityIndicator)
-        activityIndicator.center = profileView.center
     }
     
     private func setupScrollView() {
@@ -75,6 +74,7 @@ class ProfileViewController: UIViewController {
             profileView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             profileView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height - (navigationController?.navigationBar.bounds.height ?? 0) - 60)
         ])
+        activityIndicator.center = profileView.center
     }
     
     private func getStoredData() {
@@ -208,6 +208,18 @@ class ProfileViewController: UIViewController {
         }
         let loadAction = UIAlertAction(title: "Load", style: .default) { _ in
             let imagesController = ImagesCollectionViewController()
+            
+            imagesController.callback = { [weak self] urlString in
+                self?.model?.getImage(from: urlString) { result in
+                    switch result {
+                    case .success(let image):
+                        DispatchQueue.main.async {
+                            self?.profileView.photoImageView.image = image
+                        }
+                    case .failure(let error): assertionFailure(error.localizedDescription)
+                    }
+                }
+            }
             self.present(imagesController, animated: true)
         }
         alert.addAction(loadAction)

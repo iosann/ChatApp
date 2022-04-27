@@ -25,6 +25,10 @@ class ConversationViewController: UIViewController {
         return composeBar
     }
     
+    deinit {
+        print(#function)
+    }
+    
     private lazy var fetchedResultsController: NSFetchedResultsController<DBMessage> = {
         guard let context = context else { return NSFetchedResultsController<DBMessage>() }
         let fetchRequest = DBMessage.fetchRequest()
@@ -59,6 +63,7 @@ class ConversationViewController: UIViewController {
         title = selectedChannel?.name
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: ThemeManager.currentTheme?.tintColor as Any]
         composeBar.sendButton.addTarget(self, action: #selector(sendNewMessage), for: .touchUpInside)
+        composeBar.imageButton.addTarget(self, action: #selector(chooseImage), for: .touchUpInside)
         view.backgroundColor = ThemeManager.currentTheme?.backgroundColor
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide),
                                                name: UIResponder.keyboardWillHideNotification,
@@ -112,6 +117,16 @@ class ConversationViewController: UIViewController {
         let message = Message(content: text, created: Date(), senderId: myDeviceId, senderName: "")
         model?.addMessage(selectedChannelId: selectedChannel?.identifier, data: message.toDict)
         dismissKeyboard()
+    }
+    
+    @objc private func chooseImage() {
+        let imagesController = ImagesCollectionViewController()
+        imagesController.callback = { [weak self] urlString in
+            self?.composeBar.textView.becomeFirstResponder()
+            self?.composeBar.textView.text = urlString
+            self?.composeBar.textViewHeight.constant = self?.composeBar.textViewContentSize().height ?? 38
+        }
+        self.present(imagesController, animated: true)
     }
 
     @objc private func keyboardWillHide(notification: Notification) {

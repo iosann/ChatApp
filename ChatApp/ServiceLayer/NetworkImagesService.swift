@@ -7,12 +7,15 @@
 
 import Foundation
 
-protocol INetworkImagesService {
+protocol INetworkImagesListService {
     func getImagesList(_ completion: @escaping(ImagesURLResult) -> Void)
+}
+
+protocol INetworkImageService {
     func getImage(from urlString: String?, _ completion: @escaping(ImageResult) -> Void)
 }
 
-class NetworkImagesService: INetworkImagesService {
+class NetworkImagesService: INetworkImagesListService, INetworkImageService {
     
     let requestSender: IRequestSender = RequestSender()
     

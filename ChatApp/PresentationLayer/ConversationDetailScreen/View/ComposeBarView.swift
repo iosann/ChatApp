@@ -13,6 +13,7 @@ class ComposeBarView: UIView {
     @IBOutlet var textView: UITextView!
     @IBOutlet weak var textViewHeight: NSLayoutConstraint!
     @IBOutlet weak var sendButton: UIButton!
+    @IBOutlet weak var imageButton: UIButton!
     
     override var intrinsicContentSize: CGSize {
         return textViewContentSize()
@@ -49,10 +50,10 @@ class ComposeBarView: UIView {
         textView.layer.borderWidth = 1
         textView.layer.borderColor = ThemeManager.currentTheme?.textColor.cgColor
         textView.textColor = ThemeManager.currentTheme?.textColor
-        sendButton.setTitle("", for: .normal)
+        [sendButton, imageButton].forEach { $0.setTitle("", for: .normal) }
     }
     
-    private func textViewContentSize() -> CGSize {
+    func textViewContentSize() -> CGSize {
         let size = CGSize(width: textView.bounds.width, height: CGFloat.greatestFiniteMagnitude)
         let textSize = textView.sizeThatFits(size)
         return CGSize(width: bounds.width, height: textSize.height)

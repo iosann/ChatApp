@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -13,9 +13,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ComposeBarView" customModule="ChatApp" customModuleProvider="target">
             <connections>
                 <outlet property="contentView" destination="iN0-l3-epB" id="jTT-Ub-6zx"/>
+                <outlet property="imageButton" destination="r4C-sx-t1F" id="Lej-Fk-OjV"/>
                 <outlet property="sendButton" destination="Qt1-pL-Dzw" id="8f7-qh-4Km"/>
                 <outlet property="textView" destination="gxF-Yf-iZo" id="DNp-vu-Wwv"/>
-                <outlet property="textViewHeight" destination="v5N-7F-F9D" id="GIS-zC-Kru"/>
+                <outlet property="textViewHeight" destination="7a9-AJ-YFl" id="aUr-Jb-QmJ"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -24,9 +25,9 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="onDrag" text="Enter message..." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="gxF-Yf-iZo">
-                    <rect key="frame" x="16" y="8" width="334.5" height="38"/>
+                    <rect key="frame" x="60" y="8" width="290" height="38"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="38" id="v5N-7F-F9D"/>
+                        <constraint firstAttribute="height" constant="38" id="7a9-AJ-YFl"/>
                     </constraints>
                     <color key="textColor" systemColor="labelColor"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -39,15 +40,27 @@
                         <imageReference key="image" image="paperplane.fill" catalog="system" symbolScale="large"/>
                     </state>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r4C-sx-t1F">
+                    <rect key="frame" x="16" y="0.0" width="28" height="54"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="28" id="wyn-3c-Z3T"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" image="photo" catalog="system"/>
+                </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <constraints>
-                <constraint firstItem="Qt1-pL-Dzw" firstAttribute="leading" secondItem="gxF-Yf-iZo" secondAttribute="trailing" constant="16" id="Ca7-oR-9tG"/>
+                <constraint firstItem="r4C-sx-t1F" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="4EP-6N-gIK"/>
+                <constraint firstItem="r4C-sx-t1F" firstAttribute="centerY" secondItem="gxF-Yf-iZo" secondAttribute="centerY" id="AXi-9N-EKU"/>
+                <constraint firstItem="r4C-sx-t1F" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="I8j-0z-bUY"/>
+                <constraint firstItem="Qt1-pL-Dzw" firstAttribute="centerY" secondItem="gxF-Yf-iZo" secondAttribute="centerY" id="Jgo-RV-vjX"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="r4C-sx-t1F" secondAttribute="bottom" id="UkR-On-sqS"/>
                 <constraint firstAttribute="trailing" secondItem="Qt1-pL-Dzw" secondAttribute="trailing" constant="16" id="Urh-70-XEd"/>
-                <constraint firstItem="gxF-Yf-iZo" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="Xg9-nL-ccC"/>
-                <constraint firstItem="gxF-Yf-iZo" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="dnc-r0-jLu"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="gxF-Yf-iZo" secondAttribute="bottom" constant="8" id="qmE-eG-LUl"/>
+                <constraint firstItem="Qt1-pL-Dzw" firstAttribute="leading" secondItem="gxF-Yf-iZo" secondAttribute="trailing" constant="16.5" id="crU-yR-8V4"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="gxF-Yf-iZo" secondAttribute="bottom" constant="8" id="mQn-W1-Dx2"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="Qt1-pL-Dzw" secondAttribute="bottom" id="tan-rS-asO"/>
+                <constraint firstItem="gxF-Yf-iZo" firstAttribute="leading" secondItem="r4C-sx-t1F" secondAttribute="trailing" constant="16" id="vAC-Sj-qAY"/>
                 <constraint firstItem="Qt1-pL-Dzw" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="y3D-1g-zPu"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -56,6 +69,7 @@
     </objects>
     <resources>
         <image name="paperplane.fill" catalog="system" width="128" height="118"/>
+        <image name="photo" catalog="system" width="128" height="93"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

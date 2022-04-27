@@ -13,12 +13,17 @@ class ImagesCollectionViewController: UICollectionViewController {
     private lazy var activityIndicator = ActivityIndicator(frame: .zero)
     private let model: IImagesModel? = ImagesModel()
     private var images = [String]()
+    var callback: ((String) -> Void)?
     
     init() {
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
     }
     required init?(coder: NSCoder) {
           fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        print("ImagesCollection deinit")
     }
 
     override func viewDidLoad() {
@@ -68,8 +73,7 @@ class ImagesCollectionViewController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedImageURL = images[indexPath.row]
-// save image
+        callback?(images[indexPath.row])
         dismiss(animated: true)
     }
 }
