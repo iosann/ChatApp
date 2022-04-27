@@ -18,20 +18,23 @@ class ProfileViewController: UIViewController {
         return label
     }()
     private var activityIndicator = UIActivityIndicatorView()
-    private let saveByOperations = SavingByOperations()
     private var storedFullName: String?
     private var storedDescription: String?
     private var storedPhoto: UIImage?
     private var newDataForSaving: [String: Any?] = ["newName": nil, "newDescription": nil, "newPhoto": nil]
-    private weak var delegate: ISavingData?
+    private let model: IProfileModel? = ProfileModel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.delegate = saveByOperations
         getStoredData()
         setupUI()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        activityIndicator = profileView.addActivityIndicator()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -51,7 +54,6 @@ class ProfileViewController: UIViewController {
         navigationItem.leftBarButtonItem = titleButton
         view.backgroundColor = ThemeManager.currentTheme?.backgroundColor
         setupScrollView()
-        activityIndicator = profileView.addActivityIndicator()
         profileView.editPhotoButton.addTarget(self, action: #selector(editProfileImage), for: .touchUpInside)
         profileView.cancelButton.addTarget(self, action: #selector(cancelEditing), for: .touchUpInside)
         profileView.saveButton.addTarget(self, action: #selector(saveChanges), for: .touchUpInside)
@@ -79,15 +81,15 @@ class ProfileViewController: UIViewController {
     }
     
     private func getStoredData() {
-        delegate?.getStoredString(fileName: TextConstants.fullnameFilename) { [weak self] fullname in
+        model?.getStoredString(fileName: TextConstants.fullnameFilename) { [weak self] fullname in
             self?.storedFullName = fullname
             DispatchQueue.main.async { self?.profileView.nameTextView.text = fullname }
         }
-        delegate?.getStoredString(fileName: TextConstants.descriptionFileName) { [weak self] description in
+        model?.getStoredString(fileName: TextConstants.descriptionFileName) { [weak self] description in
             self?.storedDescription = description
             DispatchQueue.main.async { self?.profileView.descriptionTextView.text = description }
         }
-        delegate?.getStoredImage { [weak self] image in
+        model?.getStoredImage { [weak self] image in
             self?.storedPhoto = image
             DispatchQueue.main.async { self?.profileView.photoImageView.image = image }
         }
@@ -114,7 +116,7 @@ class ProfileViewController: UIViewController {
     }
     
     private func writeNewData() {
-        delegate?.writeData(fullName: newDataForSaving["newName"] as? String,
+        model?.writeData(fullName: newDataForSaving["newName"] as? String,
                            description: newDataForSaving["newDescription"] as? String,
                            image: newDataForSaving["newPhoto"] as? UIImage) { [weak self] result in
             self?.showAlert(result)

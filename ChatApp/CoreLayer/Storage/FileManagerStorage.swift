@@ -7,26 +7,26 @@
 
 import UIKit
 
-protocol ISavingData: AnyObject {
+protocol IFileManagerStorage: AnyObject {
     func writeData(fullName: String?, description: String?, image: UIImage?, _ completion: @escaping(Bool) -> Void)
     func getStoredString(fileName: String, _ completion: @escaping(String) -> Void)
     func getStoredImage(_ completion: @escaping(UIImage) -> Void)
 }
 
-class DataSaving {
+class FileManagerStorage: IFileManagerStorage {
     
     private let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
     private var errors = [Error]()
     
     func writeData(fullName: String?, description: String?, image: UIImage?, _ completion: @escaping (Bool) -> Void) {
-            if fullName != nil { self.writeString(string: fullName ?? "", pathName: TextConstants.fullnameFilename) }
-            if description != nil { self.writeString(string: description ?? "", pathName: TextConstants.descriptionFileName) }
-            if image != nil { self.writeImage(image: image ?? UIImage()) }
+        if fullName != nil { self.writeString(string: fullName ?? "", pathName: TextConstants.fullnameFilename) }
+        if description != nil { self.writeString(string: description ?? "", pathName: TextConstants.descriptionFileName) }
+        if image != nil { self.writeImage(image: image ?? UIImage()) }
 // sleep() добавлен, чтобы во время записи данных увидеть activityIndicator и убедиться в назаблокированности экрана
-            sleep(3)
-            if self.errors.isEmpty {
-                completion(true)
-            } else { completion(false) }
+        sleep(3)
+        if self.errors.isEmpty {
+            completion(true)
+        } else { completion(false) }
     }
     
     func getStoredString(fileName: String, _ completion: @escaping (String) -> Void) {

@@ -7,9 +7,15 @@
 
 import UIKit
 
-class SavingByGCD: ISavingData {
+protocol IStorageService: AnyObject {
+    func writeData(fullName: String?, description: String?, image: UIImage?, _ completion: @escaping(Bool) -> Void)
+    func getStoredString(fileName: String, _ completion: @escaping(String) -> Void)
+    func getStoredImage(_ completion: @escaping(UIImage) -> Void)
+}
+
+class GCDStorageService: IStorageService {
     
-    let dataSaving = DataSaving()
+    private let dataSaving: IFileManagerStorage = FileManagerStorage()
     
     func writeData(fullName: String?, description: String?, image: UIImage?, _ completion: @escaping(Bool) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in

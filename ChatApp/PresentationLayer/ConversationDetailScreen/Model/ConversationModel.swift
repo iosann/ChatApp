@@ -19,7 +19,8 @@ class ConversationModel: IConversationModel {
     private let coreDataService: ICoreDataService? = CoreDataService()
 
     func loadMessages(selectedChannelId: String?) {
-        loadingFirestoreServise?.loadData(reference: URLConstants.referenceToChannels.document(selectedChannelId ?? "").collection("messages")) { [weak self] result in
+        let reference = URLConstants.referenceToChannels.document(selectedChannelId ?? "").collection("messages")
+        loadingFirestoreServise?.loadData(reference: reference) { [weak self] result in
             switch result {
             case .success(let snapshot):
                 self?.coreDataService?.saveData { context in

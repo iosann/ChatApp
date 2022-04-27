@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SavingByOperations: ISavingData {
+class OperationStorageService: IStorageService {
     
     let operationQueue = OperationQueue()
     
@@ -93,7 +93,7 @@ class GetStoredDataOperation: AsyncOperation {
 
 class AsyncOperation: Operation {
     
-    let dataSaving = DataSaving()
+    let dataSaving: IFileManagerStorage = FileManagerStorage()
     
     enum State: String {
         case ready, executing, finished, cancelled
