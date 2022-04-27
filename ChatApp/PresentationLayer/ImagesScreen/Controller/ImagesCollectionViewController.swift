@@ -7,10 +7,10 @@
 
 import UIKit
 
-private let reuseIdentifier = "Cell"
-
 class ImagesCollectionViewController: UICollectionViewController {
     
+    private let reuseIdentifier = "Cell"
+    private lazy var activityIndicator = ActivityIndicator(frame: .zero)
     private let model: IImagesModel? = ImagesModel()
     private var images = [String]()
     
@@ -24,19 +24,26 @@ class ImagesCollectionViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.collectionView?.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        collectionView.addSubview(activityIndicator)
+        activityIndicator.center = collectionView.center
         loadImages()
     }
     
     private func loadImages() {
+        activityIndicator.startAnimating()
         model?.getImagesURL { [weak self] result in
             switch result {
             case .success(let imagesURL):
                 self?.images = imagesURL
                 DispatchQueue.main.async {
                     self?.collectionView.reloadData()
+                    self?.activityIndicator.stopAnimating()
                 }
             case .failure(let error):
                 assertionFailure(error.localizedDescription)
+                DispatchQueue.main.async {
+                    self?.activityIndicator.stopAnimating()
+                }
             }
         }
     }
@@ -52,7 +59,6 @@ class ImagesCollectionViewController: UICollectionViewController {
             case .success(let image):
                 DispatchQueue.main.async {
                     cell?.imageView.image = image
-                    cell?.imageView.sizeToFit()
                 }
             case .failure(let error):
                 assertionFailure(error.localizedDescription)
@@ -60,7 +66,12 @@ class ImagesCollectionViewController: UICollectionViewController {
         }
         return cell ?? UICollectionViewCell()
     }
-
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedImageURL = images[indexPath.row]
+// save image
+        dismiss(animated: true)
+    }
 }
 
 extension ImagesCollectionViewController: UICollectionViewDelegateFlowLayout {

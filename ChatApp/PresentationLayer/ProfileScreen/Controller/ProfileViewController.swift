@@ -17,7 +17,7 @@ class ProfileViewController: UIViewController {
         label.text = "My Profile"
         return label
     }()
-    private var activityIndicator = UIActivityIndicatorView()
+    private var activityIndicator = ActivityIndicator(frame: .zero)
     private var storedFullName: String?
     private var storedDescription: String?
     private var storedPhoto: UIImage?
@@ -30,11 +30,6 @@ class ProfileViewController: UIViewController {
         setupUI()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        activityIndicator = profileView.addActivityIndicator()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -59,6 +54,8 @@ class ProfileViewController: UIViewController {
         profileView.saveButton.addTarget(self, action: #selector(saveChanges), for: .touchUpInside)
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         profileView.addGestureRecognizer(tap)
+        profileView.addSubview(activityIndicator)
+        activityIndicator.center = profileView.center
     }
     
     private func setupScrollView() {

@@ -25,6 +25,7 @@
 		DB482C762819A14600676DE9 /* NetworkImagesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C752819A14600676DE9 /* NetworkImagesService.swift */; };
 		DB482C782819A3A000676DE9 /* ImagesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C772819A3A000676DE9 /* ImagesModel.swift */; };
 		DB482C7B2819B7DB00676DE9 /* ImageParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C7A2819B7DB00676DE9 /* ImageParser.swift */; };
+		DB482C7E2819D80400676DE9 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C7D2819D80400676DE9 /* ActivityIndicator.swift */; };
 		DB504C2B27D93E39004B0CCE /* ConversationsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB504C2A27D93E39004B0CCE /* ConversationsListViewController.swift */; };
 		DB504C2E27D94152004B0CCE /* ConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB504C2C27D94152004B0CCE /* ConversationCell.swift */; };
 		DB504C2F27D94152004B0CCE /* ConversationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB504C2D27D94152004B0CCE /* ConversationCell.xib */; };
@@ -85,6 +86,7 @@
 		DB482C752819A14600676DE9 /* NetworkImagesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkImagesService.swift; sourceTree = "<group>"; };
 		DB482C772819A3A000676DE9 /* ImagesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesModel.swift; sourceTree = "<group>"; };
 		DB482C7A2819B7DB00676DE9 /* ImageParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageParser.swift; sourceTree = "<group>"; };
+		DB482C7D2819D80400676DE9 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		DB504C2A27D93E39004B0CCE /* ConversationsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsListViewController.swift; sourceTree = "<group>"; };
 		DB504C2C27D94152004B0CCE /* ConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationCell.swift; sourceTree = "<group>"; };
 		DB504C2D27D94152004B0CCE /* ConversationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConversationCell.xib; sourceTree = "<group>"; };
@@ -443,6 +445,7 @@
 		DBB5AF59281178BD002B29CC /* SharedComponents */ = {
 			isa = PBXGroup;
 			children = (
+				DB482C7D2819D80400676DE9 /* ActivityIndicator.swift */,
 			);
 			path = SharedComponents;
 			sourceTree = "<group>";
@@ -640,6 +643,7 @@
 				DBFFEE8D27EBACD600F194D9 /* OperationStorageService.swift in Sources */,
 				DBB937C127E3651A0066E6C1 /* ThemeManager.swift in Sources */,
 				DBE6239927F370D600EA22F4 /* Message.swift in Sources */,
+				DB482C7E2819D80400676DE9 /* ActivityIndicator.swift in Sources */,
 				DB504C3B27D96727004B0CCE /* ConversationViewController.swift in Sources */,
 				DBBD175327C6682A0093B548 /* Extensions.swift in Sources */,
 				DB482C672819585000676DE9 /* ConversationsListModel.swift in Sources */,

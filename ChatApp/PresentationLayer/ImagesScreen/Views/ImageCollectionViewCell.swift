@@ -11,8 +11,8 @@ class ImageCollectionViewCell: UICollectionViewCell {
     
     let imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleToFill
-        imageView.image = UIImage(systemName: "photo")
+        imageView.image = UIImage(named: "no-image-icon")
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     

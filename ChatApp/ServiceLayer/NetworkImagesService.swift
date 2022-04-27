@@ -25,7 +25,6 @@ class NetworkImagesService: INetworkImagesService {
     
     func getImage(from urlString: String?, _ completion: @escaping(ImageResult) -> Void) {
         let configuration = RequestFactory.imageConfiguration(urlString: urlString)
-        
         requestSender.send(config: configuration) { result in
             completion(result)
         }
