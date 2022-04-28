@@ -28,11 +28,7 @@ extension ConversationViewController: UITableViewDataSource {
                     case .success(let image):
                         messageCell.messageImageView.isHidden = false
                         messageCell.messageImageView.image = image
-                    case .failure(_):
-                        messageCell.configure(messageText: (message.content ?? "") + "\n\nThis API isn't supported",
-                                      date: message.created,
-                                      isIncomingMessage: isIncoming,
-                                      senderName: message.senderName)
+                    case .failure(let error): print(error)
                     }
                 }
             }

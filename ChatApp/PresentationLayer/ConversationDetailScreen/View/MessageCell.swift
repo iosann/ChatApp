@@ -7,11 +7,7 @@
 
 import UIKit
 
-protocol MessageCellConfiguration: AnyObject {
-    var messageText: String? { get set }
-}
-
-class MessageCell: UITableViewCell, MessageCellConfiguration {
+class MessageCell: UITableViewCell {
     
     private let cellBackgroundView = UIView()
     private let messageLabel: UILabel = {
@@ -45,11 +41,10 @@ class MessageCell: UITableViewCell, MessageCellConfiguration {
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
-    
-    var messageText: String?
-    private lazy var leadingConstraint = messageLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
-    private lazy var trailingConstraint = messageLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
 
+    private lazy var leadingConstraint = cellBackgroundView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8)
+    private lazy var trailingConstraint = cellBackgroundView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8)
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupConstraints()
@@ -70,7 +65,11 @@ class MessageCell: UITableViewCell, MessageCellConfiguration {
     }
     
     func configure(messageText: String?, date: Date?, isIncomingMessage: Bool, senderName: String?) {
-        messageLabel.text = messageText
+        if let messageText = messageText, messageText.hasPrefix("http") {
+            messageLabel.text = messageText + "\n\nThis API isn't supported"
+        } else {
+            messageLabel.text = messageText
+        }
         timeLabel.text = date?.formattedDate
         if isIncomingMessage {
             cellBackgroundView.backgroundColor = ThemeManager.currentTheme?.incomingMessageColor
@@ -98,13 +97,15 @@ class MessageCell: UITableViewCell, MessageCellConfiguration {
         senderNameLabel.translatesAutoresizingMaskIntoConstraints = false
         timeLabel.translatesAutoresizingMaskIntoConstraints = false
         messageImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        messageImageView.isHidden = true
 
         NSLayoutConstraint.activate([
             senderNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
             senderNameLabel.leadingAnchor.constraint(equalTo: messageLabel.leadingAnchor),
             senderNameLabel.trailingAnchor.constraint(equalTo: messageLabel.trailingAnchor),
             messageLabel.topAnchor.constraint(equalTo: senderNameLabel.bottomAnchor, constant: 8),
-            messageLabel.widthAnchor.constraint(lessThanOrEqualToConstant: contentView.bounds.size.width * 0.75),
+
             timeLabel.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 8),
             timeLabel.trailingAnchor.constraint(equalTo: messageLabel.trailingAnchor),
             timeLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
@@ -114,12 +115,12 @@ class MessageCell: UITableViewCell, MessageCellConfiguration {
             cellBackgroundView.leadingAnchor.constraint(equalTo: messageLabel.leadingAnchor, constant: -8),
             cellBackgroundView.trailingAnchor.constraint(equalTo: messageLabel.trailingAnchor, constant: 8),
             cellBackgroundView.widthAnchor.constraint(greaterThanOrEqualToConstant: 60),
+            cellBackgroundView.widthAnchor.constraint(lessThanOrEqualToConstant: contentView.bounds.size.width * 0.75),
             
             messageImageView.topAnchor.constraint(equalTo: cellBackgroundView.topAnchor),
             messageImageView.leadingAnchor.constraint(equalTo: cellBackgroundView.leadingAnchor),
             messageImageView.trailingAnchor.constraint(equalTo: cellBackgroundView.trailingAnchor),
             messageImageView.bottomAnchor.constraint(equalTo: cellBackgroundView.bottomAnchor)
         ])
-        messageImageView.isHidden = true
     }
 }
