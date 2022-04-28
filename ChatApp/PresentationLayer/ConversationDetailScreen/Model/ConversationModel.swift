@@ -11,12 +11,14 @@ import CoreData
 protocol IConversationModel: AnyObject {
     func loadMessages(selectedChannelId: String?)
     func addMessage(selectedChannelId: String?, data: [String: Any])
+    func loadImage(from urlString: String?, _ completion: @escaping(ImageResult) -> Void)
 }
 
 class ConversationModel: IConversationModel {
     
     private let loadingFirestoreServise: ILoadingFirestoreServise? = FirestoreService()
     private let coreDataService: ICoreDataService? = CoreDataService()
+    private let imageService: INetworkImageService = NetworkImagesService()
 
     func loadMessages(selectedChannelId: String?) {
         let reference = URLConstants.referenceToChannels.document(selectedChannelId ?? "").collection("messages")
@@ -57,6 +59,12 @@ class ConversationModel: IConversationModel {
             }
         } catch {
               assertionFailure(error.localizedDescription)
+        }
+    }
+    
+    func loadImage(from urlString: String?, _ completion: @escaping(ImageResult) -> Void) {
+        imageService.getImage(from: urlString) { result in
+            completion(result)
         }
     }
 }

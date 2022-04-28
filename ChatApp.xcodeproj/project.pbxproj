@@ -31,7 +31,6 @@
 		DB504C2F27D94152004B0CCE /* ConversationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB504C2D27D94152004B0CCE /* ConversationCell.xib */; };
 		DB504C3B27D96727004B0CCE /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB504C3A27D96727004B0CCE /* ConversationViewController.swift */; };
 		DB504C3E27D96AD5004B0CCE /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB504C3D27D96AD5004B0CCE /* MessageCell.swift */; };
-		DB64701C2811E50C003C97CC /* MessageTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB64701B2811E50C003C97CC /* MessageTableViewDataSource.swift */; };
 		DB6C41E428131D44005A5C70 /* ImagesCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6C41E328131D44005A5C70 /* ImagesCollectionViewController.swift */; };
 		DB6C41E628131D71005A5C70 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6C41E528131D71005A5C70 /* ImageCollectionViewCell.swift */; };
 		DB745A5127D0FA74007534FA /* BaseProfileView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB745A5027D0FA74007534FA /* BaseProfileView.xib */; };
@@ -49,6 +48,7 @@
 		DBA00BC027FC7A94006F02ED /* DatabaseModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DBA00BBE27FC7A94006F02ED /* DatabaseModel.xcdatamodeld */; };
 		DBA00BE527FC8DB6006F02ED /* NewCoreDataContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA00BE427FC8DB6006F02ED /* NewCoreDataContainer.swift */; };
 		DBA00BE727FE3F83006F02ED /* OldCoreDataCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA00BE627FE3F83006F02ED /* OldCoreDataCoordinator.swift */; };
+		DBAD1779281A194700E719C0 /* ConversationDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBAD1778281A194700E719C0 /* ConversationDataSource.swift */; };
 		DBB5AF5B28117928002B29CC /* TableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB5AF5A28117928002B29CC /* TableViewDataSource.swift */; };
 		DBB5AF5D2811829A002B29CC /* FirestoreDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB5AF5C2811829A002B29CC /* FirestoreDatabase.swift */; };
 		DBB937C127E3651A0066E6C1 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB937C027E3651A0066E6C1 /* ThemeManager.swift */; };
@@ -92,7 +92,6 @@
 		DB504C2D27D94152004B0CCE /* ConversationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConversationCell.xib; sourceTree = "<group>"; };
 		DB504C3A27D96727004B0CCE /* ConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationViewController.swift; sourceTree = "<group>"; };
 		DB504C3D27D96AD5004B0CCE /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
-		DB64701B2811E50C003C97CC /* MessageTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTableViewDataSource.swift; sourceTree = "<group>"; };
 		DB6C41E328131D44005A5C70 /* ImagesCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesCollectionViewController.swift; sourceTree = "<group>"; };
 		DB6C41E528131D71005A5C70 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		DB745A5027D0FA74007534FA /* BaseProfileView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BaseProfileView.xib; sourceTree = "<group>"; };
@@ -112,6 +111,7 @@
 		DBA00BBF27FC7A94006F02ED /* DatabaseModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DatabaseModel.xcdatamodel; sourceTree = "<group>"; };
 		DBA00BE427FC8DB6006F02ED /* NewCoreDataContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCoreDataContainer.swift; sourceTree = "<group>"; };
 		DBA00BE627FE3F83006F02ED /* OldCoreDataCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldCoreDataCoordinator.swift; sourceTree = "<group>"; };
+		DBAD1778281A194700E719C0 /* ConversationDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationDataSource.swift; sourceTree = "<group>"; };
 		DBB5AF5A28117928002B29CC /* TableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDataSource.swift; sourceTree = "<group>"; };
 		DBB5AF5C2811829A002B29CC /* FirestoreDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreDatabase.swift; sourceTree = "<group>"; };
 		DBB937C027E3651A0066E6C1 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
@@ -374,8 +374,8 @@
 				DB504C3D27D96AD5004B0CCE /* MessageCell.swift */,
 				DBC9757627F5F48C009CC84C /* ComposeBarView.swift */,
 				DBC9757427F5F2DF009CC84C /* ComposeBarView.xib */,
-				DB64701B2811E50C003C97CC /* MessageTableViewDataSource.swift */,
 				DB482C58281722DA00676DE9 /* ConversationFRCDelegate.swift */,
+				DBAD1778281A194700E719C0 /* ConversationDataSource.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -652,10 +652,10 @@
 				DBD232BE27E13FEF00484E0B /* ButtonThemesView.swift in Sources */,
 				DB482C572817212400676DE9 /* ConversationsListFRCDelegate.swift in Sources */,
 				DB482C692819743000676DE9 /* ConversationModel.swift in Sources */,
-				DB64701C2811E50C003C97CC /* MessageTableViewDataSource.swift in Sources */,
 				DB6C41E428131D44005A5C70 /* ImagesCollectionViewController.swift in Sources */,
 				DB482C6328194EB700676DE9 /* FirestoreService.swift in Sources */,
 				DB86836A27C2A9F100D82F48 /* AppDelegate.swift in Sources */,
+				DBAD1779281A194700E719C0 /* ConversationDataSource.swift in Sources */,
 				DB8512E927E2477D00F26830 /* ColorTheme.swift in Sources */,
 				DB482C6C281980D600676DE9 /* ProfileModel.swift in Sources */,
 				DB482C782819A3A000676DE9 /* ImagesModel.swift in Sources */,

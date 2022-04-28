@@ -11,25 +11,20 @@ import CoreData
 
 class ConversationViewController: UIViewController {
     
-    private let cellIdentifier = "MessageCell"
-    private let myDeviceId = UserDefaults.standard.string(forKey: "DeviceId")
+    let cellIdentifier = "MessageCell"
+    let myDeviceId = UserDefaults.standard.string(forKey: "DeviceId")
     private var composeBar = ComposeBarView()
     var selectedChannel: DBChannel?
     var context: NSManagedObjectContext?
     let tableView = UITableView(frame: .zero, style: .insetGrouped)
 
-    private let dataSource = MessageTableViewDataSource()
     let model: IConversationModel? = ConversationModel()
     
     override var inputAccessoryView: UIView? {
         return composeBar
     }
     
-    deinit {
-        print(#function)
-    }
-    
-    private lazy var fetchedResultsController: NSFetchedResultsController<DBMessage> = {
+    lazy var fetchedResultsController: NSFetchedResultsController<DBMessage> = {
         guard let context = context else { return NSFetchedResultsController<DBMessage>() }
         let fetchRequest = DBMessage.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "channel == %@", selectedChannel ?? DBChannel())
@@ -47,8 +42,6 @@ class ConversationViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        dataSource.cellIdentifier = cellIdentifier
-        dataSource.fetchedResultsController = fetchedResultsController
         loadMessages()
         setupUI()
     }
@@ -80,7 +73,7 @@ class ConversationViewController: UIViewController {
     
     private func setupTableView() {
         view.addSubview(tableView)
-        tableView.dataSource = dataSource
+        tableView.dataSource = self
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),

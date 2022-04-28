@@ -38,6 +38,14 @@ class MessageCell: UITableViewCell, MessageCellConfiguration {
         label.textColor = ThemeManager.currentTheme?.textColor
         return label
     }()
+    let messageImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.layer.cornerRadius = 10
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFill
+        return imageView
+    }()
+    
     var messageText: String?
     private lazy var leadingConstraint = messageLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
     private lazy var trailingConstraint = messageLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
@@ -57,6 +65,8 @@ class MessageCell: UITableViewCell, MessageCellConfiguration {
         senderNameLabel.text = nil
         timeLabel.text = nil
         cellBackgroundView.backgroundColor = nil
+        messageImageView.isHidden = true
+        messageImageView.image = nil
     }
     
     func configure(messageText: String?, date: Date?, isIncomingMessage: Bool, senderName: String?) {
@@ -81,11 +91,13 @@ class MessageCell: UITableViewCell, MessageCellConfiguration {
         contentView.addSubview(messageLabel)
         contentView.addSubview(senderNameLabel)
         contentView.addSubview(timeLabel)
+        contentView.addSubview(messageImageView)
         cellBackgroundView.layer.cornerRadius = 8
         cellBackgroundView.translatesAutoresizingMaskIntoConstraints = false
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         senderNameLabel.translatesAutoresizingMaskIntoConstraints = false
         timeLabel.translatesAutoresizingMaskIntoConstraints = false
+        messageImageView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             senderNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
@@ -101,7 +113,13 @@ class MessageCell: UITableViewCell, MessageCellConfiguration {
             cellBackgroundView.bottomAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 8),
             cellBackgroundView.leadingAnchor.constraint(equalTo: messageLabel.leadingAnchor, constant: -8),
             cellBackgroundView.trailingAnchor.constraint(equalTo: messageLabel.trailingAnchor, constant: 8),
-            cellBackgroundView.widthAnchor.constraint(greaterThanOrEqualToConstant: 60)
+            cellBackgroundView.widthAnchor.constraint(greaterThanOrEqualToConstant: 60),
+            
+            messageImageView.topAnchor.constraint(equalTo: cellBackgroundView.topAnchor),
+            messageImageView.leadingAnchor.constraint(equalTo: cellBackgroundView.leadingAnchor),
+            messageImageView.trailingAnchor.constraint(equalTo: cellBackgroundView.trailingAnchor),
+            messageImageView.bottomAnchor.constraint(equalTo: cellBackgroundView.bottomAnchor)
         ])
+        messageImageView.isHidden = true
     }
 }
