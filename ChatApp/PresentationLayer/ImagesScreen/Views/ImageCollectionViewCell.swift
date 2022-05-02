@@ -19,7 +19,7 @@ class ImageCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configureImageView()
+        setupImageView()
     }
     
     required init?(coder: NSCoder) {
@@ -31,7 +31,17 @@ class ImageCollectionViewCell: UICollectionViewCell {
         imageView.image = nil
     }
     
-    private func configureImageView() {
+    func configure(from imageString: String) {
+        guard let url = URL(string: imageString) else { return }
+        do {
+            let data = try Data(contentsOf: url)
+            self.imageView.image = UIImage(data: data)
+        } catch {
+            assertionFailure(error.localizedDescription)
+        }
+    }
+    
+    private func setupImageView() {
         addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([

@@ -19,12 +19,12 @@ class RequestSender: IRequestSender {
             return
         }
         let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
-            if let error = error {
-                completion(.failure(NetworkError.sessionError(error)))
+            if error != nil {
+                completion(.failure(NetworkError.sessionError))
                 return
             }
             if let response = response as? HTTPURLResponse, 400..<500 ~= response.statusCode {
-                completion(.failure(NetworkError.statusCode(response.statusCode)))
+                completion(.failure(NetworkError.statusCode))
                 return
             }
             guard let data = data, let parsedModel: Parser.Model = config.parser.parse(data: data) else {

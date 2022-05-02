@@ -11,14 +11,12 @@ protocol IProfileModel {
     func writeData(fullName: String?, description: String?, image: UIImage?, _ completion: @escaping(Bool) -> Void)
     func getStoredString(fileName: String, _ completion: @escaping(String) -> Void)
     func getStoredImage(_ completion: @escaping(UIImage) -> Void)
-    func getImage(from urlString: String?, _ completion: @escaping(ImageResult) -> Void)
 }
 
 class ProfileModel: IProfileModel {
     
-//    private let savingService: IStorageService = SavingByGCDService()
+//    private let savingService: IStorageService = GCDStorageService()
     private let savingService: IStorageService = OperationStorageService()
-    private let imageService: INetworkImageService = NetworkImagesService()
     
     func writeData(fullName: String?, description: String?, image: UIImage?, _ completion: @escaping (Bool) -> Void) {
         savingService.writeData(fullName: fullName, description: description, image: image) { bool in
@@ -35,12 +33,6 @@ class ProfileModel: IProfileModel {
     func getStoredString(fileName: String, _ completion: @escaping (String) -> Void) {
         savingService.getStoredString(fileName: fileName) { string in
             completion(string)
-        }
-    }
-    
-    func getImage(from urlString: String?, _ completion: @escaping(ImageResult) -> Void) {
-        imageService.getImage(from: urlString) { result in
-            completion(result)
         }
     }
 }

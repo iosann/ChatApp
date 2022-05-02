@@ -11,10 +11,10 @@ enum ServiceError: Error {
     case `default`
 }
 
-enum NetworkError: Error {
-    case sessionError(Error)
-    case dataError(Error)
-    case statusCode(Int)
-    case invalidURL
-    case decodingError
+enum NetworkError: String, Error {
+    case sessionError = "Session error"
+    case dataError = "Data error"
+    case statusCode = "Status code"
+    case invalidURL = "Invalid URL"
+    case decodingError = "Decoding error"
 }

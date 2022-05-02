@@ -114,7 +114,7 @@ class ConversationViewController: UIViewController {
     
     @objc private func chooseImage() {
         let imagesController = ImagesCollectionViewController()
-        imagesController.callback = { [weak self] urlString in
+        imagesController.didUpdateCompletion = { [weak self] urlString in
             self?.composeBar.textView.becomeFirstResponder()
             self?.composeBar.textView.text = urlString
             self?.composeBar.textViewHeight.constant = self?.composeBar.textViewContentSize().height ?? 38

@@ -7,15 +7,13 @@
 
 import Foundation
 
-protocol INetworkImagesListService {
+typealias ImagesURLResult = Result<ImagesResponce, Error>
+
+protocol INetworkImageService {
     func getImagesList(_ completion: @escaping(ImagesURLResult) -> Void)
 }
 
-protocol INetworkImageService {
-    func getImage(from urlString: String?, _ completion: @escaping(ImageResult) -> Void)
-}
-
-class NetworkImagesService: INetworkImagesListService, INetworkImageService {
+class NetworkImageService: INetworkImageService {
     
     let requestSender: IRequestSender = RequestSender()
     
@@ -23,13 +21,6 @@ class NetworkImagesService: INetworkImagesListService, INetworkImageService {
         let configuration = RequestFactory.imagesURLConfiguration()
         requestSender.send(config: configuration) { result in
            completion(result)
-        }
-    }
-    
-    func getImage(from urlString: String?, _ completion: @escaping(ImageResult) -> Void) {
-        let configuration = RequestFactory.imageConfiguration(urlString: urlString)
-        requestSender.send(config: configuration) { result in
-            completion(result)
         }
     }
 }

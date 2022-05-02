@@ -22,15 +22,15 @@ extension ConversationViewController: UITableViewDataSource {
         messageCell.configure(messageText: message.content, date: message.created, isIncomingMessage: isIncoming, senderName: message.senderName)
 
         if let content = message.content, content.hasPrefix("http") {
-            model?.loadImage(from: content) { result in
+            guard let resource = URL(string: content) else { return cell }
+            do {
+                let data = try Data(contentsOf: resource)
                 DispatchQueue.main.async {
-                    switch result {
-                    case .success(let image):
-                        messageCell.messageImageView.isHidden = false
-                        messageCell.messageImageView.image = image
-                    case .failure(let error): print(error)
-                    }
+                    messageCell.messageImageView.image = UIImage(data: data)
+                    messageCell.messageImageView.isHidden = false
                 }
+            } catch {
+                assertionFailure(error.localizedDescription)
             }
         }
         return messageCell

@@ -13,20 +13,15 @@ protocol IParser {
 }
 
 class ImagesURLParser: IParser {
-    typealias Model = [String]
+    typealias Model = ImagesResponce
     
-    func parse(data: Data) -> [String]? {
-        var imagesUrl = [String]()
+    func parse(data: Data) -> Model? {
         do {
-            let responce = try JSONDecoder().decode(ImagesResponce.self, from: data)
-            responce.hits?.forEach {
- //               if let previewURL = $0.previewURL { imagesUrl.append(previewURL) }
-                if let url = $0.largeImageURL { imagesUrl.append(url) }
-            }
-            return imagesUrl
+            let responce = try JSONDecoder().decode(Model.self, from: data)
+            return responce
         } catch {
             assertionFailure(error.localizedDescription)
-            return imagesUrl
+            return nil
         }
     }
 }
