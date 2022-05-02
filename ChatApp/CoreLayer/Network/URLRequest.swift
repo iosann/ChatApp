@@ -42,3 +42,16 @@ class ImageListRequest: IRequest {
         return URLRequest(url: url)
     }
 }
+
+class ImageRequest: IRequest {
+
+    var urlString: String?
+    var urlRequest: URLRequest? {
+        guard let urlString = urlString, let url = URL(string: urlString) else { return nil }
+        return URLRequest(url: url)
+    }
+    
+    init(urlString: String?) {
+        self.urlString = urlString
+    }
+}

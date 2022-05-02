@@ -20,19 +20,6 @@ extension ConversationViewController: UITableViewDataSource {
         let message = fetchedResultsController.object(at: indexPath)
         let isIncoming = message.senderId == myDeviceId ? false : true
         messageCell.configure(messageText: message.content, date: message.created, isIncomingMessage: isIncoming, senderName: message.senderName)
-
-        if let content = message.content, content.hasPrefix("http") {
-            guard let resource = URL(string: content) else { return cell }
-            do {
-                let data = try Data(contentsOf: resource)
-                DispatchQueue.main.async {
-                    messageCell.messageImageView.image = UIImage(data: data)
-                    messageCell.messageImageView.isHidden = false
-                }
-            } catch {
-                assertionFailure(error.localizedDescription)
-            }
-        }
         return messageCell
     }
 }

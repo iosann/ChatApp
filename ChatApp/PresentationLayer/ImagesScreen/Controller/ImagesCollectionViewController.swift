@@ -63,7 +63,16 @@ class ImagesCollectionViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? ImageCollectionViewCell
-        cell?.configure(from: imagesURL[indexPath.row])
+        model?.getImage(from: imagesURL[indexPath.row]) { result in
+            switch result {
+            case .success(let image):
+                DispatchQueue.main.async {
+                    cell?.imageView.image = image
+                }
+            case .failure(let error):
+                NSLog(error.localizedDescription)
+            }
+        }
         return cell ?? UICollectionViewCell()
     }
     

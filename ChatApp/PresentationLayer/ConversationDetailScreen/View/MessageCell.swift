@@ -14,7 +14,7 @@ class MessageCell: UITableViewCell {
         let label = UILabel(frame: .zero)
         label.font = .systemFont(ofSize: 15)
         label.numberOfLines = 0
-        label.lineBreakMode = .byWordWrapping
+        label.lineBreakMode = .byCharWrapping
         label.textColor = ThemeManager.currentTheme?.textColor
         return label
     }()
@@ -65,12 +65,9 @@ class MessageCell: UITableViewCell {
     }
     
     func configure(messageText: String?, date: Date?, isIncomingMessage: Bool, senderName: String?) {
-        if let messageText = messageText, messageText.hasPrefix("http") {
-            messageLabel.text = messageText + "\n\nThis API isn't supported"
-        } else {
-            messageLabel.text = messageText
-        }
         timeLabel.text = date?.formattedDate
+        messageLabel.text = messageText
+        
         if isIncomingMessage {
             cellBackgroundView.backgroundColor = ThemeManager.currentTheme?.incomingMessageColor
             trailingConstraint.isActive = false
@@ -80,6 +77,21 @@ class MessageCell: UITableViewCell {
             cellBackgroundView.backgroundColor = ThemeManager.currentTheme?.outgoingMessageColor
             trailingConstraint.isActive = true
             leadingConstraint.isActive = false
+        }
+        
+        if let messageText = messageText, messageText.hasPrefix("http") {
+            DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+                if let url = URL(string: messageText), let data = try? Data(contentsOf: url) {
+                    DispatchQueue.main.async {
+                        self?.messageImageView.image = UIImage(data: data)
+                        self?.messageImageView.isHidden = false
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        self?.messageLabel.text = messageText + "\n\nThis API isn't supported"
+                    }
+                }
+            }
         }
     }
     

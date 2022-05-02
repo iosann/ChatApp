@@ -32,6 +32,11 @@ class ProfileViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        activityIndicator.center = profileView.center
+    }
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         NotificationCenter.default.removeObserver(UIResponder.keyboardWillShowNotification)
@@ -74,7 +79,6 @@ class ProfileViewController: UIViewController {
             profileView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             profileView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height - (navigationController?.navigationBar.bounds.height ?? 0) - 60)
         ])
-        activityIndicator.center = profileView.center
     }
     
     private func getStoredData() {
@@ -210,16 +214,13 @@ class ProfileViewController: UIViewController {
             let imagesController = ImagesCollectionViewController()
             
             imagesController.didUpdateCompletion = { [weak self] urlString in
-                guard let resource = URL(string: urlString) else { return }
-                do {
-                    let data = try Data(contentsOf: resource)
-                    DispatchQueue.main.async {
-                        self?.profileView.photoImageView.image = UIImage(data: data)
+                DispatchQueue.global(qos: .userInitiated).async {
+                    guard let url = URL(string: urlString), let data = try? Data(contentsOf: url) else { return }
+                        DispatchQueue.main.async {
+                            self?.profileView.photoImageView.image = UIImage(data: data)
+                        }
                     }
-                } catch {
-                    assertionFailure(error.localizedDescription)
                 }
-            }
             self.present(imagesController, animated: true)
         }
         alert.addAction(loadAction)

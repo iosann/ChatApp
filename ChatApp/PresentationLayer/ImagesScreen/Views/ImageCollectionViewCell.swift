@@ -31,16 +31,6 @@ class ImageCollectionViewCell: UICollectionViewCell {
         imageView.image = nil
     }
     
-    func configure(from imageString: String) {
-        guard let url = URL(string: imageString) else { return }
-        do {
-            let data = try Data(contentsOf: url)
-            self.imageView.image = UIImage(data: data)
-        } catch {
-            assertionFailure(error.localizedDescription)
-        }
-    }
-    
     private func setupImageView() {
         addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
