@@ -10,9 +10,10 @@ import UIKit
 class MessageCell: UITableViewCell {
     
     private let cellBackgroundView = UIView()
+    
     private let messageLabel: UILabel = {
         let label = UILabel(frame: .zero)
-        label.font = .systemFont(ofSize: 15)
+        label.font = .systemFont(ofSize: 14)
         label.numberOfLines = 0
         label.lineBreakMode = .byCharWrapping
         label.textColor = ThemeManager.currentTheme?.textColor
@@ -20,7 +21,7 @@ class MessageCell: UITableViewCell {
     }()
     private let senderNameLabel: UILabel = {
         let label = UILabel(frame: .zero)
-        label.font = .boldSystemFont(ofSize: 16)
+        label.font = .boldSystemFont(ofSize: 15)
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         label.textColor = ThemeManager.currentTheme?.textColor
@@ -59,15 +60,10 @@ class MessageCell: UITableViewCell {
         messageLabel.text = nil
         senderNameLabel.text = nil
         timeLabel.text = nil
-        cellBackgroundView.backgroundColor = nil
-        messageImageView.isHidden = true
         messageImageView.image = nil
     }
     
     func configure(messageText: String?, date: Date?, isIncomingMessage: Bool, senderName: String?) {
-        timeLabel.text = date?.formattedDate
-        messageLabel.text = messageText
-        
         if isIncomingMessage {
             cellBackgroundView.backgroundColor = ThemeManager.currentTheme?.incomingMessageColor
             trailingConstraint.isActive = false
@@ -84,14 +80,17 @@ class MessageCell: UITableViewCell {
                 if let url = URL(string: messageText), let data = try? Data(contentsOf: url) {
                     DispatchQueue.main.async {
                         self?.messageImageView.image = UIImage(data: data)
-                        self?.messageImageView.isHidden = false
                     }
                 } else {
                     DispatchQueue.main.async {
                         self?.messageLabel.text = messageText + "\n\nThis API isn't supported"
+                        self?.timeLabel.text = date?.formattedDate
                     }
                 }
             }
+        } else {
+            messageLabel.text = messageText
+            timeLabel.text = date?.formattedDate
         }
     }
     
@@ -103,14 +102,13 @@ class MessageCell: UITableViewCell {
         contentView.addSubview(senderNameLabel)
         contentView.addSubview(timeLabel)
         contentView.addSubview(messageImageView)
+        
         cellBackgroundView.layer.cornerRadius = 8
         cellBackgroundView.translatesAutoresizingMaskIntoConstraints = false
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         senderNameLabel.translatesAutoresizingMaskIntoConstraints = false
         timeLabel.translatesAutoresizingMaskIntoConstraints = false
         messageImageView.translatesAutoresizingMaskIntoConstraints = false
-        
-        messageImageView.isHidden = true
 
         NSLayoutConstraint.activate([
             senderNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
@@ -122,8 +120,8 @@ class MessageCell: UITableViewCell {
             timeLabel.trailingAnchor.constraint(equalTo: messageLabel.trailingAnchor),
             timeLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
             
-            cellBackgroundView.topAnchor.constraint(equalTo: senderNameLabel.topAnchor, constant: -8),
-            cellBackgroundView.bottomAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 8),
+            cellBackgroundView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            cellBackgroundView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
             cellBackgroundView.leadingAnchor.constraint(equalTo: messageLabel.leadingAnchor, constant: -8),
             cellBackgroundView.trailingAnchor.constraint(equalTo: messageLabel.trailingAnchor, constant: 8),
             cellBackgroundView.widthAnchor.constraint(greaterThanOrEqualToConstant: 60),

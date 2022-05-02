@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension ConversationViewController: UITableViewDataSource {
+extension ConversationViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let sections = fetchedResultsController.sections else { return 0 }
@@ -21,5 +21,10 @@ extension ConversationViewController: UITableViewDataSource {
         let isIncoming = message.senderId == myDeviceId ? false : true
         messageCell.configure(messageText: message.content, date: message.created, isIncomingMessage: isIncoming, senderName: message.senderName)
         return messageCell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if let messageText = fetchedResultsController.object(at: indexPath).content, messageText.hasPrefix("http") { return 220
+        } else { return UITableView.automaticDimension }
     }
 }
