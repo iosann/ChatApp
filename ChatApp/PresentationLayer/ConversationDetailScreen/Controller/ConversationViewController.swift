@@ -55,6 +55,7 @@ class ConversationViewController: UIViewController {
     private func setupUI() {
         title = selectedChannel?.name
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: ThemeManager.currentTheme?.tintColor as Any]
+        navigationController?.navigationBar.backgroundColor = ThemeManager.currentTheme?.backgroundColor
         composeBar.sendButton.addTarget(self, action: #selector(sendNewMessage), for: .touchUpInside)
         composeBar.imageButton.addTarget(self, action: #selector(chooseImage), for: .touchUpInside)
         view.backgroundColor = ThemeManager.currentTheme?.backgroundColor

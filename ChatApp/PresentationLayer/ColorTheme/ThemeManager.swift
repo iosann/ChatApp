@@ -29,6 +29,7 @@ final class ThemeManager: IChangingTheme {
     
     static func apply() {
         UIApplication.shared.delegate?.window??.tintColor = currentTheme?.tintColor
+        UIApplication.shared.delegate?.window??.backgroundColor = currentTheme?.backgroundColor
         UITableView.appearance().backgroundColor = currentTheme?.backgroundColor
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: currentTheme?.tintColor as Any]
     }

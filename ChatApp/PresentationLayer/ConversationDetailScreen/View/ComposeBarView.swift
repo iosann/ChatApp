@@ -33,8 +33,6 @@ class ComposeBarView: UIView {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        loadNib()
-        setupUI()
     }
     
     private func loadNib() {
@@ -45,6 +43,7 @@ class ComposeBarView: UIView {
     }
     
     private func setupUI() {
+        contentView.backgroundColor = ThemeManager.currentTheme?.backgroundColor
         textView.delegate = self
         textView.layer.cornerRadius = 10
         textView.layer.borderWidth = 1

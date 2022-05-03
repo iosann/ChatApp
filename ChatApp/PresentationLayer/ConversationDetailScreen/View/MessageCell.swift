@@ -64,6 +64,8 @@ class MessageCell: UITableViewCell {
     }
     
     func configure(messageText: String?, date: Date?, isIncomingMessage: Bool, senderName: String?) {
+        timeLabel.text = date?.formattedDate
+        
         if isIncomingMessage {
             cellBackgroundView.backgroundColor = ThemeManager.currentTheme?.incomingMessageColor
             trailingConstraint.isActive = false
@@ -80,17 +82,16 @@ class MessageCell: UITableViewCell {
                 if let url = URL(string: messageText), let data = try? Data(contentsOf: url) {
                     DispatchQueue.main.async {
                         self?.messageImageView.image = UIImage(data: data)
+                        self?.cellBackgroundView.backgroundColor = .clear
                     }
                 } else {
                     DispatchQueue.main.async {
                         self?.messageLabel.text = messageText + "\n\nThis API isn't supported"
-                        self?.timeLabel.text = date?.formattedDate
                     }
                 }
             }
         } else {
             messageLabel.text = messageText
-            timeLabel.text = date?.formattedDate
         }
     }
     
@@ -103,7 +104,7 @@ class MessageCell: UITableViewCell {
         contentView.addSubview(timeLabel)
         contentView.addSubview(messageImageView)
         
-        cellBackgroundView.layer.cornerRadius = 8
+        cellBackgroundView.layer.cornerRadius = 10
         cellBackgroundView.translatesAutoresizingMaskIntoConstraints = false
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         senderNameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -127,10 +128,10 @@ class MessageCell: UITableViewCell {
             cellBackgroundView.widthAnchor.constraint(greaterThanOrEqualToConstant: 60),
             cellBackgroundView.widthAnchor.constraint(lessThanOrEqualToConstant: contentView.bounds.size.width * 0.75),
             
-            messageImageView.topAnchor.constraint(equalTo: cellBackgroundView.topAnchor),
+            messageImageView.topAnchor.constraint(equalTo: senderNameLabel.bottomAnchor, constant: 8),
             messageImageView.leadingAnchor.constraint(equalTo: cellBackgroundView.leadingAnchor),
             messageImageView.trailingAnchor.constraint(equalTo: cellBackgroundView.trailingAnchor),
-            messageImageView.bottomAnchor.constraint(equalTo: cellBackgroundView.bottomAnchor)
+            messageImageView.bottomAnchor.constraint(equalTo: timeLabel.topAnchor, constant: -8)
         ])
     }
 }
