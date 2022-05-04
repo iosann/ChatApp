@@ -101,7 +101,10 @@ class ProfileViewController: UIViewController {
     }
     
     @objc private func saveChanges(_ sender: UIButton) {
+        profileView.saveButton.layer.removeAllAnimations()
         activityIndicator.startAnimating()
+        activityIndicator.animate()
+        
         [profileView.saveButton, profileView.editPhotoButton, profileView.cancelButton].forEach { $0?.isEnabled = false }
         
         if profileView.nameTextView.text != storedFullName {
