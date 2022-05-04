@@ -23,6 +23,8 @@ class ProfileViewController: UIViewController {
     private var storedPhoto: UIImage?
     private var newDataForSaving: [String: Any?] = ["newName": nil, "newDescription": nil, "newPhoto": nil]
     private let model: IProfileModel? = ProfileModel()
+    
+    private let emitter: IEmblemEmitter? = EmblemEmitter()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,6 +62,8 @@ class ProfileViewController: UIViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         profileView.addGestureRecognizer(tap)
         profileView.addSubview(activityIndicator)
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(showEmblemFlow))
+        profileView.addGestureRecognizer(longPress)
     }
     
     private func setupScrollView() {
@@ -231,6 +235,17 @@ class ProfileViewController: UIViewController {
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         alert.addAction(cancelAction)
         present(alert, animated: true)
+    }
+    
+    @objc private func showEmblemFlow(_ gestureRecognizer: UILongPressGestureRecognizer) {
+        switch gestureRecognizer.state {
+        case .began:
+            let location = gestureRecognizer.location(in: gestureRecognizer.view)
+            emitter?.showEmblemFlow(into: location, on: profileView)
+        case .ended:
+            emitter?.stopAnimation(on: profileView)
+        default: break
+        }
     }
 }
 

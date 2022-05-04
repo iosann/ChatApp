@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		BB8655BB0213036783D87EF4 /* Pods_ChatApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B85BBFB2F206D009FA1B1C29 /* Pods_ChatApp.framework */; };
 		DB2EE269282049DF0094CCDF /* ImageParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2EE268282049DF0094CCDF /* ImageParser.swift */; };
+		DB2EE26F2822C9CB0094CCDF /* EmblemEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2EE26E2822C9CB0094CCDF /* EmblemEmitter.swift */; };
 		DB398A5D2805F7FB006BE07E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DB398A5C2805F7FB006BE07E /* GoogleService-Info.plist */; };
 		DB482C572817212400676DE9 /* ConversationsListFRCDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C562817212400676DE9 /* ConversationsListFRCDelegate.swift */; };
 		DB482C59281722DA00676DE9 /* ConversationFRCDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C58281722DA00676DE9 /* ConversationFRCDelegate.swift */; };
@@ -70,6 +71,7 @@
 		B85BBFB2F206D009FA1B1C29 /* Pods_ChatApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChatApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D67BDBEE79310AFA5175A121 /* Pods-ChatApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatApp.debug.xcconfig"; path = "Target Support Files/Pods-ChatApp/Pods-ChatApp.debug.xcconfig"; sourceTree = "<group>"; };
 		DB2EE268282049DF0094CCDF /* ImageParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageParser.swift; sourceTree = "<group>"; };
+		DB2EE26E2822C9CB0094CCDF /* EmblemEmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmblemEmitter.swift; sourceTree = "<group>"; };
 		DB398A5C2805F7FB006BE07E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DB482C562817212400676DE9 /* ConversationsListFRCDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsListFRCDelegate.swift; sourceTree = "<group>"; };
 		DB482C58281722DA00676DE9 /* ConversationFRCDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationFRCDelegate.swift; sourceTree = "<group>"; };
@@ -453,6 +455,7 @@
 			isa = PBXGroup;
 			children = (
 				DB482C7D2819D80400676DE9 /* ActivityIndicator.swift */,
+				DB2EE26E2822C9CB0094CCDF /* EmblemEmitter.swift */,
 			);
 			path = SharedComponents;
 			sourceTree = "<group>";
@@ -655,6 +658,7 @@
 				DB504C3B27D96727004B0CCE /* ConversationViewController.swift in Sources */,
 				DBBD175327C6682A0093B548 /* Extensions.swift in Sources */,
 				DB482C672819585000676DE9 /* ConversationsListModel.swift in Sources */,
+				DB2EE26F2822C9CB0094CCDF /* EmblemEmitter.swift in Sources */,
 				DB8BCD8227D026FC00054A95 /* ProfileViewController.swift in Sources */,
 				DB482C6528194EC300676DE9 /* CoreDataService.swift in Sources */,
 				DBD232BE27E13FEF00484E0B /* ButtonThemesView.swift in Sources */,
