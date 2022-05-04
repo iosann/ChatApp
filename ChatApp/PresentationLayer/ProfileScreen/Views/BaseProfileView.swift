@@ -101,12 +101,27 @@ class BaseProfileView: UIView {
     @IBAction func editTextViews(_ sender: UIButton) {
         isEditingMode = true
         if nameTextView.canBecomeFirstResponder { nameTextView.becomeFirstResponder() }
+        startTremblingAnimation()
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         photoImageView.layer.cornerRadius = photoImageView.bounds.size.width / 2
         editPhotoButton.layer.cornerRadius = editPhotoButton.bounds.size.width / 2
+    }
+    
+    private func startTremblingAnimation() {
+        saveButton.center = CGPoint(x: self.saveButton.center.x - 5, y: self.saveButton.center.y - 5)
+        saveButton.transform = CGAffineTransform(rotationAngle: -9 * .pi / 180)
+        
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.1, initialSpringVelocity: 0.5,
+                       options: [.repeat, .autoreverse, .allowUserInteraction, .curveEaseInOut]) {
+            self.saveButton.center = CGPoint(x: self.saveButton.center.x + 5, y: self.saveButton.center.y + 5)
+            self.saveButton.transform = CGAffineTransform(rotationAngle: 0)
+            self.layoutIfNeeded()
+        } completion: { _ in
+            self.saveButton.transform = .identity
+        }
     }
 }
 
