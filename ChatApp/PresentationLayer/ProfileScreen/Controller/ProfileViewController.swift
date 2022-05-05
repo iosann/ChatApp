@@ -196,7 +196,6 @@ class ProfileViewController: UIViewController {
     @objc private func editProfileImage(_ sender: UIButton) {
         profileView.isEditingMode = true
         profileView.saveButton.isEnabled = true
-//        print("Выбери изображение профиля")
         
         let alert = UIAlertController(title: "Choose image source", message: nil, preferredStyle: .actionSheet)
         let imagePicker = UIImagePickerController()

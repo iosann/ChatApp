@@ -45,6 +45,14 @@ class ConversationsListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: ThemeManager.currentTheme?.tintColor as Any]
+        transition.dismissCompletion = {
+            guard let navigationBarSubviews = self.navigationController?.navigationBar.subviews else { return }
+            for subview in navigationBarSubviews {
+                for view in subview.subviews where view.bounds.width < 50 {
+                    view.isHidden = false
+                }
+            }
+        }
     }
 
     private func setupUI() {

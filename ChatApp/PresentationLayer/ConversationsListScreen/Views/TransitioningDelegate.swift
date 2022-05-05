@@ -1,5 +1,5 @@
 //
-//  VCTransitioningDelegate.swift
+//  TransitioningDelegate.swift
 //  ChatApp
 //
 //  Created by Anna Belousova on 05.05.2022.
@@ -22,6 +22,7 @@ extension ConversationsListViewController: UIViewControllerTransitioningDelegate
                                    height: view.frame.height)
                 transition.originFrame = frame
                 transition.isPresenting = true
+                view.isHidden = true
             }
         }
         return transition

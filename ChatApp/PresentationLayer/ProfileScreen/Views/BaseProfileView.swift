@@ -49,18 +49,16 @@ class BaseProfileView: UIView {
         return true
     }
     
+    private var isAnimating = false
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-//      print(saveButton.frame)
-//      Краш из-за попытки обратиться к кнопке раньше, чем xib, содержащий кнопку, будет инициализирован
         loadNib()
         configureView()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        loadNib()
-        configureView()
     }
     
     private func loadNib() {
@@ -101,7 +99,11 @@ class BaseProfileView: UIView {
     @IBAction func editTextViews(_ sender: UIButton) {
         isEditingMode = true
         if nameTextView.canBecomeFirstResponder { nameTextView.becomeFirstResponder() }
-        startTremblingAnimation()
+
+        if isAnimating {
+            editButton.layer.removeAllAnimations()
+            isAnimating = false
+        } else { startTremblingAnimation() }
     }
     
     override func layoutSubviews() {
@@ -111,17 +113,33 @@ class BaseProfileView: UIView {
     }
     
     private func startTremblingAnimation() {
-        saveButton.center = CGPoint(x: self.saveButton.center.x - 5, y: self.saveButton.center.y - 5)
-        saveButton.transform = CGAffineTransform(rotationAngle: -9 * .pi / 180)
         
-        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.1, initialSpringVelocity: 0.5,
-                       options: [.repeat, .autoreverse, .allowUserInteraction, .curveEaseInOut]) {
-            self.saveButton.center = CGPoint(x: self.saveButton.center.x + 5, y: self.saveButton.center.y + 5)
-            self.saveButton.transform = CGAffineTransform(rotationAngle: 0)
-            self.layoutIfNeeded()
-        } completion: { _ in
-            self.saveButton.transform = .identity
-        }
+        let offset = CABasicAnimation(keyPath: #keyPath(CALayer.position))
+        offset.fromValue = [saveButton.center.x - 5, saveButton.center.y - 5]
+        offset.toValue = [saveButton.center.x + 5, saveButton.center.y + 5]
+        offset.duration = 0.1
+        offset.autoreverses = true
+        
+        let rotation = CABasicAnimation(keyPath: "transform.rotation")
+        rotation.fromValue = -18 * CGFloat.pi / 180
+        rotation.toValue = 18 * CGFloat.pi / 180
+        rotation.duration = 0.1
+        rotation.autoreverses = true
+        
+        let spring = CASpringAnimation(keyPath: "position")
+        spring.damping = 10
+        spring.fromValue = [saveButton.center.x - 2, saveButton.center.y - 2]
+        spring.toValue = [saveButton.center.x + 2, saveButton.center.y + 2]
+        spring.duration = 0.1
+        spring.repeatDuration = 0.3
+        
+        let group = CAAnimationGroup()
+        group.duration = 0.3
+        group.autoreverses = true
+        group.repeatCount = .infinity
+        group.animations = [offset, rotation, spring]
+        saveButton.layer.add(group, forKey: nil)
+        isAnimating = true
     }
 }
 

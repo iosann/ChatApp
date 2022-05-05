@@ -17,6 +17,7 @@ class PopAnimator: NSObject, IPopAnimator, UIViewControllerAnimatedTransitioning
     private let duration: TimeInterval = 1
     var isPresenting = true
     var originFrame = CGRect.zero
+    var dismissCompletion: (() -> Void)?
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return duration
@@ -50,6 +51,7 @@ class PopAnimator: NSObject, IPopAnimator, UIViewControllerAnimatedTransitioning
             profileView.transform = self.isPresenting ? .identity : scaleTransform
             profileView.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
         } completion: { _ in
+            if !self.isPresenting { self.dismissCompletion?() }
             transitionContext.completeTransition(true)
         }
     }
