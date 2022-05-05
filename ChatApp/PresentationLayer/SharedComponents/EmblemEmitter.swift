@@ -15,6 +15,8 @@ protocol IEmblemEmitter {
 
 class EmblemEmitter: IEmblemEmitter {
     
+    private let emitterLayer = CAEmitterLayer()
+    
     private lazy var emblemCell: CAEmitterCell = {
         let emblemCell = CAEmitterCell()
         emblemCell.contents = UIImage(named: "emblem")?.cgImage
@@ -32,18 +34,13 @@ class EmblemEmitter: IEmblemEmitter {
         return emblemCell
     }()
     
-    private lazy var emitterLayer: CAEmitterLayer = {
-        let emitterLayer = CAEmitterLayer()
+    func showEmblemFlow(into position: CGPoint, on view: UIView) {
+        emitterLayer.emitterPosition = position
+        emitterLayer.emitterSize = CGSize(width: view.bounds.width, height: view.bounds.height)
         emitterLayer.emitterCells = [emblemCell]
         emitterLayer.renderMode = .additive
         emitterLayer.emitterMode = .surface
         emitterLayer.birthRate = 1
-        return emitterLayer
-    }()
-    
-    func showEmblemFlow(into position: CGPoint, on view: UIView) {
-        emitterLayer.emitterPosition = position
-        emitterLayer.emitterSize = CGSize(width: view.bounds.width, height: view.bounds.height)
         view.layer.addSublayer(emitterLayer)
     }
     

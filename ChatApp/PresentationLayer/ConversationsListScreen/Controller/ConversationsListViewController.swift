@@ -15,6 +15,7 @@ class ConversationsListViewController: UIViewController {
     private let dataSource = TableViewDataSource()
     let tableView = UITableView(frame: .zero, style: .insetGrouped)
     let model: IConversationsListModel? = ConversationsListModel()
+    let transition = PopAnimator()
     
     private lazy var fetchedResultsController: NSFetchedResultsController<DBChannel> = {
         guard let context = model?.mainContext as? NSManagedObjectContext else { return NSFetchedResultsController<DBChannel>() }
@@ -30,15 +31,6 @@ class ConversationsListViewController: UIViewController {
         }
         return controller
     }()
-    
-//    init(model: IConversationsListModel?) {
-//        self.model = model
-//        super.init(nibName: nil, bundle: nil)
-//    }
-//
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,6 +79,7 @@ class ConversationsListViewController: UIViewController {
     @objc private func openProfile() {
         let profileViewController = ProfileViewController()
         let navigationController = UINavigationController(rootViewController: profileViewController)
+        navigationController.transitioningDelegate = self
         self.present(navigationController, animated: true)
     }
     
