@@ -13,7 +13,7 @@ extension ConversationsListViewController: UIViewControllerTransitioningDelegate
                              presenting: UIViewController,
                              source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         
-        guard let navigationBarSubviews = self.navigationController?.navigationBar.subviews else { return transition.self }
+        guard let navigationBarSubviews = self.navigationController?.navigationBar.subviews else { return transition }
         for subview in navigationBarSubviews {
             for view in subview.subviews where view.bounds.width < 50 {
                 let frame = CGRect(x: view.frame.maxX - view.frame.width / 2,

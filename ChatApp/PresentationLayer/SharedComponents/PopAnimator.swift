@@ -10,6 +10,7 @@ import UIKit
 protocol IPopAnimator {
     var isPresenting: Bool { get set }
     var originFrame: CGRect { get set }
+    var dismissCompletion: (() -> Void)? { get set }
 }
 
 class PopAnimator: NSObject, IPopAnimator, UIViewControllerAnimatedTransitioning {
@@ -25,13 +26,13 @@ class PopAnimator: NSObject, IPopAnimator, UIViewControllerAnimatedTransitioning
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         let containerView = transitionContext.containerView
-        let profileView = isPresenting ? transitionContext.view(forKey: .to) : transitionContext.view(forKey: .from)
-        guard let profileView = profileView else {
+        let viewToPresent = isPresenting ? transitionContext.view(forKey: .to) : transitionContext.view(forKey: .from)
+        guard let viewToPresent = viewToPresent else {
             transitionContext.completeTransition(false)
             return
         }
-        let initialFrame = isPresenting ? originFrame : profileView.frame
-        let finalFrame = isPresenting ? profileView.frame : originFrame
+        let initialFrame = isPresenting ? originFrame : viewToPresent.frame
+        let finalFrame = isPresenting ? viewToPresent.frame : originFrame
         let xScaleFactor = isPresenting
                             ? initialFrame.width / finalFrame.width
                             : finalFrame.width / initialFrame.width
@@ -40,16 +41,16 @@ class PopAnimator: NSObject, IPopAnimator, UIViewControllerAnimatedTransitioning
                             : finalFrame.height / initialFrame.height
         let scaleTransform = CGAffineTransform(scaleX: xScaleFactor, y: yScaleFactor)
         if isPresenting {
-            profileView.transform = scaleTransform
-            profileView.center = CGPoint(x: initialFrame.midX, y: initialFrame.midY)
-            profileView.clipsToBounds = true
+            viewToPresent.transform = scaleTransform
+            viewToPresent.center = CGPoint(x: initialFrame.midX, y: initialFrame.midY)
+            viewToPresent.clipsToBounds = true
         }
         if let toView = transitionContext.view(forKey: .to) { containerView.addSubview(toView) }
-        containerView.bringSubviewToFront(profileView)
+        containerView.bringSubviewToFront(viewToPresent)
         
         UIView.animate(withDuration: duration, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 3, options: []) {
-            profileView.transform = self.isPresenting ? .identity : scaleTransform
-            profileView.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
+            viewToPresent.transform = self.isPresenting ? .identity : scaleTransform
+            viewToPresent.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
         } completion: { _ in
             if !self.isPresenting { self.dismissCompletion?() }
             transitionContext.completeTransition(true)

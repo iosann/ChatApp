@@ -9,12 +9,6 @@ import UIKit
 
 class ImagesCollectionViewController: UICollectionViewController {
     
-    enum SizeConstants: CGFloat {
-        case spacing = 16
-        case numberOfItemsInRow = 3
-        case sumOfCellSpacingInRow = 64
-    }
-    
     private let reuseIdentifier = "Cell"
     private lazy var activityIndicator = ActivityIndicator(frame: .zero)
     private let model: IImagesModel
@@ -80,26 +74,5 @@ class ImagesCollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         didUpdateCompletion?(imagesURL[indexPath.row])
         dismiss(animated: true)
-    }
-}
-
-extension ImagesCollectionViewController: UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: (UIScreen.main.bounds.width - SizeConstants.sumOfCellSpacingInRow.rawValue) / SizeConstants.numberOfItemsInRow.rawValue,
-                      height: (UIScreen.main.bounds.width - SizeConstants.sumOfCellSpacingInRow.rawValue) / SizeConstants.numberOfItemsInRow.rawValue)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
-                        insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: SizeConstants.spacing.rawValue,
-                            left: SizeConstants.spacing.rawValue,
-                            bottom: SizeConstants.spacing.rawValue,
-                            right: SizeConstants.spacing.rawValue)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
-                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return SizeConstants.spacing.rawValue
     }
 }

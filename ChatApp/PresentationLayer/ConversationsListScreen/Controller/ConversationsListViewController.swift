@@ -12,9 +12,10 @@ import CoreData
 class ConversationsListViewController: UIViewController {
     
     private let cellIdentifier = "ConversationCell"
-    private let dataSource = TableViewDataSource()
+    let dataSource = TableViewDataSource()
     let tableView = UITableView(frame: .zero, style: .insetGrouped)
-    private let model: IConversationsListModel
+    let model: IConversationsListModel
+    private var isThemeOpened = false
     
     let transition = PopAnimator()
     
@@ -54,14 +55,9 @@ class ConversationsListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: ThemeManager.currentTheme?.tintColor as Any]
-        transition.dismissCompletion = {
-            guard let navigationBarSubviews = self.navigationController?.navigationBar.subviews else { return }
-            for subview in navigationBarSubviews {
-                for view in subview.subviews where view.bounds.width < 50 {
-                    view.isHidden = false
-                }
-            }
+        if isThemeOpened {
+            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: ThemeManager.currentTheme?.tintColor as Any]
+            tableView.reloadData()
         }
     }
 
@@ -74,6 +70,15 @@ class ConversationsListViewController: UIViewController {
             UIBarButtonItem(image: UIImage(named: "icon_settings"), style: .plain, target: self, action: #selector(openThemes)),
             UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addChannel))]
         setupTableView()
+        
+        transition.dismissCompletion = {
+            guard let navigationBarSubviews = self.navigationController?.navigationBar.subviews else { return }
+            for subview in navigationBarSubviews {
+                for view in subview.subviews where view.bounds.width < 50 {
+                    view.isHidden = false
+                }
+            }
+        }
     }
     
     private func setupTableView() {
@@ -99,11 +104,13 @@ class ConversationsListViewController: UIViewController {
         let navigationController = UINavigationController(rootViewController: profileViewController)
         navigationController.transitioningDelegate = self
         self.present(navigationController, animated: true)
+        isThemeOpened = false
     }
     
     @objc private func openThemes() {
         let themesViewController = RootAssembly.presentationAssembly.getThemesViewController()
         navigationController?.pushViewController(themesViewController, animated: true)
+        isThemeOpened = true
     }
     
     @objc private func addChannel() {
@@ -123,29 +130,5 @@ class ConversationsListViewController: UIViewController {
     
     @objc private func updateMainContext(_ notification: Notification) {
         model.mergeChanges(notification: notification)
-    }
-}
-
-extension ConversationsListViewController: UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 90
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let conversationViewController = RootAssembly.presentationAssembly.getConversationViewController()
-        conversationViewController.selectedChannel = dataSource.fetchedResultsController?.object(at: indexPath)
-        conversationViewController.context = model.mainContext
-        navigationController?.pushViewController(conversationViewController, animated: true)
-    }
-    
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _, _, _ in
-            guard let channel = self?.dataSource.fetchedResultsController?.object(at: indexPath) else { return }
-            self?.model.deleteChannel(channel)
-        }
-        deleteAction.backgroundColor = .red
-        let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
-        return configuration
     }
 }

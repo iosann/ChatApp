@@ -16,6 +16,7 @@ class ThemesViewController: UIViewController {
     private let myView = ButtonThemesView(frame: CGRect(x: 0, y: 0, width: 300, height: 70))
 //    private let themeManager = ThemeManager()
     private weak var delegate: IThemeManager?
+    private let gradientLayer = CAGradientLayer()
     
     init(delegate: IThemeManager?) {
         self.delegate = delegate
@@ -32,7 +33,10 @@ class ThemesViewController: UIViewController {
 //        themeManager.selectedThemeComplition = { [weak self] theme in
 //            self?.setTheme(theme: theme)
 //        }
+        view.backgroundColor = ThemeManager.currentTheme?.backgroundColor
         setColors(theme: ThemeManager.currentTheme)
+        view.layer.addSublayer(gradientLayer)
+        
         view.addSubview(myView)
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelScreen))
         customizeButtons()
@@ -93,14 +97,16 @@ class ThemesViewController: UIViewController {
         setColors(theme: selectedTheme)
         sender.imageView?.layer.borderWidth = 3
         sender.imageView?.layer.borderColor = UIColor.blue.cgColor
+        animateGradient(to: selectedTheme?.backgroundColor)
         delegate?.theme = selectedTheme
 //        themeManager.selectedThemeComplition?(selectedTheme ?? .classic)
     }
     
     @objc private func cancelScreen() {
+        setColors(theme: ThemeManager.saved)
+        animateGradient(to: ThemeManager.saved.backgroundColor)
         delegate?.theme = ThemeManager.saved
  //       themeManager.selectedThemeComplition?(ThemeManager.saved)
-        setColors(theme: ThemeManager.saved)
         buttons[ThemeManager.saved.rawValue].imageView?.layer.borderWidth = 3
         buttons[ThemeManager.saved.rawValue].imageView?.layer.borderColor = UIColor.blue.cgColor
     }
@@ -111,7 +117,23 @@ class ThemesViewController: UIViewController {
             $0.imageView?.layer.borderWidth = 1
             $0.imageView?.layer.borderColor = theme?.textColor.cgColor
         }
-        view.backgroundColor = theme?.backgroundColor
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: theme?.tintColor ?? UIColor.black]
+        navigationController?.navigationBar.backgroundColor = theme?.backgroundColor
+    }
+
+    private func animateGradient(to selectedColor: UIColor?) {
+        guard let currentColor = ThemeManager.currentTheme?.backgroundColor.cgColor, let selectedColor = selectedColor?.cgColor else { return }
+        gradientLayer.colors = [currentColor, selectedColor]
+        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
+        gradientLayer.endPoint = CGPoint(x: 1, y: 1)
+        gradientLayer.frame = view.bounds
+        
+        let colorsAnimation = CABasicAnimation(keyPath: #keyPath(CAGradientLayer.colors))
+        colorsAnimation.fromValue = gradientLayer.colors
+        colorsAnimation.toValue = [selectedColor, selectedColor]
+        colorsAnimation.duration = 1.5
+        colorsAnimation.fillMode = .forwards
+        colorsAnimation.isRemovedOnCompletion = false
+        gradientLayer.add(colorsAnimation, forKey: nil)
     }
 }

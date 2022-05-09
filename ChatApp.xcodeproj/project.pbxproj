@@ -62,6 +62,10 @@
 		DBC9EB0A2829667700B8A452 /* ServiceAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9EB092829667700B8A452 /* ServiceAssembly.swift */; };
 		DBC9EB0C282969A800B8A452 /* PresentationAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9EB0B282969A800B8A452 /* PresentationAssembly.swift */; };
 		DBC9EB0E282978F200B8A452 /* RootAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9EB0D282978F200B8A452 /* RootAssembly.swift */; };
+		DBC9EB102829AE9900B8A452 /* DelegateFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9EB0F2829AE9900B8A452 /* DelegateFlowLayout.swift */; };
+		DBC9EB122829B00F00B8A452 /* TableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9EB112829B00F00B8A452 /* TableViewDelegate.swift */; };
+		DBC9EB142829B17A00B8A452 /* UICustomization.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9EB132829B17A00B8A452 /* UICustomization.swift */; };
+		DBC9EB162829B4A300B8A452 /* ImagePickerExtension+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9EB152829B4A300B8A452 /* ImagePickerExtension+Delegate.swift */; };
 		DBD232BA27E137E800484E0B /* ThemesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD232B927E137E800484E0B /* ThemesViewController.swift */; };
 		DBD232BE27E13FEF00484E0B /* ButtonThemesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD232BD27E13FEF00484E0B /* ButtonThemesView.swift */; };
 		DBE6239727F3705E00EA22F4 /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE6239627F3705E00EA22F4 /* Channel.swift */; };
@@ -132,6 +136,10 @@
 		DBC9EB092829667700B8A452 /* ServiceAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceAssembly.swift; sourceTree = "<group>"; };
 		DBC9EB0B282969A800B8A452 /* PresentationAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationAssembly.swift; sourceTree = "<group>"; };
 		DBC9EB0D282978F200B8A452 /* RootAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootAssembly.swift; sourceTree = "<group>"; };
+		DBC9EB0F2829AE9900B8A452 /* DelegateFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegateFlowLayout.swift; sourceTree = "<group>"; };
+		DBC9EB112829B00F00B8A452 /* TableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDelegate.swift; sourceTree = "<group>"; };
+		DBC9EB132829B17A00B8A452 /* UICustomization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICustomization.swift; sourceTree = "<group>"; };
+		DBC9EB152829B4A300B8A452 /* ImagePickerExtension+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImagePickerExtension+Delegate.swift"; sourceTree = "<group>"; };
 		DBD232B927E137E800484E0B /* ThemesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemesViewController.swift; sourceTree = "<group>"; };
 		DBD232BD27E13FEF00484E0B /* ButtonThemesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonThemesView.swift; sourceTree = "<group>"; };
 		DBE6239627F3705E00EA22F4 /* Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
@@ -191,6 +199,7 @@
 			isa = PBXGroup;
 			children = (
 				DB6C41E528131D71005A5C70 /* ImageCollectionViewCell.swift */,
+				DBC9EB0F2829AE9900B8A452 /* DelegateFlowLayout.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -258,6 +267,8 @@
 			children = (
 				DB745A5027D0FA74007534FA /* BaseProfileView.xib */,
 				DB745A5227D0FA8C007534FA /* BaseProfileView.swift */,
+				DBC9EB132829B17A00B8A452 /* UICustomization.swift */,
+				DBC9EB152829B4A300B8A452 /* ImagePickerExtension+Delegate.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -278,6 +289,7 @@
 				DB504C2C27D94152004B0CCE /* ConversationCell.swift */,
 				DB504C2D27D94152004B0CCE /* ConversationCell.xib */,
 				DB312F54282433D90069E7DC /* TransitioningDelegate.swift */,
+				DBC9EB112829B00F00B8A452 /* TableViewDelegate.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -701,20 +713,24 @@
 				DBAD1779281A194700E719C0 /* ConversationDataSource+Delegate.swift in Sources */,
 				DB8512E927E2477D00F26830 /* ColorTheme.swift in Sources */,
 				DB482C6C281980D600676DE9 /* ProfileModel.swift in Sources */,
+				DBC9EB122829B00F00B8A452 /* TableViewDelegate.swift in Sources */,
 				DB482C782819A3A000676DE9 /* ImagesModel.swift in Sources */,
 				DBA00BE727FE3F83006F02ED /* OldCoreDataCoordinator.swift in Sources */,
 				DB504C2B27D93E39004B0CCE /* ConversationsListViewController.swift in Sources */,
 				DBC9757727F5F48C009CC84C /* ComposeBarView.swift in Sources */,
 				DBFFEE8B27EBA9FD00F194D9 /* GCDStorageService.swift in Sources */,
+				DBC9EB142829B17A00B8A452 /* UICustomization.swift in Sources */,
 				DBB5AF5B28117928002B29CC /* TableViewDataSource.swift in Sources */,
 				DB482C5F2817335400676DE9 /* ImagesResponce.swift in Sources */,
 				DBA00BC027FC7A94006F02ED /* DatabaseModel.xcdatamodeld in Sources */,
 				DBD232BA27E137E800484E0B /* ThemesViewController.swift in Sources */,
 				DB504C2E27D94152004B0CCE /* ConversationCell.swift in Sources */,
 				DB482C762819A14600676DE9 /* NetworkImagesService.swift in Sources */,
+				DBC9EB102829AE9900B8A452 /* DelegateFlowLayout.swift in Sources */,
 				DB482C72281997BB00676DE9 /* RequestConfiguration.swift in Sources */,
 				DBC9EB0E282978F200B8A452 /* RootAssembly.swift in Sources */,
 				DBFFEE9127EC751E00F194D9 /* Constants.swift in Sources */,
+				DBC9EB162829B4A300B8A452 /* ImagePickerExtension+Delegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

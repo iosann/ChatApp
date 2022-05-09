@@ -26,8 +26,6 @@ extension ActivityIndicator {
     func animate() {
         UIView.animate(withDuration: 0.3, delay: 0, options: [.autoreverse, .repeat, .curveEaseOut]) {
             self.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
-        } completion: { _ in
-            print("finish animate")
-        }
+        } completion: { _ in }
     }
 }
