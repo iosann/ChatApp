@@ -22,10 +22,19 @@ class ProfileViewController: UIViewController {
     private var storedDescription: String?
     private var storedPhoto: UIImage?
     private var newDataForSaving: [String: Any?] = ["newName": nil, "newDescription": nil, "newPhoto": nil]
-    private let model: IProfileModel? = ProfileModel()
+    private let model: IProfileModel
     
     private let emitter: IEmblemEmitter? = EmblemEmitter()
-
+    
+    init(model: IProfileModel, presentationAssembly: IPresentationAssembly) {
+        self.model = model
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         getStoredData()
@@ -86,15 +95,15 @@ class ProfileViewController: UIViewController {
     }
     
     private func getStoredData() {
-        model?.getStoredString(fileName: TextConstants.fullnameFilename) { [weak self] fullname in
+        model.getStoredString(fileName: TextConstants.fullnameFilename) { [weak self] fullname in
             self?.storedFullName = fullname
             DispatchQueue.main.async { self?.profileView.nameTextView.text = fullname }
         }
-        model?.getStoredString(fileName: TextConstants.descriptionFileName) { [weak self] description in
+        model.getStoredString(fileName: TextConstants.descriptionFileName) { [weak self] description in
             self?.storedDescription = description
             DispatchQueue.main.async { self?.profileView.descriptionTextView.text = description }
         }
-        model?.getStoredImage { [weak self] image in
+        model.getStoredImage { [weak self] image in
             self?.storedPhoto = image
             DispatchQueue.main.async { self?.profileView.photoImageView.image = image }
         }
@@ -124,7 +133,7 @@ class ProfileViewController: UIViewController {
     }
     
     private func writeNewData() {
-        model?.writeData(fullName: newDataForSaving["newName"] as? String,
+        model.writeData(fullName: newDataForSaving["newName"] as? String,
                            description: newDataForSaving["newDescription"] as? String,
                            image: newDataForSaving["newPhoto"] as? UIImage) { [weak self] result in
             self?.showAlert(result)
@@ -217,7 +226,7 @@ class ProfileViewController: UIViewController {
             alert.addAction(photoLibraryAction)
         }
         let loadAction = UIAlertAction(title: "Load", style: .default) { _ in
-            let imagesController = ImagesCollectionViewController()
+            let imagesController = RootAssembly.presentationAssembly.getImagesCollectionViewController()
             
             imagesController.didUpdateCompletion = { [weak self] urlString in
                 DispatchQueue.global(qos: .userInitiated).async {

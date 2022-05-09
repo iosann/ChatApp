@@ -17,11 +17,12 @@ class ImagesCollectionViewController: UICollectionViewController {
     
     private let reuseIdentifier = "Cell"
     private lazy var activityIndicator = ActivityIndicator(frame: .zero)
-    private let model: IImagesModel? = ImagesModel()
+    private let model: IImagesModel
     private var imagesURL = [String]()
     var didUpdateCompletion: ((String) -> Void)?
     
-    init() {
+    init(model: IImagesModel, presentationAssembly: IPresentationAssembly) {
+        self.model = model
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
     }
     required init?(coder: NSCoder) {
@@ -38,7 +39,7 @@ class ImagesCollectionViewController: UICollectionViewController {
     
     private func loadImages() {
         activityIndicator.startAnimating()
-        model?.getImagesURL { [weak self] result in
+        model.getImagesURL { [weak self] result in
             switch result {
             case .success(let response):
                 response.hits.forEach {
@@ -63,7 +64,7 @@ class ImagesCollectionViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? ImageCollectionViewCell
-        model?.getImage(from: imagesURL[indexPath.row]) { result in
+        model.getImage(from: imagesURL[indexPath.row]) { result in
             switch result {
             case .success(let image):
                 DispatchQueue.main.async {

@@ -14,7 +14,11 @@ protocol IImagesModel {
 
 class ImagesModel: IImagesModel {
     
-    private let imageService: INetworkImageService = NetworkImageService()
+    private let imageService: INetworkImageService
+    
+    init(imageService: INetworkImageService) {
+        self.imageService = imageService
+    }
     
     func getImagesURL(_ completion: @escaping(ImagesURLResult) -> Void) {
         imageService.getImagesList { result in

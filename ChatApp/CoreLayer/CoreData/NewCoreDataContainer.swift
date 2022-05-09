@@ -8,15 +8,12 @@
 import Foundation
 import CoreData
 
-protocol ISavingToCoreData: AnyObject {
+protocol ICoreDataStorage: AnyObject {
     func performSave(_ block: @escaping(NSManagedObjectContext) -> Void)
-}
-
-protocol ICoreDataContext {
     var readContext: NSManagedObjectContext { get }
 }
 
-final class NewCoreDataContainer: ISavingToCoreData, ICoreDataContext {
+final class NewCoreDataContainer: ICoreDataStorage {
     
     static var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "DatabaseModel")

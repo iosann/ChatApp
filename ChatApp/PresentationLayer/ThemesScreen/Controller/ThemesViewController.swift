@@ -14,20 +14,24 @@ class ThemesViewController: UIViewController {
     private let bottomButton = UIButton()
     private lazy var buttons = [topButton, middleButton, bottomButton]
     private let myView = ButtonThemesView(frame: CGRect(x: 0, y: 0, width: 300, height: 70))
-    private let themeManager = ThemeManager()
+//    private let themeManager = ThemeManager()
+    private weak var delegate: IThemeManager?
     
-    // сильная ссылка на делегат может создать retain cycle
-    private weak var delegate: IChangingTheme?
+    init(delegate: IThemeManager?) {
+        self.delegate = delegate
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Settings"
-        self.delegate = themeManager
-        // захват сильной ссылки на self (ThemesViewController) может создать retain cycle,
-        // при котором ThemeManager будет держать ссылку на ThemesViewController и не даст ему деинициализироваться
-        themeManager.selectedThemeComplition = { [weak self] theme in
-            self?.setTheme(theme: theme)
-        }
+//        themeManager.selectedThemeComplition = { [weak self] theme in
+//            self?.setTheme(theme: theme)
+//        }
         setColors(theme: ThemeManager.currentTheme)
         view.addSubview(myView)
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelScreen))

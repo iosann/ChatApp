@@ -7,11 +7,11 @@
 
 import UIKit
 
-protocol IChangingTheme: AnyObject {
+protocol IThemeManager: AnyObject {
     var theme: ColorTheme? { get set }
 }
     
-final class ThemeManager: IChangingTheme {
+final class ThemeManager: IThemeManager {
 
     var selectedThemeComplition: ((ColorTheme) -> Void)?
     var theme: ColorTheme? {

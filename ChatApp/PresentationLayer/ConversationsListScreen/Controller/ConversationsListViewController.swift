@@ -14,11 +14,12 @@ class ConversationsListViewController: UIViewController {
     private let cellIdentifier = "ConversationCell"
     private let dataSource = TableViewDataSource()
     let tableView = UITableView(frame: .zero, style: .insetGrouped)
-    let model: IConversationsListModel? = ConversationsListModel()
+    private let model: IConversationsListModel
+    
     let transition = PopAnimator()
     
     private lazy var fetchedResultsController: NSFetchedResultsController<DBChannel> = {
-        guard let context = model?.mainContext as? NSManagedObjectContext else { return NSFetchedResultsController<DBChannel>() }
+        guard let context = model.mainContext else { return NSFetchedResultsController<DBChannel>() }
         let fetchRequest = DBChannel.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(DBChannel.lastActivity), ascending: false)]
         fetchRequest.fetchBatchSize = 15
@@ -31,6 +32,15 @@ class ConversationsListViewController: UIViewController {
         }
         return controller
     }()
+    
+    init(model: IConversationsListModel, presentationAssembly: IPresentationAssembly) {
+        self.model = model
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,18 +91,18 @@ class ConversationsListViewController: UIViewController {
     }
     
     private func loadChannels() {
-        model?.loadChannels()
+        model.loadChannels()
     }
     
     @objc private func openProfile() {
-        let profileViewController = ProfileViewController()
+        let profileViewController = RootAssembly.presentationAssembly.getProfileViewController()
         let navigationController = UINavigationController(rootViewController: profileViewController)
         navigationController.transitioningDelegate = self
         self.present(navigationController, animated: true)
     }
     
     @objc private func openThemes() {
-        let themesViewController = ThemesViewController()
+        let themesViewController = RootAssembly.presentationAssembly.getThemesViewController()
         navigationController?.pushViewController(themesViewController, animated: true)
     }
     
@@ -100,7 +110,7 @@ class ConversationsListViewController: UIViewController {
         let alert = UIAlertController(title: "Add channel name", message: nil, preferredStyle: .alert)
         let createAction = UIAlertAction(title: "Create", style: .cancel) { [weak self] _ in
             let channel = Channel(name: alert.textFields?.first?.text, lastActivity: Date())
-            self?.model?.addChannel(data: channel.toDict)
+            self?.model.addChannel(data: channel.toDict)
         }
         alert.addAction(createAction)
         let cancelAction = UIAlertAction(title: "Cancel", style: .default)
@@ -112,7 +122,7 @@ class ConversationsListViewController: UIViewController {
     }
     
     @objc private func updateMainContext(_ notification: Notification) {
-        model?.mergeChanges(notification: notification)
+        model.mergeChanges(notification: notification)
     }
 }
 
@@ -123,16 +133,16 @@ extension ConversationsListViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let conversationViewController = ConversationViewController()
+        let conversationViewController = RootAssembly.presentationAssembly.getConversationViewController()
         conversationViewController.selectedChannel = dataSource.fetchedResultsController?.object(at: indexPath)
-        conversationViewController.context = model?.mainContext
+        conversationViewController.context = model.mainContext
         navigationController?.pushViewController(conversationViewController, animated: true)
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _, _, _ in
             guard let channel = self?.dataSource.fetchedResultsController?.object(at: indexPath) else { return }
-            self?.model?.deleteChannel(channel)
+            self?.model.deleteChannel(channel)
         }
         deleteAction.backgroundColor = .red
         let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
