@@ -13,9 +13,9 @@ protocol IPopAnimator {
     var dismissCompletion: (() -> Void)? { get set }
 }
 
-class PopAnimator: NSObject, IPopAnimator, UIViewControllerAnimatedTransitioning {
+class PopTransitionAnimator: NSObject, IPopAnimator, UIViewControllerAnimatedTransitioning {
     
-    private let duration: TimeInterval = 1
+    private let duration: TimeInterval = 2
     var isPresenting = true
     var originFrame = CGRect.zero
     var dismissCompletion: (() -> Void)?
@@ -48,7 +48,7 @@ class PopAnimator: NSObject, IPopAnimator, UIViewControllerAnimatedTransitioning
         if let toView = transitionContext.view(forKey: .to) { containerView.addSubview(toView) }
         containerView.bringSubviewToFront(viewToPresent)
         
-        UIView.animate(withDuration: duration, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 3, options: []) {
+        UIView.animate(withDuration: duration, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 3, options: [.curveEaseInOut]) {
             viewToPresent.transform = self.isPresenting ? .identity : scaleTransform
             viewToPresent.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
         } completion: { _ in

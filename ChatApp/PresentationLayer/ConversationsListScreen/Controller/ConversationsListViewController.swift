@@ -17,7 +17,7 @@ class ConversationsListViewController: UIViewController {
     let model: IConversationsListModel
     private var isThemeOpened = false
     
-    let transition = PopAnimator()
+    let transition = PopTransitionAnimator()
     
     private lazy var fetchedResultsController: NSFetchedResultsController<DBChannel> = {
         guard let context = model.mainContext else { return NSFetchedResultsController<DBChannel>() }

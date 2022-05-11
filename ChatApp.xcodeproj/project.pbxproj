@@ -10,7 +10,7 @@
 		BB8655BB0213036783D87EF4 /* Pods_ChatApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B85BBFB2F206D009FA1B1C29 /* Pods_ChatApp.framework */; };
 		DB2EE269282049DF0094CCDF /* ImageParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2EE268282049DF0094CCDF /* ImageParser.swift */; };
 		DB2EE26F2822C9CB0094CCDF /* EmblemEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2EE26E2822C9CB0094CCDF /* EmblemEmitter.swift */; };
-		DB312F532823477E0069E7DC /* PopAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB312F522823477E0069E7DC /* PopAnimator.swift */; };
+		DB312F532823477E0069E7DC /* PopTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB312F522823477E0069E7DC /* PopTransitionAnimator.swift */; };
 		DB312F55282433D90069E7DC /* TransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB312F54282433D90069E7DC /* TransitioningDelegate.swift */; };
 		DB398A5D2805F7FB006BE07E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DB398A5C2805F7FB006BE07E /* GoogleService-Info.plist */; };
 		DB482C572817212400676DE9 /* ConversationsListFRCDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C562817212400676DE9 /* ConversationsListFRCDelegate.swift */; };
@@ -82,7 +82,7 @@
 		D67BDBEE79310AFA5175A121 /* Pods-ChatApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatApp.debug.xcconfig"; path = "Target Support Files/Pods-ChatApp/Pods-ChatApp.debug.xcconfig"; sourceTree = "<group>"; };
 		DB2EE268282049DF0094CCDF /* ImageParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageParser.swift; sourceTree = "<group>"; };
 		DB2EE26E2822C9CB0094CCDF /* EmblemEmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmblemEmitter.swift; sourceTree = "<group>"; };
-		DB312F522823477E0069E7DC /* PopAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopAnimator.swift; sourceTree = "<group>"; };
+		DB312F522823477E0069E7DC /* PopTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopTransitionAnimator.swift; sourceTree = "<group>"; };
 		DB312F54282433D90069E7DC /* TransitioningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitioningDelegate.swift; sourceTree = "<group>"; };
 		DB398A5C2805F7FB006BE07E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DB482C562817212400676DE9 /* ConversationsListFRCDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsListFRCDelegate.swift; sourceTree = "<group>"; };
@@ -482,7 +482,7 @@
 			children = (
 				DB482C7D2819D80400676DE9 /* ActivityIndicator.swift */,
 				DB2EE26E2822C9CB0094CCDF /* EmblemEmitter.swift */,
-				DB312F522823477E0069E7DC /* PopAnimator.swift */,
+				DB312F522823477E0069E7DC /* PopTransitionAnimator.swift */,
 			);
 			path = SharedComponents;
 			sourceTree = "<group>";
@@ -676,7 +676,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB312F532823477E0069E7DC /* PopAnimator.swift in Sources */,
+				DB312F532823477E0069E7DC /* PopTransitionAnimator.swift in Sources */,
 				DBFFEE9327EC8FFD00F194D9 /* FileManagerStorage.swift in Sources */,
 				DB482C6E28198D7A00676DE9 /* RequestSender.swift in Sources */,
 				DBA00BE527FC8DB6006F02ED /* NewCoreDataContainer.swift in Sources */,

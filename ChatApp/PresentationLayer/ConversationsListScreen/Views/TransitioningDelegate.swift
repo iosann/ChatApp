@@ -16,10 +16,10 @@ extension ConversationsListViewController: UIViewControllerTransitioningDelegate
         guard let navigationBarSubviews = self.navigationController?.navigationBar.subviews else { return transition }
         for subview in navigationBarSubviews {
             for view in subview.subviews where view.bounds.width < 50 {
-                let frame = CGRect(x: view.frame.maxX - view.frame.width / 2,
-                                   y: view.frame.maxY - view.frame.height / 2,
-                                   width: view.frame.width,
-                                   height: view.frame.height)
+                let frame = CGRect(x: view.frame.origin.x - view.frame.size.width / 2,
+                                   y: view.frame.size.height * 1.5,
+                                   width: view.frame.size.width,
+                                   height: view.frame.size.height)
                 transition.originFrame = frame
                 transition.isPresenting = true
                 view.isHidden = true
