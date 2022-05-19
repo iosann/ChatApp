@@ -24,6 +24,8 @@ class ChatAppUITests: XCTestCase {
 
     func testProfileUIElements() {
         guard let app = app else { return }
+
+        app.navigationBars["Channels"].buttons["avatar icon"].tap()
         
         let scrollViewsQuery = app.scrollViews
         let elementsQuery = scrollViewsQuery.otherElements

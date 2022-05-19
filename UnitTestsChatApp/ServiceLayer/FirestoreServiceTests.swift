@@ -42,4 +42,3 @@ class FirestoreServiceTests: XCTestCase {
         } else { return nil }
     }
 }
-
