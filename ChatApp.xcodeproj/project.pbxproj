@@ -129,6 +129,8 @@
 		DB504C2D27D94152004B0CCE /* ConversationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConversationCell.xib; sourceTree = "<group>"; };
 		DB504C3A27D96727004B0CCE /* ConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationViewController.swift; sourceTree = "<group>"; };
 		DB504C3D27D96AD5004B0CCE /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
+		DB62A79A2836ECB7003158D8 /* UnitsTestPlan.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UnitsTestPlan.xctestplan; sourceTree = "<group>"; };
+		DB62A79B2836ECD1003158D8 /* UITestPlan.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UITestPlan.xctestplan; sourceTree = "<group>"; };
 		DB6C41E328131D44005A5C70 /* ImagesCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesCollectionViewController.swift; sourceTree = "<group>"; };
 		DB6C41E528131D71005A5C70 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		DB745A5027D0FA74007534FA /* BaseProfileView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BaseProfileView.xib; sourceTree = "<group>"; };
@@ -366,6 +368,15 @@
 			path = ConversationDetailScreen;
 			sourceTree = "<group>";
 		};
+		DB62A7992836EC86003158D8 /* TestPlans */ = {
+			isa = PBXGroup;
+			children = (
+				DB62A79A2836ECB7003158D8 /* UnitsTestPlan.xctestplan */,
+				DB62A79B2836ECD1003158D8 /* UITestPlan.xctestplan */,
+			);
+			path = TestPlans;
+			sourceTree = "<group>";
+		};
 		DB6470182811B26D003C97CC /* Network */ = {
 			isa = PBXGroup;
 			children = (
@@ -391,6 +402,7 @@
 		DB86835D27C2A9F100D82F48 = {
 			isa = PBXGroup;
 			children = (
+				DB62A7992836EC86003158D8 /* TestPlans */,
 				DB86836827C2A9F100D82F48 /* ChatApp */,
 				DBADD61F2836D0E7003055C9 /* UnitTestsChatApp */,
 				DBADD6392836DCE7003055C9 /* ChatAppUITests */,
