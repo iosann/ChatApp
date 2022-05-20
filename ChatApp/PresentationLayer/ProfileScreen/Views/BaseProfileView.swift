@@ -49,18 +49,16 @@ class BaseProfileView: UIView {
         return true
     }
     
+    private var isAnimating = false
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-//      print(saveButton.frame)
-//      Краш из-за попытки обратиться к кнопке раньше, чем xib, содержащий кнопку, будет инициализирован
         loadNib()
         configureView()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        loadNib()
-        configureView()
     }
     
     private func loadNib() {
@@ -101,12 +99,47 @@ class BaseProfileView: UIView {
     @IBAction func editTextViews(_ sender: UIButton) {
         isEditingMode = true
         if nameTextView.canBecomeFirstResponder { nameTextView.becomeFirstResponder() }
+
+        if isAnimating {
+            editButton.layer.removeAllAnimations()
+            isAnimating = false
+        } else { startTremblingAnimation() }
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         photoImageView.layer.cornerRadius = photoImageView.bounds.size.width / 2
         editPhotoButton.layer.cornerRadius = editPhotoButton.bounds.size.width / 2
+    }
+    
+    private func startTremblingAnimation() {
+        
+        let offset = CABasicAnimation(keyPath: #keyPath(CALayer.position))
+        offset.fromValue = [saveButton.center.x - 5, saveButton.center.y - 5]
+        offset.toValue = [saveButton.center.x + 5, saveButton.center.y + 5]
+        offset.duration = 0.1
+        offset.autoreverses = true
+        
+        let rotation = CABasicAnimation(keyPath: "transform.rotation")
+        rotation.fromValue = -18 * CGFloat.pi / 180
+        rotation.toValue = 18 * CGFloat.pi / 180
+        rotation.duration = 0.1
+        rotation.autoreverses = true
+        
+        let spring = CASpringAnimation(keyPath: "position")
+        spring.damping = 10
+        spring.fromValue = [saveButton.center.x - 2, saveButton.center.y - 2]
+        spring.toValue = [saveButton.center.x + 2, saveButton.center.y + 2]
+        spring.duration = 0.1
+        spring.repeatDuration = 0.3
+        
+        let group = CAAnimationGroup()
+        group.duration = 0.3
+        group.autoreverses = true
+        group.repeatCount = .infinity
+        group.animations = [offset, rotation, spring]
+        saveButton.layer.add(group, forKey: nil)
+        isAnimating = true
     }
 }
 

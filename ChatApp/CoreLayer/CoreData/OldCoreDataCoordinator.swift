@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-final class OldCoreDataCoordinator: ISavingToCoreData, ICoreDataContext {
+final class OldCoreDataCoordinator: ICoreDataStorage {
     
     private var managedObjectModel: NSManagedObjectModel = {
         if let url = Bundle.main.url(forResource: "DatabaseModel", withExtension: "momd"),

@@ -17,7 +17,11 @@ protocol INetworkImageService {
 
 class NetworkImageService: INetworkImageService {
     
-    let requestSender: IRequestSender = RequestSender()
+    let requestSender: IRequestSender
+    
+    init(requestSender: IRequestSender) {
+        self.requestSender = requestSender
+    }
     
     func getImagesList(_ completion: @escaping(ImagesURLResult) -> Void) {
         let configuration = RequestFactory.imagesURLConfiguration()

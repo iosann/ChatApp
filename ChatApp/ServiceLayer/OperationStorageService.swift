@@ -9,10 +9,16 @@ import UIKit
 
 class OperationStorageService: IStorageService {
     
+    let fileManagerStorage: IFileManagerStorage
+    
+    init(fileManagerStorage: IFileManagerStorage) {
+        self.fileManagerStorage = fileManagerStorage
+    }
+    
     let operationQueue = OperationQueue()
     
     func writeData(fullName: String?, description: String?, image: UIImage?, _ completion: @escaping(Bool) -> Void) {
-        let writeDataOperation = WriteDataOperation(fullName: fullName, profileDescription: description, image: image)
+        let writeDataOperation = WriteDataOperation(fullName: fullName, profileDescription: description, image: image, fileManagerStorage: fileManagerStorage)
         writeDataOperation.completionBlock = {
             guard let result = writeDataOperation.boolResult else { return }
             completion(result)
@@ -21,7 +27,7 @@ class OperationStorageService: IStorageService {
     }
     
     func getStoredString(fileName: String, _ completion: @escaping (String) -> Void) {
-        let getStoredDataOperation = GetStoredDataOperation(fileName: fileName)
+        let getStoredDataOperation = GetStoredDataOperation(fileName: fileName, fileManagerStorage: fileManagerStorage)
         getStoredDataOperation.completionBlock = {
             completion(getStoredDataOperation.storedString ?? "")
         }
@@ -29,7 +35,7 @@ class OperationStorageService: IStorageService {
     }
     
     func getStoredImage(_ completion: @escaping (UIImage) -> Void) {
-        let getStoredDataOperation = GetStoredDataOperation(fileName: "")
+        let getStoredDataOperation = GetStoredDataOperation(fileName: "", fileManagerStorage: fileManagerStorage)
         getStoredDataOperation.completionBlock = {
             completion(getStoredDataOperation.storedImage ?? UIImage())
         }
@@ -43,11 +49,11 @@ class WriteDataOperation: AsyncOperation {
     private let image: UIImage?
     var boolResult: Bool?
     
-    init(fullName: String?, profileDescription: String?, image: UIImage?) {
+    init(fullName: String?, profileDescription: String?, image: UIImage?, fileManagerStorage: IFileManagerStorage) {
         self.fullName = fullName
         self.profileDescription = profileDescription
         self.image = image
-        super.init()
+        super.init(fileManagerStorage: fileManagerStorage)
     }
     
     override func main() {
@@ -55,7 +61,7 @@ class WriteDataOperation: AsyncOperation {
             state = .finished
             return
         }
-        dataSaving.writeData(fullName: fullName, description: profileDescription, image: image) { [weak self] bool in
+        fileManagerStorage.writeData(fullName: fullName, description: profileDescription, image: image) { [weak self] bool in
             self?.boolResult = bool
             self?.state = .finished
         }
@@ -67,9 +73,9 @@ class GetStoredDataOperation: AsyncOperation {
     var storedString: String?
     var storedImage: UIImage?
     
-    init(fileName: String) {
+    init(fileName: String, fileManagerStorage: IFileManagerStorage) {
         self.fileName = fileName
-        super.init()
+        super.init(fileManagerStorage: fileManagerStorage)
     }
     
     override func main() {
@@ -78,12 +84,12 @@ class GetStoredDataOperation: AsyncOperation {
             return
         }
         if fileName != "" {
-            dataSaving.getStoredString(fileName: fileName) { [weak self] string in
+            fileManagerStorage.getStoredString(fileName: fileName) { [weak self] string in
                 self?.storedString = string
                 self?.state = .finished
             }
         } else {
-            dataSaving.getStoredImage { [weak self] image in
+            fileManagerStorage.getStoredImage { [weak self] image in
                 self?.storedImage = image
                 self?.state = .finished
             }
@@ -93,7 +99,11 @@ class GetStoredDataOperation: AsyncOperation {
 
 class AsyncOperation: Operation {
     
-    let dataSaving: IFileManagerStorage = FileManagerStorage()
+    let fileManagerStorage: IFileManagerStorage
+    
+    init(fileManagerStorage: IFileManagerStorage) {
+        self.fileManagerStorage = fileManagerStorage
+    }
     
     enum State: String {
         case ready, executing, finished, cancelled

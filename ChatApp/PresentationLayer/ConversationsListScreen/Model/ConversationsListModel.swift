@@ -18,19 +18,28 @@ protocol IConversationsListModel: AnyObject {
 
 class ConversationsListModel: IConversationsListModel {
     
-    var mainContext: NSManagedObjectContext? {
-        return coreDataService?.contextCoreData?.readContext
+    private let loadingFirestoreServise: ILoadingFirestoreServise
+    private let deletingFirestoreServise: IDeletingFirestoreServise
+    private let mergingCoreDataService: IMergingCoreDataService
+    private let coreDataService: ICoreDataService
+    
+    init(coreDataService: ICoreDataService, mergingCoreDataService: IMergingCoreDataService,
+         loadingFirestoreServise: ILoadingFirestoreServise, deletingFirestoreServise: IDeletingFirestoreServise) {
+        self.coreDataService = coreDataService
+        self.mergingCoreDataService = mergingCoreDataService
+        self.loadingFirestoreServise = loadingFirestoreServise
+        self.deletingFirestoreServise = deletingFirestoreServise
     }
-    private let loadingFirestoreServise: ILoadingFirestoreServise? = FirestoreService()
-    private let deletingFirestoreServise: IDeletingFirestoreServise? = FirestoreService()
-    private let coreDataService: ICoreDataService? = CoreDataService()
-    private let mergingCoreDataService: IMergingCoreDataService? = CoreDataService()
+    
+    var mainContext: NSManagedObjectContext? {
+        return coreDataService.readContext
+    }
     
     func loadChannels() {
-        loadingFirestoreServise?.loadData(reference: URLConstants.referenceToChannels) { [weak self] result in
+        loadingFirestoreServise.loadData(reference: URLConstants.referenceToChannels) { [weak self] result in
             switch result {
             case .success(let snapshot):
-                self?.coreDataService?.saveData { context in
+                self?.coreDataService.saveData { context in
                     self?.saveChannels(snapshot: snapshot, context: context)
                 }
             case .failure(let error):
@@ -40,7 +49,7 @@ class ConversationsListModel: IConversationsListModel {
     }
     
     func addChannel(data: [String: Any]) {
-        loadingFirestoreServise?.addDocument(reference: URLConstants.referenceToChannels, data: data)
+        loadingFirestoreServise.addDocument(reference: URLConstants.referenceToChannels, data: data)
     }
     
     func deleteChannel(_ channel: DBChannel) {
@@ -51,11 +60,11 @@ class ConversationsListModel: IConversationsListModel {
            } catch {
                assertionFailure(error.localizedDescription)
            }
-        deletingFirestoreServise?.deleteChannel(channelId)
+        deletingFirestoreServise.deleteChannel(channelId)
     }
     
     func mergeChanges(notification: Notification) {
-        mergingCoreDataService?.mergeChanges(notification)
+        mergingCoreDataService.mergeChanges(notification)
     }
     
     private func saveChannels(snapshot: QuerySnapshot, context: NSManagedObjectContext) {

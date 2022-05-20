@@ -8,7 +8,7 @@
 import CoreData
 
 protocol ICoreDataService {
-    var contextCoreData: ICoreDataContext? { get }
+    var readContext: NSManagedObjectContext { get }
     func saveData(_ block: @escaping(NSManagedObjectContext) -> Void)
 }
 
@@ -18,15 +18,20 @@ protocol IMergingCoreDataService {
 
 class CoreDataService: ICoreDataService, IMergingCoreDataService {
     
-    let contextCoreData: ICoreDataContext? = NewCoreDataContainer()
-    private let savingCoreData: ISavingToCoreData? = NewCoreDataContainer()
+    private let coreDataStorage: ICoreDataStorage
+    
+    init(coreDataStorage: ICoreDataStorage) {
+        self.coreDataStorage = coreDataStorage
+    }
+    
+    lazy var readContext: NSManagedObjectContext = coreDataStorage.readContext
     
     func saveData(_ block: @escaping(NSManagedObjectContext) -> Void) {
-        savingCoreData?.performSave(block)
+        coreDataStorage.performSave(block)
     }
     
     func mergeChanges(_ notification: Notification) {
-        guard let context = notification.object as? NSManagedObjectContext, context != contextCoreData?.readContext else { return }
-        contextCoreData?.readContext.mergeChanges(fromContextDidSave: notification)
+        guard let context = notification.object as? NSManagedObjectContext, context != coreDataStorage.readContext else { return }
+        coreDataStorage.readContext.mergeChanges(fromContextDidSave: notification)
     }
 }

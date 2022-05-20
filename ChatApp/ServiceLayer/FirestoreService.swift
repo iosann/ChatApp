@@ -18,26 +18,29 @@ protocol IDeletingFirestoreServise {
 
 class FirestoreService {
     
-    private let loadingFirestore: ILoadingFirestore? = FirestoreDatabase()
-    private let deletingFirestore: IDeletingFirestore = FirestoreDatabase()
+    private let firestoreDatabase: IFirestoreDatabase
+    
+    init(firestoreDatabase: IFirestoreDatabase) {
+        self.firestoreDatabase = firestoreDatabase
+    }
 }
 
 extension FirestoreService: ILoadingFirestoreServise {
     
     func loadData(reference: CollectionReference, _ completion: @escaping (SnapshotResult) -> Void) {
-        loadingFirestore?.loadData(reference: reference) { result in
+        firestoreDatabase.loadData(reference: reference) { result in
             completion(result)
         }
     }
     
     func addDocument(reference: CollectionReference, data: [String: Any]) {
-        loadingFirestore?.addDocument(reference: reference, data: data)
+        firestoreDatabase.addDocument(reference: reference, data: data)
     }
 }
 
 extension FirestoreService: IDeletingFirestoreServise {
     
     func deleteChannel(_ channelId: String?) {
-        deletingFirestore.deleteChannelAndNestedMessages(channelId: channelId)
+        firestoreDatabase.deleteChannelAndNestedMessages(channelId: channelId)
     }
 }

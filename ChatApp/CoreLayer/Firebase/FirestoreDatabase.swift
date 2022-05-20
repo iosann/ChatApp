@@ -10,16 +10,13 @@ import Firebase
 
 typealias SnapshotResult = Result<QuerySnapshot, Error>
 
-protocol ILoadingFirestore {
+protocol IFirestoreDatabase {
     func loadData(reference: CollectionReference, _ completion: @escaping(SnapshotResult) -> Void)
     func addDocument(reference: CollectionReference, data: [String: Any])
-}
-
-protocol IDeletingFirestore {
     func deleteChannelAndNestedMessages(channelId: String?)
 }
 
-final class FirestoreDatabase: ILoadingFirestore, IDeletingFirestore {
+final class FirestoreDatabase: IFirestoreDatabase {
     
     func loadData(reference: CollectionReference, _ completion: @escaping(SnapshotResult) -> Void) {
         reference.addSnapshotListener { snapshot, error in

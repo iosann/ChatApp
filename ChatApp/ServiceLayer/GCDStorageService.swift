@@ -15,11 +15,15 @@ protocol IStorageService: AnyObject {
 
 class GCDStorageService: IStorageService {
     
-    private let dataSaving: IFileManagerStorage = FileManagerStorage()
+    private let fileManagerStorage: IFileManagerStorage
+    
+    init(fileManagerStorage: IFileManagerStorage) {
+        self.fileManagerStorage = fileManagerStorage
+    }
     
     func writeData(fullName: String?, description: String?, image: UIImage?, _ completion: @escaping(Bool) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            self?.dataSaving.writeData(fullName: fullName, description: description, image: image) { bool in
+            self?.fileManagerStorage.writeData(fullName: fullName, description: description, image: image) { bool in
                 completion(bool)
             }
         }
@@ -27,7 +31,7 @@ class GCDStorageService: IStorageService {
     
     func getStoredString(fileName: String, _ completion: @escaping(String) -> Void) {
         DispatchQueue.global(qos: .userInteractive).async { [weak self] in
-            self?.dataSaving.getStoredString(fileName: fileName) { filename in
+            self?.fileManagerStorage.getStoredString(fileName: fileName) { filename in
                 completion(filename)
             }
         }
@@ -35,7 +39,7 @@ class GCDStorageService: IStorageService {
     
     func getStoredImage(_ completion: @escaping(UIImage) -> Void) {
         DispatchQueue.global(qos: .userInteractive).async { [weak self] in
-            self?.dataSaving.getStoredImage { image in
+            self?.fileManagerStorage.getStoredImage { image in
                 completion(image)
             }
         }

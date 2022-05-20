@@ -14,24 +14,27 @@ protocol IProfileModel {
 }
 
 class ProfileModel: IProfileModel {
+
+    private let storageService: IStorageService
     
-//    private let savingService: IStorageService = GCDStorageService()
-    private let savingService: IStorageService = OperationStorageService()
+    init(storageService: IStorageService) {
+        self.storageService = storageService
+    }
     
     func writeData(fullName: String?, description: String?, image: UIImage?, _ completion: @escaping (Bool) -> Void) {
-        savingService.writeData(fullName: fullName, description: description, image: image) { bool in
+        storageService.writeData(fullName: fullName, description: description, image: image) { bool in
             completion(bool)
         }
     }
     
     func getStoredImage(_ completion: @escaping (UIImage) -> Void) {
-        savingService.getStoredImage { image in
+        storageService.getStoredImage { image in
             completion(image)
         }
     }
     
     func getStoredString(fileName: String, _ completion: @escaping (String) -> Void) {
-        savingService.getStoredString(fileName: fileName) { string in
+        storageService.getStoredString(fileName: fileName) { string in
             completion(string)
         }
     }

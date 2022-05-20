@@ -15,15 +15,20 @@ protocol IConversationModel: AnyObject {
 
 class ConversationModel: IConversationModel {
     
-    private let loadingFirestoreServise: ILoadingFirestoreServise? = FirestoreService()
-    private let coreDataService: ICoreDataService? = CoreDataService()
+    private let loadingFirestoreServise: ILoadingFirestoreServise
+    private let coreDataService: ICoreDataService
+    
+    init(coreDataService: ICoreDataService, loadingFirestoreServise: ILoadingFirestoreServise) {
+        self.coreDataService = coreDataService
+        self.loadingFirestoreServise = loadingFirestoreServise
+    }
 
     func loadMessages(selectedChannelId: String?) {
         let reference = URLConstants.referenceToChannels.document(selectedChannelId ?? "").collection("messages")
-        loadingFirestoreServise?.loadData(reference: reference) { [weak self] result in
+        loadingFirestoreServise.loadData(reference: reference) { [weak self] result in
             switch result {
             case .success(let snapshot):
-                self?.coreDataService?.saveData { context in
+                self?.coreDataService.saveData { context in
                     self?.saveMessages(selectedChannelId: selectedChannelId, snapshot: snapshot, context: context)
                 }
             case .failure(let error):
@@ -33,7 +38,7 @@ class ConversationModel: IConversationModel {
     }
     
     func addMessage(selectedChannelId: String?, data: [String: Any]) {
-        loadingFirestoreServise?.addDocument(reference: URLConstants.referenceToChannels.document(selectedChannelId ?? "").collection("messages"), data: data)
+        loadingFirestoreServise.addDocument(reference: URLConstants.referenceToChannels.document(selectedChannelId ?? "").collection("messages"), data: data)
     }
                                           
     private func saveMessages(selectedChannelId: String?, snapshot: QuerySnapshot, context: NSManagedObjectContext) {

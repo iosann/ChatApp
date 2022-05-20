@@ -18,7 +18,7 @@ class ConversationViewController: UIViewController {
     var context: NSManagedObjectContext?
     let tableView = UITableView(frame: .zero, style: .insetGrouped)
 
-    let model: IConversationModel? = ConversationModel()
+    private let model: IConversationModel
     
     override var inputAccessoryView: UIView? {
         return composeBar
@@ -39,7 +39,16 @@ class ConversationViewController: UIViewController {
         }
         return controller
     }()
-
+    
+    init(model: IConversationModel, presentationAssembly: IPresentationAssembly) {
+        self.model = model
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         loadMessages()
@@ -98,7 +107,7 @@ class ConversationViewController: UIViewController {
     }
 
     private func loadMessages() {
-        model?.loadMessages(selectedChannelId: selectedChannel?.identifier)
+        model.loadMessages(selectedChannelId: selectedChannel?.identifier)
     }
      
     @objc private func dismissKeyboard() {
@@ -110,12 +119,12 @@ class ConversationViewController: UIViewController {
     @objc private func sendNewMessage() {
         let text = composeBar.textView.text
         let message = Message(content: text, created: Date(), senderId: myDeviceId, senderName: "")
-        model?.addMessage(selectedChannelId: selectedChannel?.identifier, data: message.toDict)
+        model.addMessage(selectedChannelId: selectedChannel?.identifier, data: message.toDict)
         dismissKeyboard()
     }
     
     @objc private func chooseImage() {
-        let imagesController = ImagesCollectionViewController()
+        let imagesController = RootAssembly.presentationAssembly.getImagesCollectionViewController()
         imagesController.didUpdateCompletion = { [weak self] urlString in
             self?.composeBar.textView.becomeFirstResponder()
             self?.composeBar.textView.text = urlString
