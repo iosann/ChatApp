@@ -26,6 +26,8 @@ class CoreDataServiceTests: XCTestCase {
     
     func testPerformSave() {
         let service = buildService()
+        let writeContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        coreDataMock.stubbedPerformSaveBlockResult = (writeContext, ())
         service.saveData { context in
             self.saveChannels(channels: self.channels ?? [Channel](), context: context)
         }

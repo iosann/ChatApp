@@ -36,7 +36,7 @@ class ChatAppUITests: XCTestCase {
         let nameTextView = element.children(matching: .textView).element(boundBy: 0)
         let descriptionTextView = element.children(matching: .textView).element(boundBy: 1)
 
-        let avatarImage = app.otherElements["Photos"].scrollViews.otherElements.images["Photo, March 30, 2018, 11:14 PM"]
+        let avatarImage = app.scrollViews.children(matching: .other).element(boundBy: 0).children(matching: .other).element
         let title = XCUIApplication().navigationBars["ChatApp.ProfileView"].buttons["My Profile"]
         
         XCTAssertTrue(cameraButton.exists)
