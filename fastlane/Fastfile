@@ -1,12 +1,13 @@
 
 desc "Install dependencies, build for testing"
 lane :build_for_testing do |options|
-	scan(
-		build_for_testing: true,
-		clean: true,
-		devices: ["iPhone 11 (15.5)"],
-		scheme: "ChatApp"
-	)
+	build_app(xcargs: "-allowProvisioningUpdates")
+# 	scan(
+# 		build_for_testing: true,
+# 		clean: true,
+# 		devices: ["iPhone 11 (15.5)"],
+# 		scheme: "ChatApp"
+# 	)
 	puts "Installed dependencies, built for testing done!"
 end
 
