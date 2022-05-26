@@ -2,6 +2,7 @@
 desc "Install dependencies, build for testing"
 lane :build_for_testing do
 	cocoapods
+	swiftlint
 	scan(
 		build_for_testing: true
 	)
