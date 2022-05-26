@@ -3,7 +3,6 @@ desc "Install dependencies, build for testing"
 lane :build_for_testing do |options|
 	scan(
 		build_for_testing: true,
-		workspace: "ChatApp.xcworkspace",
 		devices: ["iPhone 11 (15.0)"],
 		scheme: "ChatApp",
 		clean: false
@@ -15,7 +14,6 @@ desc "Run tests on compiled app"
 lane :run_tests do |options|
 	scan(
 		test_without_building: true,
-		workspace: "ChatApp.xcworkspace",
 		devices: ["iPhone 11 (15.0)"],
 		scheme: "ChatApp",
 		clean: false
