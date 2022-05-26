@@ -1,0 +1,31 @@
+{
+  "configurations" : [
+    {
+      "id" : "1F50A625-1CCD-497D-B060-21F47E7AEB0A",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:ChatApp.xcodeproj",
+        "identifier" : "DBADD6372836DCE7003055C9",
+        "name" : "ChatAppUITests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:ChatApp.xcodeproj",
+        "identifier" : "DBADD61D2836D0E7003055C9",
+        "name" : "UnitTestsChatApp"
+      }
+    }
+  ],
+  "version" : 1
+}
