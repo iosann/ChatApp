@@ -1,6 +1,6 @@
 
 desc "Install dependencies, build for testing"
-lane :build_for_testing do |options|
+lane :build_for_testing do
 	scan(
 		build_for_testing: true,
 		clean: true
