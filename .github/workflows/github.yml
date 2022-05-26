@@ -6,4 +6,4 @@ jobs:
         steps:
         - uses: actions/checkout@v2
         - name: Run
-          run: bundle exec fastlane build_and_test
+          run: bundle exec fastlane build_for_testing
