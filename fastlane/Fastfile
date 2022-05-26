@@ -1,10 +1,8 @@
 
 desc "Install dependencies, build for testing"
 lane :build_for_testing do
-	setup_ci if ENV['CI']
 	scan(
-		build_for_testing: true,
-		clean: true
+		build_for_testing: true
 	)
 	puts "Installed dependencies, built for testing done!"
 end
