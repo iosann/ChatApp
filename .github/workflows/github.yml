@@ -9,5 +9,7 @@ jobs:
           with:
             ruby-version: 2.6
             bundler-cache: true
+          env:
+            ImageOS: macOS
         - name: Run
           run: bundle exec fastlane build_and_test
