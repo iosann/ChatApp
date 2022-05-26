@@ -10,6 +10,6 @@ jobs:
             ruby-version: 2.6
             bundler-cache: true
           env:
-            ImageOS: macOS
+            ImageOS: getImageOS()
         - name: Run
           run: bundle exec fastlane build_and_test
