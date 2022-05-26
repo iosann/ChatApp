@@ -14,7 +14,7 @@ end
 desc "Run tests on compiled app"
 lane :run_tests do |options|
 	scan(
-		test_without_building: true
+		test_without_building: true,
 		workspace: "ChatApp.xcworkspace",
 		devices: ["iPhone 11 (15.5)"],
 		scheme: "ChatApp"
