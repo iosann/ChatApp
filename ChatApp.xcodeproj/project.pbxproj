@@ -11,7 +11,6 @@
 		DB2EE26F2822C9CB0094CCDF /* EmblemEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2EE26E2822C9CB0094CCDF /* EmblemEmitter.swift */; };
 		DB312F532823477E0069E7DC /* PopTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB312F522823477E0069E7DC /* PopTransitionAnimator.swift */; };
 		DB312F55282433D90069E7DC /* TransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB312F54282433D90069E7DC /* TransitioningDelegate.swift */; };
-		DB398A5D2805F7FB006BE07E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DB398A5C2805F7FB006BE07E /* GoogleService-Info.plist */; };
 		DB482C572817212400676DE9 /* ConversationsListFRCDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C562817212400676DE9 /* ConversationsListFRCDelegate.swift */; };
 		DB482C59281722DA00676DE9 /* ConversationFRCDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C58281722DA00676DE9 /* ConversationFRCDelegate.swift */; };
 		DB482C5D28172BE800676DE9 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB482C5C28172BE800676DE9 /* Errors.swift */; };
@@ -107,7 +106,6 @@
 		DB2EE26E2822C9CB0094CCDF /* EmblemEmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmblemEmitter.swift; sourceTree = "<group>"; };
 		DB312F522823477E0069E7DC /* PopTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopTransitionAnimator.swift; sourceTree = "<group>"; };
 		DB312F54282433D90069E7DC /* TransitioningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitioningDelegate.swift; sourceTree = "<group>"; };
-		DB398A5C2805F7FB006BE07E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DB482ADB283FCAC500769E46 /* ChatAppConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ChatAppConfig.xcconfig; sourceTree = "<group>"; };
 		DB482C562817212400676DE9 /* ConversationsListFRCDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsListFRCDelegate.swift; sourceTree = "<group>"; };
 		DB482C58281722DA00676DE9 /* ConversationFRCDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationFRCDelegate.swift; sourceTree = "<group>"; };
@@ -293,7 +291,6 @@
 			children = (
 				DBBD175227C6682A0093B548 /* Extensions.swift */,
 				DB86837427C2A9F800D82F48 /* LaunchScreen.storyboard */,
-				DB398A5C2805F7FB006BE07E /* GoogleService-Info.plist */,
 				DB86837727C2A9F800D82F48 /* Info.plist */,
 				DB8BCD8A27D038FA00054A95 /* Resources */,
 				DBFFEE9027EC751E00F194D9 /* Constants.swift */,
@@ -759,7 +756,6 @@
 				DB945AC227DB577F00BBFBA3 /* SFProDisplay-RegularItalic.ttf in Resources */,
 				DB86837327C2A9F800D82F48 /* Assets.xcassets in Resources */,
 				DB745A5527D1390F007534FA /* SFProText-Semibold.ttf in Resources */,
-				DB398A5D2805F7FB006BE07E /* GoogleService-Info.plist in Resources */,
 				DB8BCD8827D02C8D00054A95 /* SFProText-Regular.ttf in Resources */,
 				DB8BCD8727D02C8D00054A95 /* SFProDisplay-Bold.ttf in Resources */,
 			);

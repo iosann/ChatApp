@@ -15,13 +15,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var lastState = UIApplication.shared.applicationState
     
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-        FirebaseApp.configure()
+        FirebaseApp.configure(options: createFirebaseOptions())
         if UserDefaults.standard.string(forKey: "DeviceId") == nil, let uuid = UIDevice.current.identifierForVendor?.uuidString {
                 UserDefaults.standard.setValue(uuid, forKey: "DeviceId")
             }
 //        NSLog("Application moved from not running to \(application.applicationState.name): \(#function)")
         lastState = application.applicationState
         return true
+    }
+    
+    private func createFirebaseOptions() -> FirebaseOptions {
+       let secondaryOptions = FirebaseOptions(
+           googleAppID: Bundle.main.object(forInfoDictionaryKey: "googleAppID") as? String ?? "",
+           gcmSenderID: Bundle.main.object(forInfoDictionaryKey: "gcmSenderID") as? String ?? "")
+       secondaryOptions.apiKey = Bundle.main.object(forInfoDictionaryKey: "gcmSenderID") as? String
+       secondaryOptions.projectID = Bundle.main.object(forInfoDictionaryKey: "projectID") as? String
+       secondaryOptions.bundleID = Bundle.main.object(forInfoDictionaryKey: "bundleID") as? String ?? ""
+       secondaryOptions.clientID = Bundle.main.object(forInfoDictionaryKey: "clientID") as? String
+       let string = Bundle.main.object(forInfoDictionaryKey: "databaseURL") as? String
+       secondaryOptions.databaseURL = "https://" + (string ?? "")
+       secondaryOptions.storageBucket = Bundle.main.object(forInfoDictionaryKey: "storageBucket") as? String
+       return secondaryOptions
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
