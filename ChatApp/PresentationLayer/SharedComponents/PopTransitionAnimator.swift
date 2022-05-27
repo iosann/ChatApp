@@ -15,7 +15,7 @@ protocol IPopAnimator {
 
 class PopTransitionAnimator: NSObject, IPopAnimator, UIViewControllerAnimatedTransitioning {
     
-    private let duration: TimeInterval = 2
+    private let duration: TimeInterval = 1
     var isPresenting = true
     var originFrame = CGRect.zero
     var dismissCompletion: (() -> Void)?
