@@ -1,0 +1,24 @@
+//
+//  ChatAppConfig.xcconfig
+//  ChatApp
+//
+//  Created by Anna Belousova on 26.05.2022.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+#include "Pods/Target Support Files/Pods-ChatApp/Pods-ChatApp.release.xcconfig"
+#include "Pods/Target Support Files/Pods-ChatApp/Pods-ChatApp.debug.xcconfig"
+
+PIXABAY_TOKEN = 27005211-a0d699758faad00b881360df1
+ PIXABAY_URL = pixabay.com/api/
+
+ API_KEY = AIzaSyDiP82T7uEDYP3Mz4oUv2roP8wEJsV418k
+ GOOGLE_APP_ID = 1:670117407869:ios:a2266d543cf3ccb58d9514
+ GSM_SENDER_ID = 670117407869
+ PROJECT_ID = t-messenger-a66ec
+ BUNDLE_ID = com.annabelousova.ChatApp2
+ CLIENT_ID = 670117407869-u22veujk4thi0sj318vddv6fpfvuaf71.apps.googleusercontent.com
+ DATABASE_URL = t-messenger-a66ec.firebaseio.com
+ STORAGE_BUCKET = t-messenger-a66ec.appspot.com
