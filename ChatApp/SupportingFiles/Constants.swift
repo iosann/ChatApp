@@ -16,7 +16,3 @@ struct TextConstants {
 struct URLConstants {
     static let referenceToChannels = Firestore.firestore().collection("channels")
 }
-
-struct Tokens {
-    static let pixabay = "27005211-a0d699758faad00b881360df1"
-}

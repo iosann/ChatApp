@@ -1,0 +1,25 @@
+
+desc "Install dependencies, build for testing"
+lane :build_for_testing do
+	cocoapods
+	scan(
+		build_for_testing: true,
+		clean: true
+	)
+	puts "Installed dependencies, built for testing done!"
+end
+
+desc "Run tests on compiled app"
+lane :run_my_tests do
+	run_tests(
+		test_without_building: true
+	)
+	puts "Tests on compiled app done!"
+end
+
+desc "Install dependencies, build for testing and run the tests"
+lane :build_and_test do
+	build_for_testing
+	run_my_tests
+	puts "Installed dependencies, built for testing and the tests done!"
+end

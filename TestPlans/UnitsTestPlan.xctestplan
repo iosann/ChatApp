@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "9AF86A93-6D1D-4585-9038-AFF31321E877",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:ChatApp.xcodeproj",
+        "identifier" : "DBADD61D2836D0E7003055C9",
+        "name" : "UnitTestsChatApp"
+      }
+    }
+  ],
+  "version" : 1
+}
